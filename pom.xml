@@ -8,9 +8,9 @@
     <artifactId>ruoyi-wms</artifactId>
     <version>${revision}</version>
 
-    <name>ruoyi-wms</name>
+    <name>nova-wms</name>
     <url>https://gitee.com/zccbbg/wms-ruoyi</url>
-    <description>ruoyi-wms后台管理系统</description>
+    <description>nova-wms后台管理系统</description>
 
     <properties>
         <revision>5.2.0</revision>
@@ -330,9 +330,9 @@
     </dependencyManagement>
 
     <modules>
-        <module>ruoyi-admin-wms</module>
-        <module>ruoyi-common</module>
-        <module>ruoyi-modules</module>
+        <module>nova-admin-wms</module>
+        <module>nova-common</module>
+        <module>nova-modules</module>
     </modules>
     <packaging>pom</packaging>
 
