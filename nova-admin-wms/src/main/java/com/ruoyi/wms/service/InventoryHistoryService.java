@@ -10,16 +10,16 @@ import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.wms.domain.bo.BaseOrderBo;
 import com.ruoyi.wms.domain.bo.BaseOrderDetailBo;
 import com.ruoyi.wms.domain.bo.InventoryHistoryBo;
+import com.ruoyi.wms.domain.entity.Inventory;
 import com.ruoyi.wms.domain.entity.InventoryHistory;
 import com.ruoyi.wms.domain.vo.InventoryHistoryVo;
 import com.ruoyi.wms.mapper.InventoryHistoryMapper;
+import com.ruoyi.wms.mapper.InventoryMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 库存记录Service业务层处理
@@ -31,6 +31,7 @@ import java.util.Map;
 @Service
 public class InventoryHistoryService extends ServiceImpl<InventoryHistoryMapper, InventoryHistory> {
 
+    private final InventoryMapper inventoryMapper;
     private final InventoryHistoryMapper inventoryHistoryMapper;
 
     public void saveInventoryHistory(BaseOrderBo<? extends BaseOrderDetailBo> bo,Integer orderType,Boolean isAdd){
@@ -41,6 +42,30 @@ public class InventoryHistoryService extends ServiceImpl<InventoryHistoryMapper,
             inventoryHistory.setOrderNo(bo.getOrderNo());
             inventoryHistory.setOrderType(orderType);
             inventoryHistory.setSkuId(detail.getSkuId());
+
+            LambdaQueryWrapper<Inventory> wrapper = Wrappers.lambdaQuery();
+            wrapper.eq(Inventory::getWarehouseId, detail.getWarehouseId());
+            wrapper.eq(Inventory::getSkuId, detail.getSkuId());
+            Inventory result = inventoryMapper.selectOne(wrapper);
+            if(orderType==4){
+                inventoryHistory.setStockCode(detail.getStockCode());
+            }else{
+                if(result!=null){
+                    String existingStockCode = result.getStockCode();
+                    String newStockCode = detail.getStockCode();
+                    if (existingStockCode != null && !existingStockCode.isEmpty() && newStockCode != null && !newStockCode.isEmpty()) {
+                        List<String> existingStockCodeList = Arrays.asList(existingStockCode.split(","));
+                        List<String> newStockCodeList = Arrays.asList(newStockCode.split(","));
+                        Set<String> allCodes = new HashSet<>(existingStockCodeList);
+                        allCodes.addAll(newStockCodeList.stream().map(String::trim).toList());
+                        inventoryHistory.setStockCode(String.join(",", allCodes));
+                    } else {
+                        inventoryHistory.setStockCode(newStockCode);
+                    }
+                }
+            }
+
+
             if(isAdd){
                 inventoryHistory.setQuantity(detail.getQuantity());
             }else {

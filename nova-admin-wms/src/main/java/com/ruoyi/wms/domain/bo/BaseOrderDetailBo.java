@@ -36,6 +36,12 @@ public class BaseOrderDetailBo extends BaseEntity {
     private BigDecimal quantity;
 
     /**
+     * 库位编号
+     */
+    @NotNull(message = "库位编号不能为空", groups = { AddGroup.class, EditGroup.class })
+    private String stockCode;
+
+    /**
      * 金额
      */
     private BigDecimal amount;

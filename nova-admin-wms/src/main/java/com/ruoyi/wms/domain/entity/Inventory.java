@@ -1,5 +1,6 @@
 package com.ruoyi.wms.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.ruoyi.common.mybatis.core.domain.BaseEntity;
@@ -26,7 +27,7 @@ public class Inventory extends BaseEntity{
     /**
      *
      */
-    @TableId(value = "id")
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
     /**
      * 规格ID
@@ -40,6 +41,10 @@ public class Inventory extends BaseEntity{
      * 库存
      */
     private BigDecimal quantity;
+    /**
+     * 库位编号
+     */
+    private String stockCode;
     /**
      * 备注
      */

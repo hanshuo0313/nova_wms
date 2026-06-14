@@ -1,6 +1,7 @@
 package com.ruoyi.wms.domain.vo;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.ruoyi.wms.domain.entity.ReceiptOrderDetail;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
@@ -17,5 +18,8 @@ import lombok.EqualsAndHashCode;
 @ExcelIgnoreUnannotated
 @AutoMapper(target = ReceiptOrderDetail.class)
 public class ReceiptOrderDetailVo extends BaseOrderDetailVo{
-
+    /**
+     * 库位编号
+     */
+    private String stockCode;
 }

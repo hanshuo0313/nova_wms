@@ -1,5 +1,6 @@
 package com.ruoyi.wms.domain.bo;
 
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.ruoyi.common.core.validate.AddGroup;
 import com.ruoyi.common.core.validate.EditGroup;
 import com.ruoyi.common.mybatis.core.domain.BaseEntity;
@@ -46,6 +47,12 @@ public class InventoryBo extends BaseEntity {
      */
     @NotNull(message = "库存不能为空", groups = { AddGroup.class, EditGroup.class })
     private BigDecimal quantity;
+
+    /**
+     * 库位编号
+     */
+    @NotNull(message = "库位编号不能为空", groups = { AddGroup.class, EditGroup.class })
+    private String stockCode;
 
     /**
      * 备注

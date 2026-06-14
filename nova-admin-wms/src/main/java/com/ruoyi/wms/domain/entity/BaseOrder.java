@@ -1,5 +1,6 @@
 package com.ruoyi.wms.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.ruoyi.common.mybatis.core.domain.BaseEntity;
 import lombok.Data;
@@ -14,7 +15,7 @@ public class BaseOrder extends BaseEntity {
     /**
      *
      */
-    @TableId(value = "id")
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
     /**
      * 入库单号

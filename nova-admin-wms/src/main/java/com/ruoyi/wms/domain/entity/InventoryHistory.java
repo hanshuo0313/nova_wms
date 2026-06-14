@@ -1,5 +1,6 @@
 package com.ruoyi.wms.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.ruoyi.common.mybatis.core.domain.BaseHistoryEntity;
@@ -26,7 +27,7 @@ public class InventoryHistory extends BaseHistoryEntity {
     /**
      *
      */
-    @TableId(value = "id")
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
     /**
      * 操作id（出库、入库、库存移动表单id）
@@ -68,5 +69,9 @@ public class InventoryHistory extends BaseHistoryEntity {
      * 所属仓库
      */
     private Long warehouseId;
+    /**
+     * 库位编号
+     */
+    private String stockCode;
 
 }

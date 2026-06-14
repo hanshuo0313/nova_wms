@@ -38,6 +38,12 @@ public class BaseOrderDetailVo implements Serializable {
     private BigDecimal quantity;
 
     /**
+     * 库位编号
+     */
+    @ExcelProperty(value = "库位编号")
+    private String stockCode;
+
+    /**
      * 金额
      */
     @ExcelProperty(value = "金额")

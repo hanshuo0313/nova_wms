@@ -43,6 +43,12 @@ public class InventoryVo implements Serializable {
     private Long warehouseId;
 
     /**
+     * 库位编号
+     */
+    @ExcelProperty(value = "库位编号")
+    private String stockCode;
+
+    /**
      * 库存
      */
     @ExcelProperty(value = "库存")

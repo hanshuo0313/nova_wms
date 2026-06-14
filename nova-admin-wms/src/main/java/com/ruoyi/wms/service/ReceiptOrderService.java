@@ -116,8 +116,8 @@ public class ReceiptOrderService {
      * 入库：
      * 1.校验
      * 2.保存入库单和入库单明细
-     * 3.保存库存明细
-     * 4.增加库存
+     * 3.增加库存
+     * 4.改变库位状态
      * 5.保存库存记录
      */
     @Transactional

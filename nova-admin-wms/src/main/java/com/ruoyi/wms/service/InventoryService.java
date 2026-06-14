@@ -2,6 +2,7 @@ package com.ruoyi.wms.service;
 
 import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -13,9 +14,12 @@ import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.wms.domain.bo.BaseOrderDetailBo;
 import com.ruoyi.wms.domain.bo.CheckOrderDetailBo;
 import com.ruoyi.wms.domain.bo.InventoryBo;
+import com.ruoyi.wms.domain.bo.InventoryLocationBo;
 import com.ruoyi.wms.domain.entity.Inventory;
+import com.ruoyi.wms.domain.entity.InventoryLocation;
 import com.ruoyi.wms.domain.vo.InventoryVo;
 import com.ruoyi.wms.domain.vo.ItemSkuMapVo;
+import com.ruoyi.wms.mapper.InventoryLocationMapper;
 import com.ruoyi.wms.mapper.InventoryMapper;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +42,8 @@ public class InventoryService extends ServiceImpl<InventoryMapper, Inventory> {
 
     private final InventoryMapper inventoryMapper;
     private final ItemSkuService itemSkuService;
+    private final InventoryLocationMapper inventoryLocationMapper;
+
 
     /**
      * 查询库存
@@ -133,6 +139,7 @@ public class InventoryService extends ServiceImpl<InventoryMapper, Inventory> {
                 }else {
                     if(!inventory.getQuantity().equals(detail.getCheckQuantity())){
                         inventory.setQuantity(detail.getCheckQuantity());
+                        inventory.setStockCode(detail.getStockCode());
                         updateInventoryList.add(inventory);
                     }
                 }
@@ -141,19 +148,44 @@ public class InventoryService extends ServiceImpl<InventoryMapper, Inventory> {
                 wrapper.eq(Inventory::getWarehouseId,detail.getWarehouseId());
                 Inventory inventory = inventoryMapper.selectOne(wrapper);
                 if(inventory != null){
-                    ItemSkuMapVo itemSkuMapVo = itemSkuService.queryItemSkuMapVo(detail.getSkuId());
-                    throw new ServiceException(
-                        "账面库存不匹配："+itemSkuMapVo.getItem().getItemName()+"（"+itemSkuMapVo.getItemSku().getSkuName()+"）",
-                        HttpStatus.CONFLICT,
-                        "填写账面库存：0, 实际账面库存："+inventory.getQuantity());
+                    inventory.setQuantity(detail.getCheckQuantity());
+                    inventory.setStockCode(detail.getStockCode());
+                    updateInventoryList.add(inventory);
                 }else {
                     inventory = new Inventory();
                     inventory.setSkuId(detail.getSkuId());
                     inventory.setWarehouseId(detail.getWarehouseId());
                     inventory.setQuantity(detail.getCheckQuantity());
+                    inventory.setStockCode(detail.getStockCode());
                     insertInventoryList.add(inventory);
                 }
             }
+            //改变库位状态
+            String stockCodes = detail.getStockCode();
+            List<String> stockCodeList = Arrays.asList(stockCodes.split(","));
+            if(detail.getCheckQuantity().compareTo(BigDecimal.ZERO) > 0){
+                stockCodeList.forEach(stockCode -> {
+                    LambdaUpdateWrapper<InventoryLocation> locationWrapper = Wrappers.lambdaUpdate();
+                    locationWrapper.eq(InventoryLocation::getWarehouseId, detail.getWarehouseId());
+                    locationWrapper.eq(InventoryLocation::getStockCode, stockCode);
+                    locationWrapper.set(InventoryLocation::getStatus, 2);//使用中
+                    inventoryLocationMapper.update(null, locationWrapper);
+                });
+            }else{
+                stockCodeList.forEach(stockCode -> {
+                    wrapper.ne(Inventory::getId, detail.getInventoryId());
+                    wrapper.like(Inventory::getStockCode, stockCode);
+                    Inventory results = inventoryMapper.selectOne(wrapper);
+                    if(results== null){
+                        LambdaUpdateWrapper<InventoryLocation> locationWrapper = Wrappers.lambdaUpdate();
+                        locationWrapper.eq(InventoryLocation::getWarehouseId, detail.getWarehouseId());
+                        locationWrapper.eq(InventoryLocation::getStockCode, stockCode);
+                        locationWrapper.set(InventoryLocation::getStatus, 1);//空闲
+                        inventoryLocationMapper.update(null, locationWrapper);
+                    }
+                });
+            }
+
         });
         if(CollUtil.isNotEmpty(updateInventoryList)){
             inventoryMapper.updateBatchById(updateInventoryList);
@@ -175,6 +207,19 @@ public class InventoryService extends ServiceImpl<InventoryMapper, Inventory> {
             if(result!=null){
                 BigDecimal before = result.getQuantity();
                 BigDecimal after = before.add(orderDetailsBo.getQuantity());
+                String existingStockCode = result.getStockCode();
+                String newStockCode = orderDetailsBo.getStockCode();
+                if (existingStockCode != null && !existingStockCode.isEmpty()
+                    && newStockCode != null && !newStockCode.isEmpty()
+                    && result.getQuantity().compareTo(BigDecimal.ZERO) > 0) {
+                    List<String> existingStockCodeList = Arrays.asList(existingStockCode.split(","));
+                    List<String> newStockCodeList = Arrays.asList(newStockCode.split(","));
+                    Set<String> allCodes = new HashSet<>(existingStockCodeList);
+                    allCodes.addAll(newStockCodeList.stream().map(String::trim).toList());
+                    result.setStockCode(String.join(",", allCodes));
+                } else {
+                    result.setStockCode(newStockCode);
+                }
                 result.setQuantity(after);
                 orderDetailsBo.setAfterQuantity(after);
                 orderDetailsBo.setBeforeQuantity(before);
@@ -185,6 +230,12 @@ public class InventoryService extends ServiceImpl<InventoryMapper, Inventory> {
                 Inventory inventory = MapstructUtils.convert(orderDetailsBo, Inventory.class);
                 addList.add(inventory);
             }
+            //改变库位状态
+            LambdaUpdateWrapper<InventoryLocation> locationWrapper = Wrappers.lambdaUpdate();
+            locationWrapper.eq(InventoryLocation::getWarehouseId, orderDetailsBo.getWarehouseId());
+            locationWrapper.eq(InventoryLocation::getStockCode, orderDetailsBo.getStockCode());
+            locationWrapper.set(InventoryLocation::getStatus, 2);
+            inventoryLocationMapper.update(null, locationWrapper);
         });
         if (addList.size() > 0) {
             saveBatch(addList);
@@ -216,6 +267,27 @@ public class InventoryService extends ServiceImpl<InventoryMapper, Inventory> {
                 ItemSkuMapVo itemSkuMapVo = itemSkuService.queryItemSkuMapVo(shipmentOrderDetailBo.getSkuId());
                 throw new ServiceException("库存不足", HttpStatus.CONFLICT,itemSkuMapVo.getItem().getItemName()+"（"+itemSkuMapVo.getItemSku().getSkuName()+"）库存不足，当前库存："+ beforeQuantity);
             }
+
+            if (afterQuantity.signum() == 0) {
+                result.setStockCode("");
+                String stockCodes = shipmentOrderDetailBo.getStockCode();
+                List<String> stockCodeList = Arrays.asList(stockCodes.split(","));
+                stockCodeList.forEach(stockCode -> {
+                    wrapper.ne(Inventory::getId, result.getId());
+                    wrapper.like(Inventory::getStockCode, stockCode);
+                    Inventory results = inventoryMapper.selectOne(wrapper);
+                    if(results== null){
+                        //改变库位状态
+                        LambdaUpdateWrapper<InventoryLocation> locationWrapper = Wrappers.lambdaUpdate();
+                        locationWrapper.eq(InventoryLocation::getWarehouseId, shipmentOrderDetailBo.getWarehouseId());
+                        locationWrapper.eq(InventoryLocation::getStockCode, stockCode);
+                        locationWrapper.set(InventoryLocation::getStatus, 1);//空闲
+                        inventoryLocationMapper.update(null, locationWrapper);
+                    }
+                });
+
+            }
+
             shipmentOrderDetailBo.setBeforeQuantity(beforeQuantity);
             shipmentOrderDetailBo.setAfterQuantity(afterQuantity);
             result.setQuantity(afterQuantity);

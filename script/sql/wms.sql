@@ -1116,3 +1116,44 @@ INSERT INTO `wms_warehouse` VALUES (1828364740028174337, NULL, '常熟冷链仓'
 INSERT INTO `wms_warehouse` VALUES (1840317750635581441, NULL, '吴江仓', NULL, 3, 'wms2_admin', '2024-09-29 17:08:37.859', 'wms2_admin', '2024-09-29 17:08:37.859');
 
 SET FOREIGN_KEY_CHECKS = 1;
+
+
+CREATE TABLE `inventory_location` (
+`id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+`warehouse_id` bigint(20) NOT NULL COMMENT '所属仓库',
+`stock_code` varchar(50) NOT NULL COMMENT '库位编号',
+`status` tinyint(4) NOT NULL DEFAULT 10 COMMENT '库位状态：1：空闲、2：使用中',
+`create_by` varchar(64) DEFAULT NULL COMMENT '创建人',
+`create_time` datetime(3) DEFAULT NULL COMMENT '创建时间',
+`update_by` varchar(64) DEFAULT NULL COMMENT '修改人',
+`update_time` datetime(3) DEFAULT NULL COMMENT '修改时间',
+PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1 CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='库位管理表';
+
+-- 菜单 SQL
+insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values(2060014245860859906, '库位管理', '3', '1', 'location', 'wms/location/index', 0, 0, 'C', '0', '0', 'wms:location:list', '#', 'admin', sysdate(), '', null, '库位管理菜单');
+
+-- 按钮 SQL
+insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values(2060014245860859907, '库位管理查询', 2060014245860859906, '1',  '#', '', 0, 0, 'F', '0', '0', 'wms:location:query',        '#', 'admin', sysdate(), '', null, '');
+
+insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values(2060014245860859908, '库位管理新增', 2060014245860859906, '2',  '#', '', 0, 0, 'F', '0', '0', 'wms:location:add',          '#', 'admin', sysdate(), '', null, '');
+
+insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values(2060014245860859909, '库位管理修改', 2060014245860859906, '3',  '#', '', 0, 0, 'F', '0', '0', 'wms:location:edit',         '#', 'admin', sysdate(), '', null, '');
+
+insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values(2060014245860859910, '库位管理删除', 2060014245860859906, '4',  '#', '', 0, 0, 'F', '0', '0', 'wms:location:remove',       '#', 'admin', sysdate(), '', null, '');
+
+insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values(2060014245860859911, '库位管理导出', 2060014245860859906, '5',  '#', '', 0, 0, 'F', '0', '0', 'wms:location:export',       '#', 'admin', sysdate(), '', null, '');
+
+-- 字典类型
+INSERT INTO sys_dict_type (dict_id,dict_name,dict_type,status,create_by,create_time,update_by,update_time,remark) VALUES
+    (2060055753150300162,'库位状态','wms_location_status','1','admin','2026-05-29 01:49:00','admin','2026-05-29 01:49:00',NULL);
+-- 字典数据
+INSERT INTO sys_dict_data (dict_code,dict_sort,dict_label,dict_value,dict_type,css_class,list_class,is_default,status,create_by,create_time,update_by,update_time,remark) VALUES
+(30,1,'空闲','1','wms_location_status',NULL,'primary','N','1','admin',NULL,'',NULL,NULL),
+(31,1,'使用中','2','wms_location_status',NULL,'warning','N','1','admin',NULL,'',NULL,NULL);

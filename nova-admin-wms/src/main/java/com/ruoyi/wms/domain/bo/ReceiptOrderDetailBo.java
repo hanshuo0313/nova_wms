@@ -22,5 +22,8 @@ import lombok.EqualsAndHashCode;
 })
 public class ReceiptOrderDetailBo extends BaseOrderDetailBo {
 
-
+    /**
+     * 库位编号（显式声明确保映射）
+     */
+    private String stockCode;
 }
