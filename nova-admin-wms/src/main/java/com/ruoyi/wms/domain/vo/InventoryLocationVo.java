@@ -28,14 +28,14 @@ public class InventoryLocationVo implements Serializable {
     /**
      *
      */
-    @ExcelProperty(value = "")
+    @ExcelProperty(value = "序号")
     private Long id;
 
     /**
      * 所属仓库
      */
     @ExcelProperty(value = "所属仓库")
-    private Long warehouseId;
+    private String warehouseId;
 
     /**
      * 库位编号

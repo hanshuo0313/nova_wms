@@ -1157,3 +1157,37 @@ INSERT INTO sys_dict_type (dict_id,dict_name,dict_type,status,create_by,create_t
 INSERT INTO sys_dict_data (dict_code,dict_sort,dict_label,dict_value,dict_type,css_class,list_class,is_default,status,create_by,create_time,update_by,update_time,remark) VALUES
 (30,1,'空闲','1','wms_location_status',NULL,'primary','N','1','admin',NULL,'',NULL,NULL),
 (31,1,'使用中','2','wms_location_status',NULL,'warning','N','1','admin',NULL,'',NULL,NULL);
+
+
+CREATE TABLE `wms_glossary` (
+                                `id` bigint(20) NOT NULL AUTO_INCREMENT,
+                                `source_text` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '原文',
+                                `target_text` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '译文',
+                                `target_lang` varchar(10) NOT NULL DEFAULT 'en' COMMENT '目标语言：en/ja/ko/de...',
+                                `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
+                                `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                                `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
+                                `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                                PRIMARY KEY (`id`),
+                                UNIQUE KEY `uk_source_target` (`source_text`,`target_lang`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='术语词典'
+
+-- 菜单 SQL
+insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values(2066966045083971586, '术语词典', '3', '1', 'glossary', 'wms/glossary/index', 1, 0, 'C', '0', '0', 'wms:glossary:list', '#', 'admin', sysdate(), '', null, '术语词典菜单');
+
+-- 按钮 SQL
+insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values(2066966045083971587, '术语词典查询', 2066966045083971586, '1',  '#', '', 1, 0, 'F', '0', '0', 'wms:glossary:query',        '#', 'admin', sysdate(), '', null, '');
+
+insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values(2066966045083971588, '术语词典新增', 2066966045083971586, '2',  '#', '', 1, 0, 'F', '0', '0', 'wms:glossary:add',          '#', 'admin', sysdate(), '', null, '');
+
+insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values(2066966045083971589, '术语词典修改', 2066966045083971586, '3',  '#', '', 1, 0, 'F', '0', '0', 'wms:glossary:edit',         '#', 'admin', sysdate(), '', null, '');
+
+insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values(2066966045083971590, '术语词典删除', 2066966045083971586, '4',  '#', '', 1, 0, 'F', '0', '0', 'wms:glossary:remove',       '#', 'admin', sysdate(), '', null, '');
+
+insert into sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, update_by, update_time, remark)
+values(2066966045083971591, '术语词典导出', 2066966045083971586, '5',  '#', '', 1, 0, 'F', '0', '0', 'wms:glossary:export',       '#', 'admin', sysdate(), '', null, '');

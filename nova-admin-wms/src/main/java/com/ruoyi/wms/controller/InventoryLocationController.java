@@ -1,8 +1,15 @@
 package com.ruoyi.wms.controller;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.ruoyi.wms.domain.entity.Warehouse;
 import com.ruoyi.wms.domain.vo.WarehouseVo;
+import com.ruoyi.wms.mapper.WarehouseMapper;
 import com.ruoyi.wms.service.WarehouseService;
 import lombok.RequiredArgsConstructor;
 import jakarta.servlet.http.HttpServletResponse;
@@ -37,6 +44,7 @@ import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 public class InventoryLocationController extends BaseController {
 
     private final InventoryLocationService inventoryLocationService;
+    private final WarehouseMapper warehouseMapper;
 
     /**
      * 查询库位管理列表
@@ -50,13 +58,30 @@ public class InventoryLocationController extends BaseController {
     /**
      * 导出库位管理列表
      */
+    /**
+     * 导出库位管理列表
+     */
     @SaCheckPermission("wms:location:export")
     @Log(title = "库位管理", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(InventoryLocationBo bo, HttpServletResponse response) {
         List<InventoryLocationVo> list = inventoryLocationService.queryList(bo);
+        LambdaQueryWrapper<Warehouse> lqw = Wrappers.lambdaQuery();
+        List<Warehouse> warehouseList = warehouseMapper.selectList(lqw);
+
+        // 创建仓库ID到名称的映射
+        Map<Long, String> warehouseMap = warehouseList.stream()
+            .collect(Collectors.toMap(Warehouse::getId, Warehouse::getWarehouseName));
+
+        Long index=1L;
+        for (InventoryLocationVo vo : list) {
+            vo.setId(index++);
+            vo.setWarehouseId(warehouseMap.get(Long.valueOf(vo.getWarehouseId())));
+        }
+
         ExcelUtil.exportExcel(list, "库位管理", InventoryLocationVo.class, response);
     }
+
 
     /**
      * 获取库位管理详细信息
