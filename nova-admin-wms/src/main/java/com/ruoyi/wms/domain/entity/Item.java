@@ -1,5 +1,6 @@
 package com.ruoyi.wms.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.ruoyi.common.mybatis.core.domain.BaseEntity;
@@ -19,7 +20,7 @@ public class Item extends BaseEntity {
     /**
      *
      */
-    @TableId(value = "id")
+    @TableId(value = "id",  type = IdType.AUTO)
     private Long id;
 
     /**
@@ -33,6 +34,11 @@ public class Item extends BaseEntity {
     private String itemName;
 
     /**
+     * 图片
+     */
+    private String itemImage;
+
+    /**
      * 分类
      */
     private String itemCategory;
@@ -41,6 +47,11 @@ public class Item extends BaseEntity {
      * 单位类别
      */
     private String unit;
+
+    /**
+     * 级别
+     */
+    private String itemLevel;
 
     /**
      * 品牌

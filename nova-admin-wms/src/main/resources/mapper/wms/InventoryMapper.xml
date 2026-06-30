@@ -39,6 +39,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="bo.itemCategory != null">
                 and item.item_category=#{bo.itemCategory}
             </if>
+            <if test="bo.unit != null">
+                and item.unit=#{bo.unit}
+            </if>
             <if test="bo.itemId != null">
                 and item.id=#{bo.itemId}
             </if>

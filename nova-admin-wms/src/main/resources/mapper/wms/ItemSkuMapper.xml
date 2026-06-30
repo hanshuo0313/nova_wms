@@ -66,6 +66,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="bo.itemCategory != null and bo.itemCategory != ''">
                 and (category.id=#{bo.itemCategory} or category.parent_id=#{bo.itemCategory})
             </if>
+            <if test="bo.unit != null and bo.unit != ''">
+                and item.unit=#{bo.unit}
+            </if>
         </where>
         order by sku.item_id desc
     </select>

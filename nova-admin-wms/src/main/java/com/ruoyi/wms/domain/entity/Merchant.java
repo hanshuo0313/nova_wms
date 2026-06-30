@@ -1,5 +1,6 @@
 package com.ruoyi.wms.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.ruoyi.common.mybatis.core.domain.BaseEntity;
@@ -25,7 +26,7 @@ public class Merchant extends BaseEntity {
     /**
      * id
      */
-    @TableId(value = "id")
+    @TableId(value = "id",  type = IdType.AUTO)
     private Long id;
     /**
      * 编号

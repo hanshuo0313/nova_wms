@@ -1,9 +1,6 @@
 package com.ruoyi.system.domain.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.ruoyi.common.mybatis.core.domain.BaseEntity;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -30,7 +27,7 @@ public class SysDept extends BaseEntity {
     /**
      * 部门ID
      */
-    @TableId(value = "dept_id")
+    @TableId(value = "dept_id",type = IdType.INPUT)
     private Long deptId;
 
     /**

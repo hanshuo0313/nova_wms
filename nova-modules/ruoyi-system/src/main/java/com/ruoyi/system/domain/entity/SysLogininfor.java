@@ -2,6 +2,7 @@ package com.ruoyi.system.domain.entity;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -31,7 +32,7 @@ public class SysLogininfor implements Serializable {
      * ID
      */
     @ExcelProperty(value = "序号")
-    @TableId(value = "info_id")
+    @TableId(value = "info_id",type= IdType.AUTO)
     private Long infoId;
 
     /**

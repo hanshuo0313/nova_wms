@@ -37,6 +37,12 @@ public class ItemVo implements Serializable {
     private String itemName;
 
     /**
+     * 图片
+     */
+    @ExcelProperty(value = "图片")
+    private String itemImage;
+
+    /**
      * 分类
      */
     @ExcelProperty(value = "分类")
@@ -47,6 +53,12 @@ public class ItemVo implements Serializable {
      */
     @ExcelProperty(value = "单位类别")
     private String unit;
+
+    /**
+     * 级别
+     */
+    @ExcelProperty(value = "级别")
+    private String itemLevel;
 
     /**
      * 品牌

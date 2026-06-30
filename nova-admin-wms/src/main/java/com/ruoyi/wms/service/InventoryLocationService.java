@@ -1,5 +1,6 @@
 package com.ruoyi.wms.service;
 
+import com.ruoyi.common.core.exception.ServiceException;
 import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
@@ -69,6 +70,15 @@ public class InventoryLocationService {
      * 新增库位管理
      */
     public void insertByBo(InventoryLocationBo bo) {
+        // 校验同一仓库下库位编号是否已存在
+        boolean exists = inventoryLocationMapper.exists(
+            Wrappers.<InventoryLocation>lambdaQuery()
+                .eq(InventoryLocation::getWarehouseId, bo.getWarehouseId())
+                .eq(InventoryLocation::getStockCode, bo.getStockCode())
+        );
+        if (exists) {
+            throw new ServiceException("该仓库下库位编号【" + bo.getStockCode() + "】已存在，不允许重复添加");
+        }
         InventoryLocation add = MapstructUtils.convert(bo, InventoryLocation.class);
         inventoryLocationMapper.insert(add);
     }

@@ -1,9 +1,6 @@
 package com.ruoyi.demo.domain.entity;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.Version;
+import com.baomidou.mybatisplus.annotation.*;
 import com.ruoyi.common.mybatis.core.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -25,7 +22,7 @@ public class TestTree extends BaseEntity {
     /**
      * 主键
      */
-    @TableId(value = "id")
+    @TableId(value = "id",  type = IdType.AUTO)
     private Long id;
 
     /**

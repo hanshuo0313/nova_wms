@@ -1,6 +1,7 @@
 package com.ruoyi.system.domain.entity;
 
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.ruoyi.common.core.constant.UserConstants;
@@ -27,7 +28,7 @@ public class SysDictData extends BaseEntity {
      * 字典编码
      */
     @ExcelProperty(value = "字典编码")
-    @TableId(value = "dict_code")
+    @TableId(value = "dict_code",type= IdType.AUTO)
     private Long dictCode;
 
     /**

@@ -36,6 +36,11 @@ public class ItemSkuBo extends BaseEntity {
     private Long itemId;
 
     /**
+     * 单位
+     */
+    private String unit;
+
+    /**
      * sku条码
      */
     private String barcode;

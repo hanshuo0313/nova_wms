@@ -70,4 +70,5 @@ public class InventoryBo extends BaseEntity {
     private String skuCode;
     private Long itemId;
     private Long itemCategory;
+    private String unit;
 }

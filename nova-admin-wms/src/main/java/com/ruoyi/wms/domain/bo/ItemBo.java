@@ -40,10 +40,20 @@ public class ItemBo extends BaseEntity {
     private String itemName;
 
     /**
+     * 图片
+     */
+    private String itemImage;
+
+    /**
      * 分类
      */
     @NotBlank(message = "分类不能为空", groups = { AddGroup.class, EditGroup.class })
     private String itemCategory;
+
+    /**
+     * 级别
+     */
+    private String itemLevel;
 
     /**
      * 单位类别
