@@ -1,6 +1,7 @@
 package com.ruoyi.wms.service;
 
 import com.ruoyi.common.core.utils.MapstructUtils;
+import com.ruoyi.common.core.exception.ServiceException;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.core.utils.StringUtils;
@@ -67,6 +68,15 @@ public class GlossaryService {
      * 新增术语词典
      */
     public void insertByBo(GlossaryBo bo) {
+        // 校验同一源文本和同一目标语言下是否已存在
+        boolean exists = glossaryMapper.exists(
+            Wrappers.<Glossary>lambdaQuery()
+                .eq(Glossary::getSourceText, bo.getSourceText())
+                .eq(Glossary::getTargetLang, bo.getTargetLang())
+        );
+        if (exists) {
+            throw new ServiceException("术语词典中已存在【" + bo.getSourceText() + "】（" + bo.getTargetLang() + "），不允许重复添加");
+        }
         Glossary add = MapstructUtils.convert(bo, Glossary.class);
         glossaryMapper.insert(add);
     }

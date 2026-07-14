@@ -27,7 +27,7 @@ import java.util.Map;
 @Data
 @TableName("sys_oper_log")
 @ExcelIgnoreUnannotated
-@AutoMapper(target = OperLogEvent.class)
+/*@AutoMapper(target = OperLogEvent.class)*/
 public class SysOperLog implements Serializable {
 
     private static final long serialVersionUID = 1L;
