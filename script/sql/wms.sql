@@ -80,12 +80,12 @@ PRIMARY KEY (`config_id`) USING BTREE
 -- ----------------------------
 -- Records of sys_config
 -- ----------------------------
-INSERT INTO `sys_config` VALUES (1,'主框架页-默认皮肤样式名称','sys.index.skinName','skin-blue','Y','admin','2024-06-13 16:06:37','',NULL,'蓝色 skin-blue、绿色 skin-green、紫色 skin-purple、红色 skin-red、黄色 skin-yellow');
-INSERT INTO `sys_config` VALUES (2,'用户管理-账号初始密码','sys.user.initPassword','123456','Y','admin','2024-06-13 16:06:37','',NULL,'初始化密码 123456');
-INSERT INTO `sys_config` VALUES (3,'主框架页-侧边栏主题','sys.index.sideTheme','theme-dark','Y','admin','2024-06-13 16:06:37','hs','2026-05-23 21:30:34','深色主题theme-dark，浅色主题theme-light');
-INSERT INTO `sys_config` VALUES (4,'账号自助-验证码开关','sys.account.captchaEnabled','true','Y','admin','2024-06-13 16:06:37','',NULL,'是否开启验证码功能（true开启，false关闭）');
-INSERT INTO `sys_config` VALUES (5,'账号自助-是否开启用户注册功能','sys.account.registerUser','false','Y','admin','2024-06-13 16:06:37','admin','2026-05-23 02:09:24','是否开启注册用户功能（true开启，false关闭）');
-INSERT INTO `sys_config` VALUES (6,'OSS预览列表资源开关','sys.oss.previewListResource','true','Y','admin','2024-06-13 16:06:37','admin','2026-06-28 18:06:17','true:开启, false:关闭');
+INSERT INTO `sys_config` VALUES (1,'主框架页-默认皮肤样式名称','sys.index.skinName','skin-blue','Y','admin','2026-06-13 16:06:37','',NULL,'蓝色 skin-blue、绿色 skin-green、紫色 skin-purple、红色 skin-red、黄色 skin-yellow');
+INSERT INTO `sys_config` VALUES (2,'用户管理-账号初始密码','sys.user.initPassword','123456','Y','admin','2026-06-13 16:06:37','',NULL,'初始化密码 123456');
+INSERT INTO `sys_config` VALUES (3,'主框架页-侧边栏主题','sys.index.sideTheme','theme-dark','Y','admin','2026-06-13 16:06:37','hs','2026-05-23 21:30:34','深色主题theme-dark，浅色主题theme-light');
+INSERT INTO `sys_config` VALUES (4,'账号自助-验证码开关','sys.account.captchaEnabled','true','Y','admin','2026-06-13 16:06:37','',NULL,'是否开启验证码功能（true开启，false关闭）');
+INSERT INTO `sys_config` VALUES (5,'账号自助-是否开启用户注册功能','sys.account.registerUser','false','Y','admin','2026-06-13 16:06:37','admin','2026-05-23 02:09:24','是否开启注册用户功能（true开启，false关闭）');
+INSERT INTO `sys_config` VALUES (6,'OSS预览列表资源开关','sys.oss.previewListResource','true','Y','admin','2026-06-13 16:06:37','admin','2026-06-28 18:06:17','true:开启, false:关闭');
 
 -- ----------------------------
 -- Table structure for sys_dept
@@ -112,8 +112,8 @@ PRIMARY KEY (`dept_id`) USING BTREE
 -- ----------------------------
 -- Records of sys_dept
 -- ----------------------------
-INSERT INTO `sys_dept` VALUES (100,0,'0','部门管理',0,'','','','1','0','admin','2024-06-13 16:06:25','admin','2026-05-27 18:22:59');
-INSERT INTO `sys_dept` VALUES (101,100,'0,100','管理部门',1,'','','','1','0','admin','2024-06-13 16:06:25','admin','2026-05-23 01:55:43');
+INSERT INTO `sys_dept` VALUES (100,0,'0','部门管理',0,'','','','1','0','admin','2026-06-13 16:06:25','admin','2026-05-27 18:22:59');
+INSERT INTO `sys_dept` VALUES (101,100,'0,100','管理部门',1,'','','','1','0','admin','2026-06-13 16:06:25','admin','2026-05-23 01:55:43');
 INSERT INTO `sys_dept` VALUES (102,100,'0,100','普通部门',2,NULL,NULL,NULL,'1','0','admin','2026-05-23 02:19:40','admin','2026-05-27 17:45:25');
 
 -- ----------------------------
@@ -141,59 +141,59 @@ PRIMARY KEY (`dict_code`) USING BTREE
 -- ----------------------------
 -- Records of sys_dict_data
 -- ----------------------------
-INSERT INTO `sys_dict_data` VALUES (1,1,'男','0','sys_user_sex','','','Y','1','admin','2024-06-13 16:06:36','',NULL,'性别男');
-INSERT INTO `sys_dict_data` VALUES (2,2,'女','1','sys_user_sex','','','N','1','admin','2024-06-13 16:06:36','',NULL,'性别女');
-INSERT INTO `sys_dict_data` VALUES (3,3,'未知','2','sys_user_sex','','','N','1','admin','2024-06-13 16:06:36','',NULL,'性别未知');
-INSERT INTO `sys_dict_data` VALUES (4,1,'显示','1','sys_show_hide','','primary','Y','1','admin','2024-06-13 16:06:36','admin','2024-07-10 16:34:54','显示菜单');
-INSERT INTO `sys_dict_data` VALUES (5,2,'隐藏','0','sys_show_hide','','danger','N','1','admin','2024-06-13 16:06:36','admin','2024-07-10 16:35:07','隐藏菜单');
-INSERT INTO `sys_dict_data` VALUES (6,1,'正常','1','sys_normal_disable','','primary','Y','1','admin','2024-06-13 16:06:36','admin','2024-07-10 14:30:58','正常状态');
-INSERT INTO `sys_dict_data` VALUES (7,2,'停用','0','sys_normal_disable','','danger','N','1','admin','2024-06-13 16:06:36','admin','2024-07-10 14:31:06','停用状态');
-INSERT INTO `sys_dict_data` VALUES (8,1,'是','Y','sys_yes_no','','primary','Y','1','admin','2024-06-13 16:06:36','',NULL,'系统默认是');
-INSERT INTO `sys_dict_data` VALUES (9,2,'否','N','sys_yes_no','','danger','N','1','admin','2024-06-13 16:06:36','',NULL,'系统默认否');
-INSERT INTO `sys_dict_data` VALUES (10,1,'通知','1','sys_notice_type','','warning','Y','1','admin','2024-06-13 16:06:36','',NULL,'通知');
-INSERT INTO `sys_dict_data` VALUES (11,2,'公告','2','sys_notice_type','','success','N','1','admin','2024-06-13 16:06:36','',NULL,'公告');
-INSERT INTO `sys_dict_data` VALUES (12,1,'正常','1','sys_notice_status','','primary','Y','1','admin','2024-06-13 16:06:36','admin','2024-07-10 17:24:35','正常状态');
-INSERT INTO `sys_dict_data` VALUES (13,2,'关闭','0','sys_notice_status','','danger','N','1','admin','2024-06-13 16:06:36','admin','2024-07-10 17:24:44','关闭状态');
-INSERT INTO `sys_dict_data` VALUES (14,1,'新增','1','sys_oper_type','','info','N','1','admin','2024-06-13 16:06:36','',NULL,'新增操作');
-INSERT INTO `sys_dict_data` VALUES (15,2,'修改','2','sys_oper_type','','info','N','1','admin','2024-06-13 16:06:36','',NULL,'修改操作');
-INSERT INTO `sys_dict_data` VALUES (16,3,'删除','3','sys_oper_type','','danger','N','1','admin','2024-06-13 16:06:37','',NULL,'删除操作');
-INSERT INTO `sys_dict_data` VALUES (17,4,'授权','4','sys_oper_type','','primary','N','1','admin','2024-06-13 16:06:37','',NULL,'授权操作');
-INSERT INTO `sys_dict_data` VALUES (18,5,'导出','5','sys_oper_type','','warning','N','1','admin','2024-06-13 16:06:37','',NULL,'导出操作');
-INSERT INTO `sys_dict_data` VALUES (19,6,'导入','6','sys_oper_type','','warning','N','1','admin','2024-06-13 16:06:37','',NULL,'导入操作');
-INSERT INTO `sys_dict_data` VALUES (20,7,'强退','7','sys_oper_type','','danger','N','1','admin','2024-06-13 16:06:37','',NULL,'强退操作');
-INSERT INTO `sys_dict_data` VALUES (21,8,'生成代码','8','sys_oper_type','','warning','N','1','admin','2024-06-13 16:06:37','',NULL,'生成操作');
-INSERT INTO `sys_dict_data` VALUES (22,9,'清空数据','9','sys_oper_type','','danger','N','1','admin','2024-06-13 16:06:37','',NULL,'清空操作');
-INSERT INTO `sys_dict_data` VALUES (23,1,'失败','0','sys_common_status','','danger','N','1','admin','2024-06-13 16:06:37','admin','2024-07-15 10:50:52','正常状态');
-INSERT INTO `sys_dict_data` VALUES (24,2,'成功','1','sys_common_status','','success','N','1','admin','2024-06-13 16:06:37','admin','2024-07-15 10:51:05','停用状态');
-INSERT INTO `sys_dict_data` VALUES (25,99,'其他','0','sys_oper_type','','info','N','1','admin','2024-06-13 16:06:36','',NULL,'其他操作');
+INSERT INTO `sys_dict_data` VALUES (1,1,'男','0','sys_user_sex','','','Y','1','admin','2026-06-13 16:06:36','',NULL,'性别男');
+INSERT INTO `sys_dict_data` VALUES (2,2,'女','1','sys_user_sex','','','N','1','admin','2026-06-13 16:06:36','',NULL,'性别女');
+INSERT INTO `sys_dict_data` VALUES (3,3,'未知','2','sys_user_sex','','','N','1','admin','2026-06-13 16:06:36','',NULL,'性别未知');
+INSERT INTO `sys_dict_data` VALUES (4,1,'显示','1','sys_show_hide','','primary','Y','1','admin','2026-06-13 16:06:36','admin','2026-07-10 16:34:54','显示菜单');
+INSERT INTO `sys_dict_data` VALUES (5,2,'隐藏','0','sys_show_hide','','danger','N','1','admin','2026-06-13 16:06:36','admin','2026-07-10 16:35:07','隐藏菜单');
+INSERT INTO `sys_dict_data` VALUES (6,1,'正常','1','sys_normal_disable','','primary','Y','1','admin','2026-06-13 16:06:36','admin','2026-07-10 14:30:58','正常状态');
+INSERT INTO `sys_dict_data` VALUES (7,2,'停用','0','sys_normal_disable','','danger','N','1','admin','2026-06-13 16:06:36','admin','2026-07-10 14:31:06','停用状态');
+INSERT INTO `sys_dict_data` VALUES (8,1,'是','Y','sys_yes_no','','primary','Y','1','admin','2026-06-13 16:06:36','',NULL,'系统默认是');
+INSERT INTO `sys_dict_data` VALUES (9,2,'否','N','sys_yes_no','','danger','N','1','admin','2026-06-13 16:06:36','',NULL,'系统默认否');
+INSERT INTO `sys_dict_data` VALUES (10,1,'通知','1','sys_notice_type','','warning','Y','1','admin','2026-06-13 16:06:36','',NULL,'通知');
+INSERT INTO `sys_dict_data` VALUES (11,2,'公告','2','sys_notice_type','','success','N','1','admin','2026-06-13 16:06:36','',NULL,'公告');
+INSERT INTO `sys_dict_data` VALUES (12,1,'正常','1','sys_notice_status','','primary','Y','1','admin','2026-06-13 16:06:36','admin','2026-07-10 17:24:35','正常状态');
+INSERT INTO `sys_dict_data` VALUES (13,2,'关闭','0','sys_notice_status','','danger','N','1','admin','2026-06-13 16:06:36','admin','2026-07-10 17:24:44','关闭状态');
+INSERT INTO `sys_dict_data` VALUES (14,1,'新增','1','sys_oper_type','','info','N','1','admin','2026-06-13 16:06:36','',NULL,'新增操作');
+INSERT INTO `sys_dict_data` VALUES (15,2,'修改','2','sys_oper_type','','info','N','1','admin','2026-06-13 16:06:36','',NULL,'修改操作');
+INSERT INTO `sys_dict_data` VALUES (16,3,'删除','3','sys_oper_type','','danger','N','1','admin','2026-06-13 16:06:37','',NULL,'删除操作');
+INSERT INTO `sys_dict_data` VALUES (17,4,'授权','4','sys_oper_type','','primary','N','1','admin','2026-06-13 16:06:37','',NULL,'授权操作');
+INSERT INTO `sys_dict_data` VALUES (18,5,'导出','5','sys_oper_type','','warning','N','1','admin','2026-06-13 16:06:37','',NULL,'导出操作');
+INSERT INTO `sys_dict_data` VALUES (19,6,'导入','6','sys_oper_type','','warning','N','1','admin','2026-06-13 16:06:37','',NULL,'导入操作');
+INSERT INTO `sys_dict_data` VALUES (20,7,'强退','7','sys_oper_type','','danger','N','1','admin','2026-06-13 16:06:37','',NULL,'强退操作');
+INSERT INTO `sys_dict_data` VALUES (21,8,'生成代码','8','sys_oper_type','','warning','N','1','admin','2026-06-13 16:06:37','',NULL,'生成操作');
+INSERT INTO `sys_dict_data` VALUES (22,9,'清空数据','9','sys_oper_type','','danger','N','1','admin','2026-06-13 16:06:37','',NULL,'清空操作');
+INSERT INTO `sys_dict_data` VALUES (23,1,'失败','0','sys_common_status','','danger','N','1','admin','2026-06-13 16:06:37','admin','2026-07-15 10:50:52','正常状态');
+INSERT INTO `sys_dict_data` VALUES (24,2,'成功','1','sys_common_status','','success','N','1','admin','2026-06-13 16:06:37','admin','2026-07-15 10:51:05','停用状态');
+INSERT INTO `sys_dict_data` VALUES (25,99,'其他','0','sys_oper_type','','info','N','1','admin','2026-06-13 16:06:36','',NULL,'其他操作');
 INSERT INTO `sys_dict_data` VALUES (26,1,'空闲','1','wms_location_status',NULL,'primary','N','1','admin',NULL,'',NULL,NULL);
 INSERT INTO `sys_dict_data` VALUES (27,1,'使用中','2','wms_location_status',NULL,'warning','N','1','admin',NULL,'',NULL,NULL);
-INSERT INTO `sys_dict_data` VALUES (28,0,'客户','1','merchant_type',NULL,'default','N','1','admin','2024-07-15 11:35:46','admin','2024-07-16 11:21:11',NULL);
-INSERT INTO `sys_dict_data` VALUES (29,1,'供应商','2','merchant_type',NULL,'default','N','1','admin','2024-07-15 11:45:03','admin','2024-07-16 11:21:29','');
-INSERT INTO `sys_dict_data` VALUES (30,3,'客户/供应商','3','merchant_type',NULL,'default','N','1','admin','2024-07-16 11:21:48','admin','2024-07-16 11:21:48',NULL);
-INSERT INTO `sys_dict_data` VALUES (31,0,'未入库','0','wms_receipt_status',NULL,'info','N','1','admin','2024-07-16 18:09:00','admin','2024-07-22 09:38:14',NULL);
-INSERT INTO `sys_dict_data` VALUES (32,1,'已入库','1','wms_receipt_status',NULL,'primary','N','1','admin','2024-07-16 18:09:11','admin','2024-07-22 09:38:22',NULL);
-INSERT INTO `sys_dict_data` VALUES (33,3,'作废','-1','wms_receipt_status',NULL,'danger','N','1','admin','2024-07-17 10:16:32','admin','2024-07-22 09:38:29',NULL);
-INSERT INTO `sys_dict_data` VALUES (34,0,'生产入库','1','wms_receipt_type',NULL,'primary','N','1','admin','2024-07-19 16:42:12','admin','2024-07-22 09:38:50',NULL);
-INSERT INTO `sys_dict_data` VALUES (35,1,'采购入库','2','wms_receipt_type',NULL,'primary','N','1','admin','2024-07-19 16:42:23','admin','2024-07-22 09:38:56',NULL);
-INSERT INTO `sys_dict_data` VALUES (36,2,'退货入库','3','wms_receipt_type',NULL,'primary','N','1','admin','2024-07-19 16:42:35','admin','2024-07-22 09:39:01',NULL);
-INSERT INTO `sys_dict_data` VALUES (37,3,'归还入库','4','wms_receipt_type',NULL,'primary','N','1','admin','2024-07-19 16:42:43','admin','2024-07-22 09:39:06',NULL);
-INSERT INTO `sys_dict_data` VALUES (38,2,'作废','-1','wms_shipment_status',NULL,'danger','N','1','admin','2024-08-01 11:25:02','admin','2024-08-01 14:25:24',NULL);
-INSERT INTO `sys_dict_data` VALUES (39,0,'未出库','0','wms_shipment_status',NULL,'info','N','1','admin','2024-08-01 11:25:29','admin','2024-08-01 14:25:37',NULL);
-INSERT INTO `sys_dict_data` VALUES (40,1,'已出库','1','wms_shipment_status',NULL,'primary','N','1','admin','2024-08-01 11:25:42','admin','2024-08-01 14:25:32',NULL);
-INSERT INTO `sys_dict_data` VALUES (41,0,'退货出库','1','wms_shipment_type',NULL,'primary','N','1','admin','2024-08-01 11:26:41','wms2_admin','2024-09-25 18:45:02',NULL);
-INSERT INTO `sys_dict_data` VALUES (42,1,'销售出库','2','wms_shipment_type',NULL,'primary','N','1','admin','2024-08-01 11:26:51','wms2_admin','2024-09-25 18:45:13',NULL);
-INSERT INTO `sys_dict_data` VALUES (43,2,'生产出库','3','wms_shipment_type',NULL,'primary','N','1','admin','2024-08-01 11:26:58','wms2_admin','2024-09-25 18:45:23',NULL);
-INSERT INTO `sys_dict_data` VALUES (44,0,'入库','1','wms_inventory_history_type',NULL,'success','N','1','admin','2024-08-07 14:13:21','wms2_admin','2024-09-27 10:53:49',NULL);
-INSERT INTO `sys_dict_data` VALUES (45,1,'出库','2','wms_inventory_history_type',NULL,'danger','N','1','admin','2024-08-07 14:13:36','wms2_admin','2024-09-27 10:53:39',NULL);
-INSERT INTO `sys_dict_data` VALUES (46,2,'移库','3','wms_inventory_history_type',NULL,'warning','N','1','admin','2024-08-07 14:13:45','wms2_admin','2024-09-27 10:54:01',NULL);
-INSERT INTO `sys_dict_data` VALUES (47,3,'盘库','4','wms_inventory_history_type',NULL,'primary','N','1','admin','2024-08-07 14:13:54','admin','2024-08-07 14:58:06',NULL);
-INSERT INTO `sys_dict_data` VALUES (48,0,'未移库','0','wms_movement_status',NULL,'info','N','1','admin','2024-08-12 10:21:48','admin','2024-08-12 10:21:48',NULL);
-INSERT INTO `sys_dict_data` VALUES (49,1,'已移库','1','wms_movement_status',NULL,'primary','N','1','admin','2024-08-12 10:21:59','admin','2024-08-12 10:21:59',NULL);
-INSERT INTO `sys_dict_data` VALUES (50,2,'作废','-1','wms_movement_status',NULL,'danger','N','1','admin','2024-08-12 10:22:13','admin','2024-08-12 10:22:13',NULL);
-INSERT INTO `sys_dict_data` VALUES (51,0,'待盘库','0','wms_check_status',NULL,'info','N','1','admin','2024-08-13 10:18:39','admin','2024-08-13 10:18:39',NULL);
-INSERT INTO `sys_dict_data` VALUES (52,1,'已盘库','1','wms_check_status',NULL,'primary','N','1','admin','2024-08-13 10:18:52','admin','2024-08-13 10:18:52',NULL);
-INSERT INTO `sys_dict_data` VALUES (53,2,'作废','-1','wms_check_status',NULL,'danger','N','1','admin','2024-08-13 10:19:09','admin','2024-08-13 10:19:09',NULL);
+INSERT INTO `sys_dict_data` VALUES (28,0,'客户','1','merchant_type',NULL,'default','N','1','admin','2026-07-15 11:35:46','admin','2026-07-16 11:21:11',NULL);
+INSERT INTO `sys_dict_data` VALUES (29,1,'供应商','2','merchant_type',NULL,'default','N','1','admin','2026-07-15 11:45:03','admin','2026-07-16 11:21:29','');
+INSERT INTO `sys_dict_data` VALUES (30,3,'客户/供应商','3','merchant_type',NULL,'default','N','1','admin','2026-07-16 11:21:48','admin','2026-07-16 11:21:48',NULL);
+INSERT INTO `sys_dict_data` VALUES (31,0,'未入库','0','wms_receipt_status',NULL,'info','N','1','admin','2026-07-16 18:09:00','admin','2026-07-22 09:38:14',NULL);
+INSERT INTO `sys_dict_data` VALUES (32,1,'已入库','1','wms_receipt_status',NULL,'primary','N','1','admin','2026-07-16 18:09:11','admin','2026-07-22 09:38:22',NULL);
+INSERT INTO `sys_dict_data` VALUES (33,3,'作废','-1','wms_receipt_status',NULL,'danger','N','1','admin','2026-07-17 10:16:32','admin','2026-07-22 09:38:29',NULL);
+INSERT INTO `sys_dict_data` VALUES (34,0,'生产入库','1','wms_receipt_type',NULL,'primary','N','1','admin','2026-07-19 16:42:12','admin','2026-07-22 09:38:50',NULL);
+INSERT INTO `sys_dict_data` VALUES (35,1,'采购入库','2','wms_receipt_type',NULL,'primary','N','1','admin','2026-07-19 16:42:23','admin','2026-07-22 09:38:56',NULL);
+INSERT INTO `sys_dict_data` VALUES (36,2,'退货入库','3','wms_receipt_type',NULL,'primary','N','1','admin','2026-07-19 16:42:35','admin','2026-07-22 09:39:01',NULL);
+INSERT INTO `sys_dict_data` VALUES (37,3,'归还入库','4','wms_receipt_type',NULL,'primary','N','1','admin','2026-07-19 16:42:43','admin','2026-07-22 09:39:06',NULL);
+INSERT INTO `sys_dict_data` VALUES (38,2,'作废','-1','wms_shipment_status',NULL,'danger','N','1','admin','2026-08-01 11:25:02','admin','2026-08-01 14:25:24',NULL);
+INSERT INTO `sys_dict_data` VALUES (39,0,'未出库','0','wms_shipment_status',NULL,'info','N','1','admin','2026-08-01 11:25:29','admin','2026-08-01 14:25:37',NULL);
+INSERT INTO `sys_dict_data` VALUES (40,1,'已出库','1','wms_shipment_status',NULL,'primary','N','1','admin','2026-08-01 11:25:42','admin','2026-08-01 14:25:32',NULL);
+INSERT INTO `sys_dict_data` VALUES (41,0,'退货出库','1','wms_shipment_type',NULL,'primary','N','1','admin','2026-08-01 11:26:41','wms2_admin','2026-09-25 18:45:02',NULL);
+INSERT INTO `sys_dict_data` VALUES (42,1,'销售出库','2','wms_shipment_type',NULL,'primary','N','1','admin','2026-08-01 11:26:51','wms2_admin','2026-09-25 18:45:13',NULL);
+INSERT INTO `sys_dict_data` VALUES (43,2,'生产出库','3','wms_shipment_type',NULL,'primary','N','1','admin','2026-08-01 11:26:58','wms2_admin','2026-09-25 18:45:23',NULL);
+INSERT INTO `sys_dict_data` VALUES (44,0,'入库','1','wms_inventory_history_type',NULL,'success','N','1','admin','2026-08-07 14:13:21','wms2_admin','2026-09-27 10:53:49',NULL);
+INSERT INTO `sys_dict_data` VALUES (45,1,'出库','2','wms_inventory_history_type',NULL,'danger','N','1','admin','2026-08-07 14:13:36','wms2_admin','2026-09-27 10:53:39',NULL);
+INSERT INTO `sys_dict_data` VALUES (46,2,'移库','3','wms_inventory_history_type',NULL,'warning','N','1','admin','2026-08-07 14:13:45','wms2_admin','2026-09-27 10:54:01',NULL);
+INSERT INTO `sys_dict_data` VALUES (47,3,'盘库','4','wms_inventory_history_type',NULL,'primary','N','1','admin','2026-08-07 14:13:54','admin','2026-08-07 14:58:06',NULL);
+INSERT INTO `sys_dict_data` VALUES (48,0,'未移库','0','wms_movement_status',NULL,'info','N','1','admin','2026-08-12 10:21:48','admin','2026-08-12 10:21:48',NULL);
+INSERT INTO `sys_dict_data` VALUES (49,1,'已移库','1','wms_movement_status',NULL,'primary','N','1','admin','2026-08-12 10:21:59','admin','2026-08-12 10:21:59',NULL);
+INSERT INTO `sys_dict_data` VALUES (50,2,'作废','-1','wms_movement_status',NULL,'danger','N','1','admin','2026-08-12 10:22:13','admin','2026-08-12 10:22:13',NULL);
+INSERT INTO `sys_dict_data` VALUES (51,0,'待盘库','0','wms_check_status',NULL,'info','N','1','admin','2026-08-13 10:18:39','admin','2026-08-13 10:18:39',NULL);
+INSERT INTO `sys_dict_data` VALUES (52,1,'已盘库','1','wms_check_status',NULL,'primary','N','1','admin','2026-08-13 10:18:52','admin','2026-08-13 10:18:52',NULL);
+INSERT INTO `sys_dict_data` VALUES (53,2,'作废','-1','wms_check_status',NULL,'danger','N','1','admin','2026-08-13 10:19:09','admin','2026-08-13 10:19:09',NULL);
 INSERT INTO `sys_dict_data` VALUES (54,1,'English','en','language_type',NULL,'default','N','1','admin','2026-06-18 00:20:51','admin','2026-06-18 00:20:51',NULL);
 INSERT INTO `sys_dict_data` VALUES (55,2,'日本語','ja','language_type',NULL,'default','N','1','admin','2026-06-18 00:21:15','admin','2026-06-18 00:21:15',NULL);
 INSERT INTO `sys_dict_data` VALUES (56,3,'한국어','ko','language_type',NULL,'default','N','1','admin','2026-06-18 00:21:32','admin','2026-06-18 00:21:32',NULL);
@@ -222,22 +222,22 @@ UNIQUE INDEX `dict_type`(`dict_type`) USING BTREE
 -- ----------------------------
 -- Records of sys_dict_type
 -- ----------------------------
-INSERT INTO `sys_dict_type` VALUES (1,'用户性别','sys_user_sex','1','admin','2024-06-13 16:06:35','',NULL,'用户性别列表');
-INSERT INTO `sys_dict_type` VALUES (2,'菜单状态','sys_show_hide','1','admin','2024-06-13 16:06:35','',NULL,'菜单状态列表');
-INSERT INTO `sys_dict_type` VALUES (3,'系统开关','sys_normal_disable','1','admin','2024-06-13 16:06:35','',NULL,'系统开关列表');
-INSERT INTO `sys_dict_type` VALUES (4,'系统是否','sys_yes_no','1','admin','2024-06-13 16:06:35','',NULL,'系统是否列表');
-INSERT INTO `sys_dict_type` VALUES (5,'通知类型','sys_notice_type','1','admin','2024-06-13 16:06:35','',NULL,'通知类型列表');
-INSERT INTO `sys_dict_type` VALUES (6,'通知状态','sys_notice_status','1','admin','2024-06-13 16:06:35','',NULL,'通知状态列表');
-INSERT INTO `sys_dict_type` VALUES (7,'操作类型','sys_oper_type','1','admin','2024-06-13 16:06:35','',NULL,'操作类型列表');
-INSERT INTO `sys_dict_type` VALUES (8,'系统状态','sys_common_status','1','admin','2024-06-13 16:06:36','',NULL,'登录状态列表');
-INSERT INTO `sys_dict_type` VALUES (9,'企业类型','merchant_type','1','admin','2024-07-15 11:35:34','admin','2024-07-16 17:41:32','企业类型');
-INSERT INTO `sys_dict_type` VALUES (10,'入库状态','wms_receipt_status','1','admin','2024-07-16 18:02:04','admin','2024-07-16 18:02:17','入库状态');
-INSERT INTO `sys_dict_type` VALUES (11,'入库类型','wms_receipt_type','1','admin','2024-07-19 16:41:51','admin','2024-07-19 16:41:51',NULL);
-INSERT INTO `sys_dict_type` VALUES (12,'出库状态','wms_shipment_status','1','admin','2024-08-01 11:18:11','admin','2024-08-01 11:18:11',NULL);
-INSERT INTO `sys_dict_type` VALUES (13,'出库类型','wms_shipment_type','1','admin','2024-08-01 11:18:26','admin','2024-08-01 11:18:26',NULL);
-INSERT INTO `sys_dict_type` VALUES (14,'库存记录操作类型','wms_inventory_history_type','1','admin','2024-08-07 14:12:27','admin','2024-08-07 14:12:27',NULL);
-INSERT INTO `sys_dict_type` VALUES (15,'移库状态','wms_movement_status','1','admin','2024-08-12 10:21:04','admin','2024-08-12 10:21:04',NULL);
-INSERT INTO `sys_dict_type` VALUES (16,'盘库状态','wms_check_status','1','admin','2024-08-13 10:18:14','admin','2024-08-13 10:18:14',NULL);
+INSERT INTO `sys_dict_type` VALUES (1,'用户性别','sys_user_sex','1','admin','2026-06-13 16:06:35','',NULL,'用户性别列表');
+INSERT INTO `sys_dict_type` VALUES (2,'菜单状态','sys_show_hide','1','admin','2026-06-13 16:06:35','',NULL,'菜单状态列表');
+INSERT INTO `sys_dict_type` VALUES (3,'系统开关','sys_normal_disable','1','admin','2026-06-13 16:06:35','',NULL,'系统开关列表');
+INSERT INTO `sys_dict_type` VALUES (4,'系统是否','sys_yes_no','1','admin','2026-06-13 16:06:35','',NULL,'系统是否列表');
+INSERT INTO `sys_dict_type` VALUES (5,'通知类型','sys_notice_type','1','admin','2026-06-13 16:06:35','',NULL,'通知类型列表');
+INSERT INTO `sys_dict_type` VALUES (6,'通知状态','sys_notice_status','1','admin','2026-06-13 16:06:35','',NULL,'通知状态列表');
+INSERT INTO `sys_dict_type` VALUES (7,'操作类型','sys_oper_type','1','admin','2026-06-13 16:06:35','',NULL,'操作类型列表');
+INSERT INTO `sys_dict_type` VALUES (8,'系统状态','sys_common_status','1','admin','2026-06-13 16:06:36','',NULL,'登录状态列表');
+INSERT INTO `sys_dict_type` VALUES (9,'企业类型','merchant_type','1','admin','2026-07-15 11:35:34','admin','2026-07-16 17:41:32','企业类型');
+INSERT INTO `sys_dict_type` VALUES (10,'入库状态','wms_receipt_status','1','admin','2026-07-16 18:02:04','admin','2026-07-16 18:02:17','入库状态');
+INSERT INTO `sys_dict_type` VALUES (11,'入库类型','wms_receipt_type','1','admin','2026-07-19 16:41:51','admin','2026-07-19 16:41:51',NULL);
+INSERT INTO `sys_dict_type` VALUES (12,'出库状态','wms_shipment_status','1','admin','2026-08-01 11:18:11','admin','2026-08-01 11:18:11',NULL);
+INSERT INTO `sys_dict_type` VALUES (13,'出库类型','wms_shipment_type','1','admin','2026-08-01 11:18:26','admin','2026-08-01 11:18:26',NULL);
+INSERT INTO `sys_dict_type` VALUES (14,'库存记录操作类型','wms_inventory_history_type','1','admin','2026-08-07 14:12:27','admin','2026-08-07 14:12:27',NULL);
+INSERT INTO `sys_dict_type` VALUES (15,'移库状态','wms_movement_status','1','admin','2026-08-12 10:21:04','admin','2026-08-12 10:21:04',NULL);
+INSERT INTO `sys_dict_type` VALUES (16,'盘库状态','wms_check_status','1','admin','2026-08-13 10:18:14','admin','2026-08-13 10:18:14',NULL);
 INSERT INTO `sys_dict_type` VALUES (17,'库位状态','wms_location_status','1','admin','2026-05-29 01:49:00','admin','2026-05-29 01:49:00',NULL);
 INSERT INTO `sys_dict_type` VALUES (18,'目标语言','language_type','1','admin','2026-06-18 00:19:09','admin','2026-06-18 00:19:09',NULL);
 INSERT INTO `sys_dict_type` VALUES (19,'商品级别','product_level','1','admin','2026-06-18 22:54:58','admin','2026-06-18 22:54:58',NULL);
@@ -291,111 +291,111 @@ PRIMARY KEY (`menu_id`) USING BTREE
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
-INSERT INTO `sys_menu` VALUES (1,'系统管理',0,8,'system',NULL,'',0,0,'M','1','1','','system','admin','2024-06-13 16:06:26','admin','2026-06-21 02:47:42','系统管理目录');
-INSERT INTO `sys_menu` VALUES (2,'系统监控',0,9,'monitor',NULL,'',0,0,'M','1','1','','monitor','admin','2024-06-13 16:06:26','admin','2026-06-21 02:47:47','系统监控目录');
-INSERT INTO `sys_menu` VALUES (100,'用户管理',1,1,'user','system/user/index','',0,0,'C','1','1','system:user:list','user','admin','2024-06-13 16:06:26','',NULL,'用户管理菜单');
-INSERT INTO `sys_menu` VALUES (101,'角色管理',1,2,'role','system/role/index','',0,0,'C','1','1','system:role:list','peoples','admin','2024-06-13 16:06:26','',NULL,'角色管理菜单');
-INSERT INTO `sys_menu` VALUES (102,'菜单管理',1,3,'menu','system/menu/index','',0,0,'C','1','1','system:menu:list','tree-table','admin','2024-06-13 16:06:26','',NULL,'菜单管理菜单');
-INSERT INTO `sys_menu` VALUES (103,'部门管理',1,4,'dept','system/dept/index','',0,0,'C','0','0','system:dept:list','tree','admin','2024-06-13 16:06:26','admin','2026-06-21 20:24:45','部门管理菜单');
-INSERT INTO `sys_menu` VALUES (104,'岗位管理',1,5,'post','system/post/index','',0,0,'C','0','0','system:post:list','post','admin','2024-06-13 16:06:26','admin','2026-06-08 01:08:24','岗位管理菜单');
-INSERT INTO `sys_menu` VALUES (105,'字典管理',1,6,'dict','system/dict/index','',0,0,'C','1','1','system:dict:list','dict','admin','2024-06-13 16:06:26','admin','2026-06-12 21:19:35','字典管理菜单');
-INSERT INTO `sys_menu` VALUES (106,'参数设置',1,7,'config','system/config/index','',0,0,'C','1','1','system:config:list','edit','admin','2024-06-13 16:06:26','',NULL,'参数设置菜单');
-INSERT INTO `sys_menu` VALUES (107,'通知公告',1,9,'notice','system/notice/index','',0,0,'C','1','1','system:notice:list','message','admin','2024-06-13 16:06:26','admin','2026-06-17 04:23:06','通知公告菜单');
-INSERT INTO `sys_menu` VALUES (108,'日志管理',0,11,'log','','',0,0,'M','1','1','','log','admin','2024-06-13 16:06:27','admin','2026-06-21 02:48:17','日志管理菜单');
-INSERT INTO `sys_menu` VALUES (109,'在线用户',2,1,'online','monitor/online/index','',0,0,'C','1','1','monitor:online:list','online','admin','2024-06-13 16:06:27','',NULL,'在线用户菜单');
-INSERT INTO `sys_menu` VALUES (112,'缓存列表',2,6,'cacheList','monitor/cache/list','',0,0,'C','1','1','monitor:cache:list','redis-list','admin','2024-06-13 16:06:27','',NULL,'缓存列表菜单');
-INSERT INTO `sys_menu` VALUES (113,'缓存监控',2,5,'cache','monitor/cache/index','',0,0,'C','1','1','monitor:cache:list','redis','admin','2024-06-13 16:06:27','',NULL,'缓存监控菜单');
-INSERT INTO `sys_menu` VALUES (115,'代码生成',0,10,'gen','tool/gen/index','',0,0,'C','1','1','tool:gen:list','code','admin','2024-06-13 16:06:27','admin','2026-06-21 02:47:55','代码生成菜单');
-INSERT INTO `sys_menu` VALUES (118,'文件管理',1,10,'oss','system/oss/index','',0,0,'C','1','1','system:oss:list','upload','admin','2024-06-13 16:06:27','',NULL,'文件管理菜单');
-INSERT INTO `sys_menu` VALUES (500,'操作日志',108,1,'operlog','monitor/operlog/index','',0,0,'C','1','1','monitor:operlog:list','form','admin','2024-06-13 16:06:27','',NULL,'操作日志菜单');
-INSERT INTO `sys_menu` VALUES (501,'登录日志',108,2,'logininfor','monitor/logininfor/index','',0,0,'C','1','1','monitor:logininfor:list','logininfor','admin','2024-06-13 16:06:27','',NULL,'登录日志菜单');
-INSERT INTO `sys_menu` VALUES (1001,'用户查询',100,1,'','','',0,0,'F','1','1','system:user:query','#','admin','2024-06-13 16:06:27','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1002,'用户新增',100,2,'','','',0,0,'F','1','1','system:user:add','#','admin','2024-06-13 16:06:27','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1003,'用户修改',100,3,'','','',0,0,'F','1','1','system:user:edit','#','admin','2024-06-13 16:06:27','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1004,'用户删除',100,4,'','','',0,0,'F','1','1','system:user:remove','#','admin','2024-06-13 16:06:27','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1005,'用户导出',100,5,'','','',0,0,'F','1','1','system:user:export','#','admin','2024-06-13 16:06:27','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1006,'用户导入',100,6,'','','',0,0,'F','1','1','system:user:import','#','admin','2024-06-13 16:06:27','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1007,'重置密码',100,7,'','','',0,0,'F','1','1','system:user:resetPwd','#','admin','2024-06-13 16:06:27','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1008,'角色查询',101,1,'','','',0,0,'F','1','1','system:role:query','#','admin','2024-06-13 16:06:27','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1009,'角色新增',101,2,'','','',0,0,'F','1','1','system:role:add','#','admin','2024-06-13 16:06:27','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1010,'角色修改',101,3,'','','',0,0,'F','1','1','system:role:edit','#','admin','2024-06-13 16:06:28','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1011,'角色删除',101,4,'','','',0,0,'F','1','1','system:role:remove','#','admin','2024-06-13 16:06:28','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1012,'角色导出',101,5,'','','',0,0,'F','1','1','system:role:export','#','admin','2024-06-13 16:06:28','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1013,'菜单查询',102,1,'','','',0,0,'F','1','1','system:menu:query','#','admin','2024-06-13 16:06:28','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1014,'菜单新增',102,2,'','','',0,0,'F','1','1','system:menu:add','#','admin','2024-06-13 16:06:28','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1015,'菜单修改',102,3,'','','',0,0,'F','1','1','system:menu:edit','#','admin','2024-06-13 16:06:28','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1016,'菜单删除',102,4,'','','',0,0,'F','1','1','system:menu:remove','#','admin','2024-06-13 16:06:28','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1017,'部门查询',103,1,'','','',0,0,'F','1','1','system:dept:query','#','admin','2024-06-13 16:06:28','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1018,'部门新增',103,2,'','','',0,0,'F','1','1','system:dept:add','#','admin','2024-06-13 16:06:28','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1019,'部门修改',103,3,'','','',0,0,'F','1','1','system:dept:edit','#','admin','2024-06-13 16:06:28','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1020,'部门删除',103,4,'','','',0,0,'F','1','1','system:dept:remove','#','admin','2024-06-13 16:06:28','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1021,'岗位查询',104,1,'','','',0,0,'F','1','1','system:post:query','#','admin','2024-06-13 16:06:28','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1022,'岗位新增',104,2,'','','',0,0,'F','1','1','system:post:add','#','admin','2024-06-13 16:06:28','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1023,'岗位修改',104,3,'','','',0,0,'F','1','1','system:post:edit','#','admin','2024-06-13 16:06:28','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1024,'岗位删除',104,4,'','','',0,0,'F','1','1','system:post:remove','#','admin','2024-06-13 16:06:28','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1025,'岗位导出',104,5,'','','',0,0,'F','1','1','system:post:export','#','admin','2024-06-13 16:06:28','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1026,'字典查询',105,1,'#','','',0,0,'F','1','1','system:dict:query','#','admin','2024-06-13 16:06:28','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1027,'字典新增',105,2,'#','','',0,0,'F','1','1','system:dict:add','#','admin','2024-06-13 16:06:28','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1028,'字典修改',105,3,'#','','',0,0,'F','1','1','system:dict:edit','#','admin','2024-06-13 16:06:28','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1029,'字典删除',105,4,'#','','',0,0,'F','1','1','system:dict:remove','#','admin','2024-06-13 16:06:28','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1030,'字典导出',105,5,'#','','',0,0,'F','1','1','system:dict:export','#','admin','2024-06-13 16:06:29','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1031,'参数查询',106,1,'#','','',0,0,'F','1','1','system:config:query','#','admin','2024-06-13 16:06:29','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1032,'参数新增',106,2,'#','','',0,0,'F','1','1','system:config:add','#','admin','2024-06-13 16:06:29','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1033,'参数修改',106,3,'#','','',0,0,'F','1','1','system:config:edit','#','admin','2024-06-13 16:06:29','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1034,'参数删除',106,4,'#','','',0,0,'F','1','1','system:config:remove','#','admin','2024-06-13 16:06:29','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1035,'参数导出',106,5,'#','','',0,0,'F','1','1','system:config:export','#','admin','2024-06-13 16:06:29','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1036,'公告查询',107,1,'#','','',0,0,'F','1','1','system:notice:query','#','admin','2024-06-13 16:06:29','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1037,'公告新增',107,2,'#','','',0,0,'F','1','1','system:notice:add','#','admin','2024-06-13 16:06:29','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1038,'公告修改',107,3,'#','','',0,0,'F','1','1','system:notice:edit','#','admin','2024-06-13 16:06:29','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1039,'公告删除',107,4,'#','','',0,0,'F','1','1','system:notice:remove','#','admin','2024-06-13 16:06:29','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1040,'操作查询',500,1,'#','','',0,0,'F','1','1','monitor:operlog:query','#','admin','2024-06-13 16:06:29','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1041,'操作删除',500,2,'#','','',0,0,'F','1','1','monitor:operlog:remove','#','admin','2024-06-13 16:06:29','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1042,'日志导出',500,4,'#','','',0,0,'F','1','1','monitor:operlog:export','#','admin','2024-06-13 16:06:29','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1043,'登录查询',501,1,'#','','',0,0,'F','1','1','monitor:logininfor:query','#','admin','2024-06-13 16:06:29','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1044,'登录删除',501,2,'#','','',0,0,'F','1','1','monitor:logininfor:remove','#','admin','2024-06-13 16:06:29','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1045,'日志导出',501,3,'#','','',0,0,'F','1','1','monitor:logininfor:export','#','admin','2024-06-13 16:06:29','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1046,'在线查询',109,1,'#','','',0,0,'F','1','1','monitor:online:query','#','admin','2024-06-13 16:06:29','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1047,'批量强退',109,2,'#','','',0,0,'F','1','1','monitor:online:batchLogout','#','admin','2024-06-13 16:06:29','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1048,'单条强退',109,3,'#','','',0,0,'F','1','1','monitor:online:forceLogout','#','admin','2024-06-13 16:06:30','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1050,'账户解锁',501,4,'#','','',0,0,'F','1','1','monitor:logininfor:unlock','#','admin','2024-06-13 16:06:29','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1055,'生成查询',115,1,'#','','',0,0,'F','1','1','tool:gen:query','#','admin','2024-06-13 16:06:30','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1056,'生成修改',115,2,'#','','',0,0,'F','1','1','tool:gen:edit','#','admin','2024-06-13 16:06:30','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1057,'生成删除',115,3,'#','','',0,0,'F','1','1','tool:gen:remove','#','admin','2024-06-13 16:06:30','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1058,'导入代码',115,2,'#','','',0,0,'F','1','1','tool:gen:import','#','admin','2024-06-13 16:06:30','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1059,'预览代码',115,4,'#','','',0,0,'F','1','1','tool:gen:preview','#','admin','2024-06-13 16:06:30','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1060,'生成代码',115,5,'#','','',0,0,'F','1','1','tool:gen:code','#','admin','2024-06-13 16:06:30','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1061,'文件查询',118,1,'#','','',0,0,'F','1','1','system:oss:query','#','admin','2024-06-13 16:06:30','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1062,'文件上传',118,2,'#','','',0,0,'F','1','1','system:oss:upload','#','admin','2024-06-13 16:06:30','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1063,'文件下载',118,3,'#','','',0,0,'F','1','1','system:oss:download','#','admin','2024-06-13 16:06:30','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1064,'文件删除',118,4,'#','','',0,0,'F','1','1','system:oss:remove','#','admin','2024-06-13 16:06:30','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1065,'配置添加',118,5,'#','','',0,0,'F','1','1','system:oss:add','#','admin','2024-06-13 16:06:30','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1066,'配置编辑',118,6,'#','','',0,0,'F','1','1','system:oss:edit','#','admin','2024-06-13 16:06:30','',NULL,'');
-INSERT INTO `sys_menu` VALUES (3,'基础资料',0,0,'basic',NULL,NULL,0,0,'M','1','1',NULL,'excel','admin','2024-07-04 15:01:48','admin','2026-06-20 18:31:23','');
-INSERT INTO `sys_menu` VALUES (119,'往来单位',3,1,'merchant','wms/basic/merchant/index',NULL,0,0,'C','1','1','wms:merchant:list','documentation','admin','2024-07-05 11:58:12','admin','2024-08-27 16:41:53','往来单位菜单');
-INSERT INTO `sys_menu` VALUES (1070,'单位查询',119,1,'#','',NULL,0,0,'F','1','1','wms:merchant:list','#','admin','2024-07-05 11:58:12','admin','2024-08-30 10:43:54','');
-INSERT INTO `sys_menu` VALUES (1071,'单位新增',119,2,'#','',NULL,0,0,'F','1','1','wms:merchant:add','#','admin','2024-07-05 11:58:12','',NULL,'');
-INSERT INTO `sys_menu` VALUES (1072,'单位修改',119,3,'#','',NULL,0,0,'F','1','1','wms:merchant:edit','#','admin','2024-07-05 11:58:12','',NULL,'');
-INSERT INTO `sys_menu` VALUES (120,'仓库管理',3,2,'warehouse','wms/basic/warehouse/index',NULL,0,0,'C','1','1','wms:warehouse:list','documentation','admin','2024-07-17 14:17:51','wms2_admin','2024-09-10 13:38:53','');
-INSERT INTO `sys_menu` VALUES (121,'商品管理',3,4,'item','wms/basic/item/index',NULL,0,0,'C','1','1','wms:item:list','documentation','admin','2024-07-18 14:16:33','admin','2024-08-27 16:43:06','');
-INSERT INTO `sys_menu` VALUES (122,'品牌管理',3,3,'itemBrand','wms/basic/itemBrand/index',NULL,0,0,'C','1','1','wms:itemBrand:list','documentation','admin','2024-07-30 11:18:27','admin','2024-08-27 16:42:55','');
-INSERT INTO `sys_menu` VALUES (1073,'仓库查询',120,1,'',NULL,NULL,0,0,'F','1','1','wms:warehouse:list','#','admin','2024-08-30 10:44:27','wms2_admin','2024-09-10 13:39:02','');
-INSERT INTO `sys_menu` VALUES (1074,'仓库编辑',120,2,'',NULL,NULL,0,0,'F','1','1','wms:warehouse:edit','#','admin','2024-08-30 10:46:48','wms2_admin','2024-09-10 13:39:10','');
-INSERT INTO `sys_menu` VALUES (1075,'仓库新增',120,2,'',NULL,NULL,0,0,'F','1','1','wms:itemBrand:add','#','admin','2024-08-30 10:46:48','wms2_admin','2024-09-10 13:39:10','');
-INSERT INTO `sys_menu` VALUES (1076,'品牌查询',122,1,'',NULL,NULL,0,0,'F','1','1','wms:itemBrand:list','#','admin','2024-08-30 10:47:22','admin','2024-08-30 10:47:22','');
-INSERT INTO `sys_menu` VALUES (1077,'品牌编辑',122,2,'',NULL,NULL,0,0,'F','1','1','wms:itemBrand:edit','#','admin','2024-08-30 10:50:27','admin','2024-08-30 10:50:27','');
-INSERT INTO `sys_menu` VALUES (1078,'品牌新增',122,2,'',NULL,NULL,0,0,'F','1','1','wms:itemBrand:add','#','admin','2024-08-30 10:50:27','admin','2024-08-30 10:50:27','');
-INSERT INTO `sys_menu` VALUES (1079,'商品查询',121,1,'',NULL,NULL,0,0,'F','1','1','wms:item:list','#','admin','2024-08-30 10:51:00','admin','2024-08-30 10:51:00','');
-INSERT INTO `sys_menu` VALUES (1080,'商品编辑',121,2,'',NULL,NULL,0,0,'F','1','1','wms:item:edit','#','admin','2024-08-30 10:51:21','admin','2024-08-30 10:51:21','');
-INSERT INTO `sys_menu` VALUES (4,'库存统计',0,1,'inventory','wms/inventory/statistic',NULL,0,0,'C','1','1','wms:inventory:all','chart','admin','2024-08-06 15:50:30','admin','2026-06-20 18:31:12','');
-INSERT INTO `sys_menu` VALUES (5,'库存记录',0,3,'inventoryHistory','wms/inventory/history',NULL,0,0,'C','1','1','wms:inventoryHistory:all','list','admin','2024-08-07 14:46:13','admin','2024-08-30 08:58:13','');
-INSERT INTO `sys_menu` VALUES (6,'入库',0,4,'receiptOrder','wms/order/receipt/index',NULL,0,0,'C','1','1','wms:receipt:all','exit-fullscreen','admin','2024-07-31 09:58:42','admin','2026-06-21 02:47:03','');
-INSERT INTO `sys_menu` VALUES (123,'编辑入库单',0,1000,'receiptOrderEdit','wms/order/receipt/edit',NULL,0,0,'C','0','1','wms:receipt:edit','#','admin','2024-07-22 10:08:08','hs','2026-05-23 21:21:49','');
-INSERT INTO `sys_menu` VALUES (7,'出库',0,5,'shipmentOrder','wms/order/shipment/index',NULL,0,0,'C','1','1','wms:shipment:all','fullscreen','admin','2024-08-01 11:43:04','admin','2026-06-21 02:47:12','');
-INSERT INTO `sys_menu` VALUES (124,'编辑出库单',0,1000,'shipmentOrderEdit','wms/order/shipment/edit',NULL,0,0,'C','0','1','wms:shipment:edit','#','admin','2024-08-01 11:46:00','admin','2024-08-27 16:43:37','');
-INSERT INTO `sys_menu` VALUES (8,'移库',0,6,'movementOrder','wms/order/movement/index',NULL,0,0,'C','1','1','wms:movement:all','drag','admin','2024-08-12 10:19:35','admin','2026-06-21 02:47:19','');
-INSERT INTO `sys_menu` VALUES (125,'编辑移库单',0,1000,'movementOrderEdit','wms/order/movement/edit',NULL,0,0,'C','0','1','wms:movement:edit','#','admin','2024-08-12 13:07:00','admin','2024-08-27 16:43:50','');
-INSERT INTO `sys_menu` VALUES (9,'盘库',0,7,'checkOrder','wms/order/check/index',NULL,0,0,'C','1','1','wms:check:all','example','admin','2024-08-13 10:38:08','admin','2026-06-21 02:47:27','');
-INSERT INTO `sys_menu` VALUES (126,'编辑盘库单',0,1000,'checkOrderEdit','wms/order/check/edit',NULL,0,0,'C','0','1','wms:check:edit','#','admin','2024-08-13 10:51:36','admin','2024-08-27 16:43:44','');
+INSERT INTO `sys_menu` VALUES (1,'系统管理',0,8,'system',NULL,'',0,0,'M','1','1','','system','admin','2026-06-13 16:06:26','admin','2026-06-21 02:47:42','系统管理目录');
+INSERT INTO `sys_menu` VALUES (2,'系统监控',0,9,'monitor',NULL,'',0,0,'M','1','1','','monitor','admin','2026-06-13 16:06:26','admin','2026-06-21 02:47:47','系统监控目录');
+INSERT INTO `sys_menu` VALUES (100,'用户管理',1,1,'user','system/user/index','',0,0,'C','1','1','system:user:list','user','admin','2026-06-13 16:06:26','',NULL,'用户管理菜单');
+INSERT INTO `sys_menu` VALUES (101,'角色管理',1,2,'role','system/role/index','',0,0,'C','1','1','system:role:list','peoples','admin','2026-06-13 16:06:26','',NULL,'角色管理菜单');
+INSERT INTO `sys_menu` VALUES (102,'菜单管理',1,3,'menu','system/menu/index','',0,0,'C','1','1','system:menu:list','tree-table','admin','2026-06-13 16:06:26','',NULL,'菜单管理菜单');
+INSERT INTO `sys_menu` VALUES (103,'部门管理',1,4,'dept','system/dept/index','',0,0,'C','0','0','system:dept:list','tree','admin','2026-06-13 16:06:26','admin','2026-06-21 20:24:45','部门管理菜单');
+INSERT INTO `sys_menu` VALUES (104,'岗位管理',1,5,'post','system/post/index','',0,0,'C','0','0','system:post:list','post','admin','2026-06-13 16:06:26','admin','2026-06-08 01:08:24','岗位管理菜单');
+INSERT INTO `sys_menu` VALUES (105,'字典管理',1,6,'dict','system/dict/index','',0,0,'C','1','1','system:dict:list','dict','admin','2026-06-13 16:06:26','admin','2026-06-12 21:19:35','字典管理菜单');
+INSERT INTO `sys_menu` VALUES (106,'参数设置',1,7,'config','system/config/index','',0,0,'C','1','1','system:config:list','edit','admin','2026-06-13 16:06:26','',NULL,'参数设置菜单');
+INSERT INTO `sys_menu` VALUES (107,'通知公告',1,9,'notice','system/notice/index','',0,0,'C','1','1','system:notice:list','message','admin','2026-06-13 16:06:26','admin','2026-06-17 04:23:06','通知公告菜单');
+INSERT INTO `sys_menu` VALUES (108,'日志管理',0,11,'log','','',0,0,'M','1','1','','log','admin','2026-06-13 16:06:27','admin','2026-06-21 02:48:17','日志管理菜单');
+INSERT INTO `sys_menu` VALUES (109,'在线用户',2,1,'online','monitor/online/index','',0,0,'C','1','1','monitor:online:list','online','admin','2026-06-13 16:06:27','',NULL,'在线用户菜单');
+INSERT INTO `sys_menu` VALUES (112,'缓存列表',2,6,'cacheList','monitor/cache/list','',0,0,'C','1','1','monitor:cache:list','redis-list','admin','2026-06-13 16:06:27','',NULL,'缓存列表菜单');
+INSERT INTO `sys_menu` VALUES (113,'缓存监控',2,5,'cache','monitor/cache/index','',0,0,'C','1','1','monitor:cache:list','redis','admin','2026-06-13 16:06:27','',NULL,'缓存监控菜单');
+INSERT INTO `sys_menu` VALUES (115,'代码生成',0,10,'gen','tool/gen/index','',0,0,'C','1','1','tool:gen:list','code','admin','2026-06-13 16:06:27','admin','2026-06-21 02:47:55','代码生成菜单');
+INSERT INTO `sys_menu` VALUES (118,'文件管理',1,10,'oss','system/oss/index','',0,0,'C','1','1','system:oss:list','upload','admin','2026-06-13 16:06:27','',NULL,'文件管理菜单');
+INSERT INTO `sys_menu` VALUES (500,'操作日志',108,1,'operlog','monitor/operlog/index','',0,0,'C','1','1','monitor:operlog:list','form','admin','2026-06-13 16:06:27','',NULL,'操作日志菜单');
+INSERT INTO `sys_menu` VALUES (501,'登录日志',108,2,'logininfor','monitor/logininfor/index','',0,0,'C','1','1','monitor:logininfor:list','logininfor','admin','2026-06-13 16:06:27','',NULL,'登录日志菜单');
+INSERT INTO `sys_menu` VALUES (1001,'用户查询',100,1,'','','',0,0,'F','1','1','system:user:query','#','admin','2026-06-13 16:06:27','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1002,'用户新增',100,2,'','','',0,0,'F','1','1','system:user:add','#','admin','2026-06-13 16:06:27','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1003,'用户修改',100,3,'','','',0,0,'F','1','1','system:user:edit','#','admin','2026-06-13 16:06:27','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1004,'用户删除',100,4,'','','',0,0,'F','1','1','system:user:remove','#','admin','2026-06-13 16:06:27','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1005,'用户导出',100,5,'','','',0,0,'F','1','1','system:user:export','#','admin','2026-06-13 16:06:27','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1006,'用户导入',100,6,'','','',0,0,'F','1','1','system:user:import','#','admin','2026-06-13 16:06:27','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1007,'重置密码',100,7,'','','',0,0,'F','1','1','system:user:resetPwd','#','admin','2026-06-13 16:06:27','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1008,'角色查询',101,1,'','','',0,0,'F','1','1','system:role:query','#','admin','2026-06-13 16:06:27','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1009,'角色新增',101,2,'','','',0,0,'F','1','1','system:role:add','#','admin','2026-06-13 16:06:27','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1010,'角色修改',101,3,'','','',0,0,'F','1','1','system:role:edit','#','admin','2026-06-13 16:06:28','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1011,'角色删除',101,4,'','','',0,0,'F','1','1','system:role:remove','#','admin','2026-06-13 16:06:28','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1012,'角色导出',101,5,'','','',0,0,'F','1','1','system:role:export','#','admin','2026-06-13 16:06:28','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1013,'菜单查询',102,1,'','','',0,0,'F','1','1','system:menu:query','#','admin','2026-06-13 16:06:28','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1014,'菜单新增',102,2,'','','',0,0,'F','1','1','system:menu:add','#','admin','2026-06-13 16:06:28','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1015,'菜单修改',102,3,'','','',0,0,'F','1','1','system:menu:edit','#','admin','2026-06-13 16:06:28','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1016,'菜单删除',102,4,'','','',0,0,'F','1','1','system:menu:remove','#','admin','2026-06-13 16:06:28','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1017,'部门查询',103,1,'','','',0,0,'F','1','1','system:dept:query','#','admin','2026-06-13 16:06:28','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1018,'部门新增',103,2,'','','',0,0,'F','1','1','system:dept:add','#','admin','2026-06-13 16:06:28','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1019,'部门修改',103,3,'','','',0,0,'F','1','1','system:dept:edit','#','admin','2026-06-13 16:06:28','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1020,'部门删除',103,4,'','','',0,0,'F','1','1','system:dept:remove','#','admin','2026-06-13 16:06:28','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1021,'岗位查询',104,1,'','','',0,0,'F','1','1','system:post:query','#','admin','2026-06-13 16:06:28','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1022,'岗位新增',104,2,'','','',0,0,'F','1','1','system:post:add','#','admin','2026-06-13 16:06:28','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1023,'岗位修改',104,3,'','','',0,0,'F','1','1','system:post:edit','#','admin','2026-06-13 16:06:28','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1024,'岗位删除',104,4,'','','',0,0,'F','1','1','system:post:remove','#','admin','2026-06-13 16:06:28','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1025,'岗位导出',104,5,'','','',0,0,'F','1','1','system:post:export','#','admin','2026-06-13 16:06:28','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1026,'字典查询',105,1,'#','','',0,0,'F','1','1','system:dict:query','#','admin','2026-06-13 16:06:28','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1027,'字典新增',105,2,'#','','',0,0,'F','1','1','system:dict:add','#','admin','2026-06-13 16:06:28','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1028,'字典修改',105,3,'#','','',0,0,'F','1','1','system:dict:edit','#','admin','2026-06-13 16:06:28','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1029,'字典删除',105,4,'#','','',0,0,'F','1','1','system:dict:remove','#','admin','2026-06-13 16:06:28','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1030,'字典导出',105,5,'#','','',0,0,'F','1','1','system:dict:export','#','admin','2026-06-13 16:06:29','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1031,'参数查询',106,1,'#','','',0,0,'F','1','1','system:config:query','#','admin','2026-06-13 16:06:29','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1032,'参数新增',106,2,'#','','',0,0,'F','1','1','system:config:add','#','admin','2026-06-13 16:06:29','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1033,'参数修改',106,3,'#','','',0,0,'F','1','1','system:config:edit','#','admin','2026-06-13 16:06:29','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1034,'参数删除',106,4,'#','','',0,0,'F','1','1','system:config:remove','#','admin','2026-06-13 16:06:29','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1035,'参数导出',106,5,'#','','',0,0,'F','1','1','system:config:export','#','admin','2026-06-13 16:06:29','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1036,'公告查询',107,1,'#','','',0,0,'F','1','1','system:notice:query','#','admin','2026-06-13 16:06:29','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1037,'公告新增',107,2,'#','','',0,0,'F','1','1','system:notice:add','#','admin','2026-06-13 16:06:29','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1038,'公告修改',107,3,'#','','',0,0,'F','1','1','system:notice:edit','#','admin','2026-06-13 16:06:29','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1039,'公告删除',107,4,'#','','',0,0,'F','1','1','system:notice:remove','#','admin','2026-06-13 16:06:29','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1040,'操作查询',500,1,'#','','',0,0,'F','1','1','monitor:operlog:query','#','admin','2026-06-13 16:06:29','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1041,'操作删除',500,2,'#','','',0,0,'F','1','1','monitor:operlog:remove','#','admin','2026-06-13 16:06:29','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1042,'日志导出',500,4,'#','','',0,0,'F','1','1','monitor:operlog:export','#','admin','2026-06-13 16:06:29','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1043,'登录查询',501,1,'#','','',0,0,'F','1','1','monitor:logininfor:query','#','admin','2026-06-13 16:06:29','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1044,'登录删除',501,2,'#','','',0,0,'F','1','1','monitor:logininfor:remove','#','admin','2026-06-13 16:06:29','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1045,'日志导出',501,3,'#','','',0,0,'F','1','1','monitor:logininfor:export','#','admin','2026-06-13 16:06:29','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1046,'在线查询',109,1,'#','','',0,0,'F','1','1','monitor:online:query','#','admin','2026-06-13 16:06:29','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1047,'批量强退',109,2,'#','','',0,0,'F','1','1','monitor:online:batchLogout','#','admin','2026-06-13 16:06:29','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1048,'单条强退',109,3,'#','','',0,0,'F','1','1','monitor:online:forceLogout','#','admin','2026-06-13 16:06:30','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1050,'账户解锁',501,4,'#','','',0,0,'F','1','1','monitor:logininfor:unlock','#','admin','2026-06-13 16:06:29','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1055,'生成查询',115,1,'#','','',0,0,'F','1','1','tool:gen:query','#','admin','2026-06-13 16:06:30','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1056,'生成修改',115,2,'#','','',0,0,'F','1','1','tool:gen:edit','#','admin','2026-06-13 16:06:30','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1057,'生成删除',115,3,'#','','',0,0,'F','1','1','tool:gen:remove','#','admin','2026-06-13 16:06:30','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1058,'导入代码',115,2,'#','','',0,0,'F','1','1','tool:gen:import','#','admin','2026-06-13 16:06:30','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1059,'预览代码',115,4,'#','','',0,0,'F','1','1','tool:gen:preview','#','admin','2026-06-13 16:06:30','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1060,'生成代码',115,5,'#','','',0,0,'F','1','1','tool:gen:code','#','admin','2026-06-13 16:06:30','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1061,'文件查询',118,1,'#','','',0,0,'F','1','1','system:oss:query','#','admin','2026-06-13 16:06:30','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1062,'文件上传',118,2,'#','','',0,0,'F','1','1','system:oss:upload','#','admin','2026-06-13 16:06:30','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1063,'文件下载',118,3,'#','','',0,0,'F','1','1','system:oss:download','#','admin','2026-06-13 16:06:30','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1064,'文件删除',118,4,'#','','',0,0,'F','1','1','system:oss:remove','#','admin','2026-06-13 16:06:30','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1065,'配置添加',118,5,'#','','',0,0,'F','1','1','system:oss:add','#','admin','2026-06-13 16:06:30','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1066,'配置编辑',118,6,'#','','',0,0,'F','1','1','system:oss:edit','#','admin','2026-06-13 16:06:30','',NULL,'');
+INSERT INTO `sys_menu` VALUES (3,'基础资料',0,0,'basic',NULL,NULL,0,0,'M','1','1',NULL,'excel','admin','2026-07-04 15:01:48','admin','2026-06-20 18:31:23','');
+INSERT INTO `sys_menu` VALUES (119,'往来单位',3,1,'merchant','wms/basic/merchant/index',NULL,0,0,'C','1','1','wms:merchant:list','documentation','admin','2026-07-05 11:58:12','admin','2026-08-27 16:41:53','往来单位菜单');
+INSERT INTO `sys_menu` VALUES (1070,'单位查询',119,1,'#','',NULL,0,0,'F','1','1','wms:merchant:list','#','admin','2026-07-05 11:58:12','admin','2026-08-30 10:43:54','');
+INSERT INTO `sys_menu` VALUES (1071,'单位新增',119,2,'#','',NULL,0,0,'F','1','1','wms:merchant:add','#','admin','2026-07-05 11:58:12','',NULL,'');
+INSERT INTO `sys_menu` VALUES (1072,'单位修改',119,3,'#','',NULL,0,0,'F','1','1','wms:merchant:edit','#','admin','2026-07-05 11:58:12','',NULL,'');
+INSERT INTO `sys_menu` VALUES (120,'仓库管理',3,2,'warehouse','wms/basic/warehouse/index',NULL,0,0,'C','1','1','wms:warehouse:list','documentation','admin','2026-07-17 14:17:51','wms2_admin','2026-09-10 13:38:53','');
+INSERT INTO `sys_menu` VALUES (121,'商品管理',3,4,'item','wms/basic/item/index',NULL,0,0,'C','1','1','wms:item:list','documentation','admin','2026-07-18 14:16:33','admin','2026-08-27 16:43:06','');
+INSERT INTO `sys_menu` VALUES (122,'品牌管理',3,3,'itemBrand','wms/basic/itemBrand/index',NULL,0,0,'C','1','1','wms:itemBrand:list','documentation','admin','2026-07-30 11:18:27','admin','2026-08-27 16:42:55','');
+INSERT INTO `sys_menu` VALUES (1073,'仓库查询',120,1,'',NULL,NULL,0,0,'F','1','1','wms:warehouse:list','#','admin','2026-08-30 10:44:27','wms2_admin','2026-09-10 13:39:02','');
+INSERT INTO `sys_menu` VALUES (1074,'仓库编辑',120,2,'',NULL,NULL,0,0,'F','1','1','wms:warehouse:edit','#','admin','2026-08-30 10:46:48','wms2_admin','2026-09-10 13:39:10','');
+INSERT INTO `sys_menu` VALUES (1075,'仓库新增',120,2,'',NULL,NULL,0,0,'F','1','1','wms:itemBrand:add','#','admin','2026-08-30 10:46:48','wms2_admin','2026-09-10 13:39:10','');
+INSERT INTO `sys_menu` VALUES (1076,'品牌查询',122,1,'',NULL,NULL,0,0,'F','1','1','wms:itemBrand:list','#','admin','2026-08-30 10:47:22','admin','2026-08-30 10:47:22','');
+INSERT INTO `sys_menu` VALUES (1077,'品牌编辑',122,2,'',NULL,NULL,0,0,'F','1','1','wms:itemBrand:edit','#','admin','2026-08-30 10:50:27','admin','2026-08-30 10:50:27','');
+INSERT INTO `sys_menu` VALUES (1078,'品牌新增',122,2,'',NULL,NULL,0,0,'F','1','1','wms:itemBrand:add','#','admin','2026-08-30 10:50:27','admin','2026-08-30 10:50:27','');
+INSERT INTO `sys_menu` VALUES (1079,'商品查询',121,1,'',NULL,NULL,0,0,'F','1','1','wms:item:list','#','admin','2026-08-30 10:51:00','admin','2026-08-30 10:51:00','');
+INSERT INTO `sys_menu` VALUES (1080,'商品编辑',121,2,'',NULL,NULL,0,0,'F','1','1','wms:item:edit','#','admin','2026-08-30 10:51:21','admin','2026-08-30 10:51:21','');
+INSERT INTO `sys_menu` VALUES (4,'库存统计',0,1,'inventory','wms/inventory/statistic',NULL,0,0,'C','1','1','wms:inventory:all','chart','admin','2026-08-06 15:50:30','admin','2026-06-20 18:31:12','');
+INSERT INTO `sys_menu` VALUES (5,'库存记录',0,3,'inventoryHistory','wms/inventory/history',NULL,0,0,'C','1','1','wms:inventoryHistory:all','list','admin','2026-08-07 14:46:13','admin','2026-08-30 08:58:13','');
+INSERT INTO `sys_menu` VALUES (6,'入库',0,4,'receiptOrder','wms/order/receipt/index',NULL,0,0,'C','1','1','wms:receipt:all','exit-fullscreen','admin','2026-07-31 09:58:42','admin','2026-06-21 02:47:03','');
+INSERT INTO `sys_menu` VALUES (123,'编辑入库单',0,1000,'receiptOrderEdit','wms/order/receipt/edit',NULL,0,0,'C','0','1','wms:receipt:edit','#','admin','2026-07-22 10:08:08','hs','2026-05-23 21:21:49','');
+INSERT INTO `sys_menu` VALUES (7,'出库',0,5,'shipmentOrder','wms/order/shipment/index',NULL,0,0,'C','1','1','wms:shipment:all','fullscreen','admin','2026-08-01 11:43:04','admin','2026-06-21 02:47:12','');
+INSERT INTO `sys_menu` VALUES (124,'编辑出库单',0,1000,'shipmentOrderEdit','wms/order/shipment/edit',NULL,0,0,'C','0','1','wms:shipment:edit','#','admin','2026-08-01 11:46:00','admin','2026-08-27 16:43:37','');
+INSERT INTO `sys_menu` VALUES (8,'移库',0,6,'movementOrder','wms/order/movement/index',NULL,0,0,'C','1','1','wms:movement:all','drag','admin','2026-08-12 10:19:35','admin','2026-06-21 02:47:19','');
+INSERT INTO `sys_menu` VALUES (125,'编辑移库单',0,1000,'movementOrderEdit','wms/order/movement/edit',NULL,0,0,'C','0','1','wms:movement:edit','#','admin','2026-08-12 13:07:00','admin','2026-08-27 16:43:50','');
+INSERT INTO `sys_menu` VALUES (9,'盘库',0,7,'checkOrder','wms/order/check/index',NULL,0,0,'C','1','1','wms:check:all','example','admin','2026-08-13 10:38:08','admin','2026-06-21 02:47:27','');
+INSERT INTO `sys_menu` VALUES (126,'编辑盘库单',0,1000,'checkOrderEdit','wms/order/check/edit',NULL,0,0,'C','0','1','wms:check:edit','#','admin','2026-08-13 10:51:36','admin','2026-08-27 16:43:44','');
 INSERT INTO `sys_menu` VALUES (10,'库位管理',0,2,'location','wms/location/index','',0,0,'C','1','1','wms:location:list','tab','admin','2026-05-28 23:17:16','admin','2026-06-01 10:00:41','库位管理菜单');
 INSERT INTO `sys_menu` VALUES (1081,'库位管理查询',10,1,'#','',NULL,0,0,'F','0','1','wms:location:query','#','admin','2026-05-28 23:17:16','admin','2026-05-28 23:34:30','');
 INSERT INTO `sys_menu` VALUES (1082,'库位管理新增',10,2,'#','',NULL,0,0,'F','0','1','wms:location:add','#','admin','2026-05-28 23:17:16','admin','2026-05-28 23:34:34','');
@@ -504,12 +504,12 @@ PRIMARY KEY (`oss_config_id`) USING BTREE
 -- ----------------------------
 -- Records of sys_oss_config
 -- ----------------------------
-INSERT INTO `sys_oss_config` VALUES (1,'minio','admin','admin123456','nova-wms','','127.0.0.1:9000','','N','','0','1','','admin','2024-06-13 16:06:38','admin','2026-06-29 20:26:43','');
-INSERT INTO `sys_oss_config` VALUES (2,'qiniu','XXXXXXXXXXXXXXX','XXXXXXXXXXXXXXX','root','','s3-cn-north-1.qiniucs.com','','N','','0','0','','admin','2024-06-13 16:06:38','admin','2026-06-19 19:00:46',NULL);
-INSERT INTO `sys_oss_config` VALUES (3,'aliyun','XXXXXXXXXXXXXXX','XXXXXXXXXXXXXXX','root','','oss-cn-beijing.aliyuncs.com','','N','','0','0','','admin','2024-06-13 16:06:38','admin','2026-06-19 19:00:49',NULL);
-INSERT INTO `sys_oss_config` VALUES (4,'qcloud','XXXXXXXXXXXXXXX','XXXXXXXXXXXXXXX','root','','cos.ap-beijing.myqcloud.com','','N','ap-beijing','0','0','','admin','2024-06-13 16:06:38','admin','2024-06-13 16:06:38',NULL);
-INSERT INTO `sys_oss_config` VALUES (5,'image','XXXXXXXXXXXXXXX','XXXXXXXXXXXXXXX','root','image','127.0.0.1:9000','','N','','0','0','','admin','2024-06-13 16:06:38','admin','2026-06-28 18:13:40',NULL);
-INSERT INTO `sys_oss_config` VALUES (6,'rustfs','XXXXXXXXXXXXXXX','XXXXXXXXXXXXXXX','root','','127.0.0.1:9000','','N','','0','0','','admin','2024-06-13 16:06:38','admin','2026-06-28 18:13:40',NULL);
+INSERT INTO `sys_oss_config` VALUES (1,'minio','admin','admin123456','nova-wms','','127.0.0.1:9000','','N','','0','1','','admin','2026-06-13 16:06:38','admin','2026-06-29 20:26:43','');
+INSERT INTO `sys_oss_config` VALUES (2,'qiniu','XXXXXXXXXXXXXXX','XXXXXXXXXXXXXXX','root','','s3-cn-north-1.qiniucs.com','','N','','0','0','','admin','2026-06-13 16:06:38','admin','2026-06-19 19:00:46',NULL);
+INSERT INTO `sys_oss_config` VALUES (3,'aliyun','XXXXXXXXXXXXXXX','XXXXXXXXXXXXXXX','root','','oss-cn-beijing.aliyuncs.com','','N','','0','0','','admin','2026-06-13 16:06:38','admin','2026-06-19 19:00:49',NULL);
+INSERT INTO `sys_oss_config` VALUES (4,'qcloud','XXXXXXXXXXXXXXX','XXXXXXXXXXXXXXX','root','','cos.ap-beijing.myqcloud.com','','N','ap-beijing','0','0','','admin','2026-06-13 16:06:38','admin','2026-06-13 16:06:38',NULL);
+INSERT INTO `sys_oss_config` VALUES (5,'image','XXXXXXXXXXXXXXX','XXXXXXXXXXXXXXX','root','image','127.0.0.1:9000','','N','','0','0','','admin','2026-06-13 16:06:38','admin','2026-06-28 18:13:40',NULL);
+INSERT INTO `sys_oss_config` VALUES (6,'rustfs','XXXXXXXXXXXXXXX','XXXXXXXXXXXXXXX','root','','127.0.0.1:9000','','N','','0','0','','admin','2026-06-13 16:06:38','admin','2026-06-28 18:13:40',NULL);
 
 -- ----------------------------
 -- Table structure for sys_post
@@ -556,7 +556,7 @@ CREATE TABLE `sys_role`  (
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
-INSERT INTO `sys_role` VALUES (1,'超级管理员','admin',1,'1',1,1,'1','0','admin','2024-06-13 16:06:26','',NULL,'超级管理员');
+INSERT INTO `sys_role` VALUES (1,'超级管理员','admin',1,'1',1,1,'1','0','admin','2026-06-13 16:06:26','',NULL,'超级管理员');
 INSERT INTO `sys_role` VALUES (2,'管理用户','manage',2,'1',1,1,'1','0','admin','2026-05-23 03:09:50','admin','2026-06-29 20:49:46',NULL);
 INSERT INTO `sys_role` VALUES (3,'普通用户','common',3,'5',1,1,'1','0','admin','2026-05-23 03:12:14','admin','2026-06-29 20:48:19',NULL);
 
@@ -700,7 +700,7 @@ CREATE TABLE `sys_user`  (
 `email` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户邮箱',
 `phonenumber` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '手机号码',
 `sex` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '用户性别（0男 1女 2未知）',
-`avatar` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '头像地址',
+`avatar` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '头像地址',
 `password` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '密码',
 `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '帐号状态（0正常 1停用）',
 `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
@@ -717,7 +717,7 @@ PRIMARY KEY (`user_id`) USING BTREE
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1,101,'admin','超级管理员','sys_user','','','0','','$2a$10$9s14SAlohUiCtonoV9BgfeHQzQAYAkPPhzRvdNZlUrAUWxkacbZKG','1','0','0:0:0:0:0:0:0:1','2026-06-29 18:05:53','admin','2024-06-13 16:06:25','admin','2026-06-29 18:05:53','管理员');
+INSERT INTO `sys_user` VALUES (1,101,'admin','超级管理员','sys_user','','','0','','$2a$10$9s14SAlohUiCtonoV9BgfeHQzQAYAkPPhzRvdNZlUrAUWxkacbZKG','1','0','0:0:0:0:0:0:0:1','2026-06-29 18:05:53','admin','2026-06-13 16:06:25','admin','2026-06-29 18:05:53','初始密码:admin@123');
 INSERT INTO `sys_user` VALUES (2,101,'hs','管理员','sys_user','','','0','','$2a$10$0TovoLYrMisOcEwXyIImdu7QMARn4cYvOe/x63sd3hkIwjKFnjKMy','1','0','0:0:0:0:0:0:0:1','2026-06-21 17:44:12','admin','2026-05-23 03:17:56','hs','2026-06-21 17:44:12',NULL);
 INSERT INTO `sys_user` VALUES (3,NULL,'gjy','普通用户','sys_user','','','0','','$2a$10$lE5bYDnDy3EKWX31Mp0r3uN003mE1OU.0kYfYwJfbZ41YwMdFwHJ.','1','0','',NULL,'admin','2026-06-20 23:17:02','admin','2026-06-20 23:17:02',NULL);
 
@@ -848,7 +848,7 @@ DROP TABLE IF EXISTS `wms_item`;
 CREATE TABLE `wms_item` (
 `id` bigint(20) NOT NULL AUTO_INCREMENT,
 `item_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '编号',
-`item_name` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '名称',
+`item_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '名称',
 `item_image` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '商品图片(ossId,逗号分隔)',
 `item_category` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '分类',
 `unit` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '单位类别',

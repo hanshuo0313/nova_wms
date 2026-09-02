@@ -31,6 +31,7 @@ public class ItemBo extends BaseEntity {
     /**
      * 编号
      */
+    @NotBlank(message = "编号不能为空", groups = { AddGroup.class, EditGroup.class })
     private String itemCode;
 
     /**
