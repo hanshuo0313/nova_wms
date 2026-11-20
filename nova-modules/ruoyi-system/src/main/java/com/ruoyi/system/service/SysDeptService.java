@@ -196,13 +196,16 @@ public class SysDeptService implements DeptService {
      * @param deptId 部门id
      */
     public void checkDeptDataScope(Long deptId) {
-        if (!LoginHelper.isAdmin()) {
-            SysDept dept = new SysDept();
-            dept.setDeptId(deptId);
-            List<SysDeptVo> depts = this.selectDeptList(MapstructUtils.convert(dept, SysDeptBo.class));
-            if (CollUtil.isEmpty(depts)) {
-                throw new ServiceException("没有权限访问部门数据！");
-            }
+        // 未指定部门（如新增用户时未选择部门）或超级管理员无需校验
+        if (ObjectUtil.isNull(deptId) || LoginHelper.isAdmin()) {
+            System.out.println("未指定部门或是超级管理员，无需校验数据权限");
+            return;
+        }
+        SysDeptBo dept = new SysDeptBo();
+        dept.setDeptId(deptId);
+        List<SysDeptVo> depts = this.selectDeptList(dept);
+        if (CollUtil.isEmpty(depts)) {
+            throw new ServiceException("没有权限访问部门数据！");
         }
     }
 
