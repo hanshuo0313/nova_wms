@@ -65,8 +65,14 @@ public class ItemSkuVo implements Serializable {
     /**
      * 高(cm)
      */
-    @ExcelProperty(value = "=高(cm)")
+    @ExcelProperty(value = "高(cm)")
     private BigDecimal height;
+
+    /**
+     * 体积(cm³，自动计算)
+     */
+    @ExcelProperty(value = "体积(cm³)")
+    private BigDecimal volume;
 
     /**
      * 毛重(kg)

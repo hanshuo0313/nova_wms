@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 出库单详情业务对象 wms_shipment_order_detail
+ * 鍑哄簱鍗曡鎯呬笟鍔″璞?wms_shipment_order_detail
  *
  * @author zcc
  * @date 2024-08-01
@@ -20,5 +20,15 @@ import lombok.EqualsAndHashCode;
     @AutoMapper(target = InventoryBo.class, reverseConvertGenerate = false)
 })
 public class ShipmentOrderDetailBo extends BaseOrderDetailBo{
+
+    /**
+     * 閿佸畾搴撳瓨琛孖D锛堢‘瀹氶厤璐у悗鍐欏叆锛?
+     */
+    private Long inventoryId;
+
+    /**
+     * 计划数量
+     */
+    private java.math.BigDecimal planQuantity;
 
 }

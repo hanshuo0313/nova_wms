@@ -7,6 +7,7 @@ import lombok.Data;
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Data
 @ExcelIgnoreUnannotated
@@ -24,6 +25,28 @@ public class BaseOrderDetailVo implements Serializable {
      */
     @ExcelProperty(value = "订单单号")
     private Long orderId;
+
+    /**
+     * 所属单据编号
+     */
+    @ExcelProperty(value = "单号")
+    private String orderNo;
+
+    /**
+     * 单据状态
+     */
+    private Integer orderStatus;
+
+    /**
+     * 单据类型（入库类型/出库类型/盘点方式等）
+     */
+    private Integer orderType;
+
+    /**
+     * 创建时间
+     */
+    @ExcelProperty(value = "创建时间")
+    private LocalDateTime createTime;
 
     /**
      * 规格id

@@ -83,6 +83,14 @@ public class ShipmentOrderController extends BaseController {
     @RepeatSubmit()
     @PostMapping()
     public R<Long> add(@Validated(AddGroup.class) @RequestBody ShipmentOrderBo bo) {
+        // 紧急领料出库、退货出库单由系统自动生成，不允许手工创建
+        if (ServiceConstants.ShipmentType.URGENT.equals(bo.getShipmentType())
+            || ServiceConstants.ShipmentType.RETURN.equals(bo.getShipmentType())) {
+            return R.fail("紧急领料出库单、退货出库单由系统自动生成，不能手工创建");
+        }
+        if (bo.getShipmentType() == null) {
+            bo.setShipmentType(ServiceConstants.ShipmentType.OTHER);
+        }
         Long id = shipmentOrderService.insertByBo(bo);
         return R.ok(id);
     }
@@ -103,12 +111,33 @@ public class ShipmentOrderController extends BaseController {
      * 出库
      */
     @SaCheckPermission("wms:shipment:all")
-    @Log(title = "出库单", businessType = BusinessType.UPDATE)
+    @Log(title = "Shipment", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
     @PutMapping("/shipment")
     public R<Void> shipment(@Validated(AddGroup.class) @RequestBody ShipmentOrderBo bo) {
-        bo.setOrderStatus(ServiceConstants.ShipmentOrderStatus.FINISH);
         shipmentOrderService.shipment(bo);
+        return R.ok();
+    }
+
+    /**
+     * 确认出库单：开始配货并锁定库存
+     */
+    @SaCheckPermission("wms:shipment:edit")
+    @Log(title = "Shipment", businessType = BusinessType.UPDATE)
+    @PostMapping("/confirm/{id}")
+    public R<Void> confirm(@PathVariable Long id) {
+        shipmentOrderService.confirm(id);
+        return R.ok();
+    }
+
+    /**
+     * 取消出库单：释放锁定库存
+     */
+    @SaCheckPermission("wms:shipment:edit")
+    @Log(title = "Shipment", businessType = BusinessType.UPDATE)
+    @PostMapping("/cancel/{id}")
+    public R<Void> cancel(@PathVariable Long id) {
+        shipmentOrderService.cancel(id);
         return R.ok();
     }
 

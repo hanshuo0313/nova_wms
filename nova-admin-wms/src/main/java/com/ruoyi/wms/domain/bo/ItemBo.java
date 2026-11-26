@@ -10,6 +10,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Data
@@ -46,6 +47,11 @@ public class ItemBo extends BaseEntity {
     private String itemImage;
 
     /**
+     * 供应商ID
+     */
+    private Long supplierId;
+
+    /**
      * 分类
      */
     @NotBlank(message = "分类不能为空", groups = { AddGroup.class, EditGroup.class })
@@ -71,6 +77,26 @@ public class ItemBo extends BaseEntity {
      */
     @NotNull(message = "仓库不能为空", groups = { AddGroup.class })
     private Long warehouseId;
+    
+    /**
+     * 型号
+     */
+    private String itemModel;
+
+    /**
+     * 售价(元)
+     */
+    private BigDecimal sellingPrice;
+
+    /**
+     * 交货期(天)
+     */
+    private Integer deliveryDays;
+
+    /**
+     * 安全库存水位
+     */
+    private BigDecimal safetyStock;
 
 
     /**

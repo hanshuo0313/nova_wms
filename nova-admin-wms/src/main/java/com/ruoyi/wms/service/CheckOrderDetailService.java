@@ -10,8 +10,10 @@ import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.wms.domain.bo.CheckOrderDetailBo;
 import com.ruoyi.wms.domain.entity.CheckOrderDetail;
+import com.ruoyi.wms.domain.entity.CheckOrder;
 import com.ruoyi.wms.domain.vo.CheckOrderDetailVo;
 import com.ruoyi.wms.mapper.CheckOrderDetailMapper;
+import com.ruoyi.wms.mapper.CheckOrderMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +34,29 @@ public class CheckOrderDetailService extends ServiceImpl<CheckOrderDetailMapper,
 
     private final CheckOrderDetailMapper checkOrderDetailMapper;
     private final ItemSkuService itemSkuService;
+    private final CheckOrderMapper checkOrderMapper;
+
+    private void fillExtra(List<CheckOrderDetailVo> list) {
+        if (CollUtil.isEmpty(list)) {
+            return;
+        }
+        itemSkuService.setItemSkuMap(list);
+        java.util.Set<Long> orderIds = list.stream().map(CheckOrderDetailVo::getOrderId)
+            .filter(java.util.Objects::nonNull).collect(java.util.stream.Collectors.toSet());
+        if (orderIds.isEmpty()) {
+            return;
+        }
+        java.util.Map<Long, CheckOrder> orderMap = checkOrderMapper.selectBatchIds(orderIds).stream()
+            .collect(java.util.stream.Collectors.toMap(CheckOrder::getId, o -> o, (a, b) -> a));
+        list.forEach(d -> {
+            CheckOrder order = orderMap.get(d.getOrderId());
+            if (order != null) {
+                d.setOrderNo(order.getOrderNo());
+                d.setOrderStatus(order.getOrderStatus());
+                d.setOrderType(order.getCheckType());
+            }
+        });
+    }
 
     /**
      * 查询库存盘点单据详情
@@ -49,7 +74,7 @@ public class CheckOrderDetailService extends ServiceImpl<CheckOrderDetailMapper,
         if (CollUtil.isEmpty(result.getRecords())) {
             return TableDataInfo.build(result);
         }
-        itemSkuService.setItemSkuMap(result.getRecords());
+        fillExtra(result.getRecords());
         return TableDataInfo.build(result);
     }
 
@@ -58,7 +83,9 @@ public class CheckOrderDetailService extends ServiceImpl<CheckOrderDetailMapper,
      */
     public List<CheckOrderDetailVo> queryList(CheckOrderDetailBo bo) {
         LambdaQueryWrapper<CheckOrderDetail> lqw = buildQueryWrapper(bo);
-        return checkOrderDetailMapper.selectVoList(lqw);
+        List<CheckOrderDetailVo> list = checkOrderDetailMapper.selectVoList(lqw);
+        fillExtra(list);
+        return list;
     }
 
     private LambdaQueryWrapper<CheckOrderDetail> buildQueryWrapper(CheckOrderDetailBo bo) {

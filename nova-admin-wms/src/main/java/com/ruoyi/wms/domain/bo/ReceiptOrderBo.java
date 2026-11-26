@@ -21,9 +21,8 @@ import lombok.EqualsAndHashCode;
 public class ReceiptOrderBo extends BaseOrderBo<ReceiptOrderDetailBo> {
 
     /**
-     * 入库类型
+     * 入库类型（历史字段，新逻辑使用 receiptType）
      */
-    @NotNull(message = "入库类型不能为空", groups = { AddGroup.class, EditGroup.class })
     private Long optType;
 
     /**
@@ -39,5 +38,25 @@ public class ReceiptOrderBo extends BaseOrderBo<ReceiptOrderDetailBo> {
      */
     @NotNull(message = "仓库不能为空", groups = { AddGroup.class, EditGroup.class })
     private Long warehouseId;
+
+    /**
+     * 入库类型 1采购入库 2领料返库 3其他入库
+     */
+    private Integer receiptType;
+
+    /**
+     * 来源单ID
+     */
+    private Long sourceOrderId;
+
+    /**
+     * 来源单号
+     */
+    private String sourceOrderNo;
+
+    /**
+     * 操作数量（实际入库数量）
+     */
+    private java.math.BigDecimal operatedQuantity;
 
 }

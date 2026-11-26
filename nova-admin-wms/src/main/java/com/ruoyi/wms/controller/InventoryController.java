@@ -56,6 +56,42 @@ public class InventoryController extends BaseController {
     }
 
     /**
+     * 库存查询（含供应商、分类、等级、型号、规格、动碰次数）
+     */
+    @SaCheckPermission("wms:inventory:all")
+    @GetMapping("/page")
+    public TableDataInfo<InventoryVo> queryPageList(InventoryBo bo, PageQuery pageQuery) {
+        return inventoryService.queryPageList(bo, pageQuery);
+    }
+
+    /**
+     * 查询仓库+SKU的可用库存（库存-锁定）
+     */
+    @SaCheckPermission("wms:inventory:all")
+    @GetMapping("/available")
+    public R<java.math.BigDecimal> available(Long warehouseId, Long skuId) {
+        return R.ok(inventoryService.availableQuantity(warehouseId, skuId));
+    }
+
+    /**
+     * 库存按仓库+SKU汇总（选择商品时显示总库存）
+     */
+    @SaCheckPermission("wms:inventory:all")
+    @GetMapping("/summary")
+    public TableDataInfo<InventoryVo> summary(InventoryBo bo, PageQuery pageQuery) {
+        return inventoryService.querySummaryPage(bo, pageQuery);
+    }
+
+    /**
+     * 安全库存预警
+     */
+    @SaCheckPermission("wms:inventory:all")
+    @GetMapping("/alert")
+    public TableDataInfo<InventoryVo> querySafetyStockAlert(InventoryBo bo, PageQuery pageQuery) {
+        return inventoryService.querySafetyStockAlert(bo, pageQuery);
+    }
+
+    /**
      * 查询库存列表商品维度
      */
     @SaCheckPermission("wms:inventory:all")

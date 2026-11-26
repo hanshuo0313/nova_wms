@@ -61,6 +61,11 @@ public class ItemSku extends BaseEntity {
     private BigDecimal height;
 
     /**
+     * 体积(cm³，长*宽*高)
+     */
+    private BigDecimal volume;
+
+    /**
      * 毛重(kg)
      */
     private BigDecimal grossWeight;

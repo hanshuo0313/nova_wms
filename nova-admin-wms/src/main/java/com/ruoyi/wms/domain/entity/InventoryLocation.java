@@ -35,6 +35,41 @@ public class InventoryLocation extends BaseEntity {
      * 库位编号
      */
     private String stockCode;
+
+    /**
+     * 货架号
+     */
+    private String shelfNo;
+
+    /**
+     * 列
+     */
+    private String colNo;
+
+    /**
+     * 层
+     */
+    private String layerNo;
+
+    /**
+     * 长(cm)
+     */
+    private java.math.BigDecimal length;
+
+    /**
+     * 宽(cm)
+     */
+    private java.math.BigDecimal width;
+
+    /**
+     * 高(cm)
+     */
+    private java.math.BigDecimal height;
+
+    /**
+     * 容积(cm³)
+     */
+    private java.math.BigDecimal volume;
     /**
      * 库位状态：1：空闲、2：使用中
      */

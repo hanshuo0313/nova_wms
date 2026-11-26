@@ -44,6 +44,44 @@ public class InventoryLocationVo implements Serializable {
     private String stockCode;
 
     /**
+     * 货架号
+     */
+    @ExcelProperty(value = "货架号")
+    private String shelfNo;
+
+    /**
+     * 列
+     */
+    @ExcelProperty(value = "列")
+    private String colNo;
+
+    /**
+     * 层
+     */
+    @ExcelProperty(value = "层")
+    private String layerNo;
+
+    /**
+     * 长(cm)
+     */
+    private java.math.BigDecimal length;
+
+    /**
+     * 宽(cm)
+     */
+    private java.math.BigDecimal width;
+
+    /**
+     * 高(cm)
+     */
+    private java.math.BigDecimal height;
+
+    /**
+     * 容积(cm³)
+     */
+    private java.math.BigDecimal volume;
+
+    /**
      * 库位状态：1：空闲、2：使用中
      */
     @ExcelProperty(value = "库位状态", converter = ExcelDictConvert.class)

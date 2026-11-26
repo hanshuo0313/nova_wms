@@ -83,6 +83,13 @@ public class ReceiptOrderController extends BaseController {
     @RepeatSubmit()
     @PostMapping()
     public R<Long> add(@Validated(AddGroup.class) @RequestBody ReceiptOrderBo bo) {
+        // 采购入库单只能由采购单自动生成，不允许手工创建
+        if (ServiceConstants.ReceiptType.PURCHASE.equals(bo.getReceiptType())) {
+            return R.fail("采购入库单由采购单自动生成，不能手工创建");
+        }
+        if (bo.getReceiptType() == null) {
+            bo.setReceiptType(ServiceConstants.ReceiptType.OTHER);
+        }
         bo.setOrderStatus(ServiceConstants.ReceiptOrderStatus.PENDING);
         Long id = receiptOrderService.insertByBo(bo);
         return R.ok(id);
@@ -96,7 +103,7 @@ public class ReceiptOrderController extends BaseController {
     @RepeatSubmit()
     @PostMapping("/warehousing")
     public R<Void> doWarehousing(@Validated(AddGroup.class) @RequestBody ReceiptOrderBo bo) {
-        bo.setOrderStatus(ServiceConstants.ReceiptOrderStatus.FINISH);
+        // 状态由服务层根据明细操作数量决定：未全部上架完成时保持未入库
         receiptOrderService.receive(bo);
         return R.ok();
     }

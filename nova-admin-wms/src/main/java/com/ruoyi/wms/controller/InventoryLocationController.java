@@ -55,6 +55,30 @@ public class InventoryLocationController extends BaseController {
     }
 
     /**
+     * 校验货位是否存在且属于该仓库
+     */
+    @SaCheckPermission("wms:location:list")
+    @GetMapping("/validate")
+    public R<Boolean> validateLocation(@RequestParam Long warehouseId, @RequestParam String stockCode) {
+        com.ruoyi.wms.domain.bo.InventoryLocationBo query = new com.ruoyi.wms.domain.bo.InventoryLocationBo();
+        query.setWarehouseId(warehouseId);
+        query.setStockCode(stockCode);
+        boolean exists = inventoryLocationService.queryList(query).stream()
+            .anyMatch(it -> stockCode.equalsIgnoreCase(it.getStockCode()));
+        return R.ok(exists);
+    }
+
+    /**
+     * 入库推荐库位（按容积匹配）
+     */
+    @SaCheckPermission("wms:location:list")
+    @GetMapping("/recommend")
+    public R<List<InventoryLocationVo>> recommend(@RequestParam(required = false) Long warehouseId,
+                                                  @RequestParam(required = false) java.math.BigDecimal volume) {
+        return R.ok(inventoryLocationService.recommend(warehouseId, volume, 20));
+    }
+
+    /**
      * 导出库位管理列表
      */
     /**

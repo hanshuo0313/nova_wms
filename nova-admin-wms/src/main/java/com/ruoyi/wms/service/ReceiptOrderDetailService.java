@@ -10,8 +10,10 @@ import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.wms.domain.bo.ReceiptOrderDetailBo;
 import com.ruoyi.wms.domain.entity.ReceiptOrderDetail;
+import com.ruoyi.wms.domain.entity.ReceiptOrder;
 import com.ruoyi.wms.domain.vo.ReceiptOrderDetailVo;
 import com.ruoyi.wms.mapper.ReceiptOrderDetailMapper;
+import com.ruoyi.wms.mapper.ReceiptOrderMapper;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,6 +36,29 @@ public class ReceiptOrderDetailService extends ServiceImpl<ReceiptOrderDetailMap
 
     private final ReceiptOrderDetailMapper receiptOrderDetailMapper;
     private final ItemSkuService itemSkuService;
+    private final ReceiptOrderMapper receiptOrderMapper;
+
+    private void fillExtra(List<ReceiptOrderDetailVo> list) {
+        if (CollUtil.isEmpty(list)) {
+            return;
+        }
+        itemSkuService.setItemSkuMap(list);
+        java.util.Set<Long> orderIds = list.stream().map(ReceiptOrderDetailVo::getOrderId)
+            .filter(java.util.Objects::nonNull).collect(java.util.stream.Collectors.toSet());
+        if (orderIds.isEmpty()) {
+            return;
+        }
+        java.util.Map<Long, ReceiptOrder> orderMap = receiptOrderMapper.selectBatchIds(orderIds).stream()
+            .collect(java.util.stream.Collectors.toMap(ReceiptOrder::getId, o -> o, (a, b) -> a));
+        list.forEach(d -> {
+            ReceiptOrder order = orderMap.get(d.getOrderId());
+            if (order != null) {
+                d.setOrderNo(order.getOrderNo());
+                d.setOrderStatus(order.getOrderStatus());
+                d.setOrderType(order.getReceiptType());
+            }
+        });
+    }
 
     /**
      * 查询入库单详情
@@ -48,6 +73,7 @@ public class ReceiptOrderDetailService extends ServiceImpl<ReceiptOrderDetailMap
     public TableDataInfo<ReceiptOrderDetailVo> queryPageList(ReceiptOrderDetailBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<ReceiptOrderDetail> lqw = buildQueryWrapper(bo);
         Page<ReceiptOrderDetailVo> result = receiptOrderDetailMapper.selectVoPage(pageQuery.build(), lqw);
+        fillExtra(result.getRecords());
         return TableDataInfo.build(result);
     }
 
@@ -56,7 +82,9 @@ public class ReceiptOrderDetailService extends ServiceImpl<ReceiptOrderDetailMap
      */
     public List<ReceiptOrderDetailVo> queryList(ReceiptOrderDetailBo bo) {
         LambdaQueryWrapper<ReceiptOrderDetail> lqw = buildQueryWrapper(bo);
-        return receiptOrderDetailMapper.selectVoList(lqw);
+        List<ReceiptOrderDetailVo> list = receiptOrderDetailMapper.selectVoList(lqw);
+        fillExtra(list);
+        return list;
     }
 
     private LambdaQueryWrapper<ReceiptOrderDetail> buildQueryWrapper(ReceiptOrderDetailBo bo) {

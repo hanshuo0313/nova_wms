@@ -95,6 +95,44 @@ public class CheckOrderController extends BaseController {
     }
 
     /**
+     * 按盘点方式生成盘点明细（全盘/动盘/指定）
+     */
+    @SaCheckPermission("wms:check:all")
+    @PostMapping("/generate")
+    public R<java.util.List<com.ruoyi.wms.domain.bo.CheckOrderDetailBo>> generate(@RequestBody CheckOrderBo bo) {
+        return R.ok(checkOrderService.generateDetails(bo));
+    }
+
+    /**
+     * PAD 端逐项盘点确认
+     */
+    @SaCheckPermission("wms:check:all")
+    @Log(title = "库存盘点单据", businessType = BusinessType.UPDATE)
+    @PostMapping("/padConfirm")
+    public R<Void> padConfirm(@RequestBody java.util.Map<String, Object> body) {
+        Long orderId = body.get("orderId") == null ? null : Long.valueOf(body.get("orderId").toString());
+        Long detailId = body.get("detailId") == null ? null : Long.valueOf(body.get("detailId").toString());
+        java.math.BigDecimal checkQuantity = body.get("checkQuantity") == null ? null
+            : new java.math.BigDecimal(body.get("checkQuantity").toString());
+        if (orderId == null || detailId == null || checkQuantity == null) {
+            return R.fail("参数不完整");
+        }
+        checkOrderService.padConfirm(orderId, detailId, checkQuantity);
+        return R.ok();
+    }
+
+    /**
+     * 取消盘点单（释放锁定库存）
+     */
+    @SaCheckPermission("wms:check:edit")
+    @Log(title = "库存盘点单据", businessType = BusinessType.UPDATE)
+    @PostMapping("/cancel/{id}")
+    public R<Void> cancel(@PathVariable Long id) {
+        checkOrderService.cancel(id);
+        return R.ok();
+    }
+
+    /**
      * 盘库结束
      */
     @SaCheckPermission("wms:check:all")

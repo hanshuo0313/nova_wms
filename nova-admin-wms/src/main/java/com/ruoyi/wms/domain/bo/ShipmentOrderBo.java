@@ -20,9 +20,8 @@ import lombok.EqualsAndHashCode;
 @AutoMapper(target = ShipmentOrder.class, reverseConvertGenerate = false)
 public class ShipmentOrderBo extends BaseOrderBo<ShipmentOrderDetailBo> {
     /**
-     * 入库类型
+     * 入库类型（历史字段，新逻辑使用 shipmentType）
      */
-    @NotNull(message = "出库类型不能为空", groups = { AddGroup.class, EditGroup.class })
     private Long optType;
 
     /**
@@ -38,4 +37,19 @@ public class ShipmentOrderBo extends BaseOrderBo<ShipmentOrderDetailBo> {
      */
     @NotNull(message = "仓库不能为空", groups = { AddGroup.class, EditGroup.class })
     private Long warehouseId;
+
+    /**
+     * 出库类型 1领料出库 2紧急领料出库 3退货出库 4其他出库
+     */
+    private Integer shipmentType;
+
+    /**
+     * 来源单ID
+     */
+    private Long sourceOrderId;
+
+    /**
+     * 来源单号
+     */
+    private String sourceOrderNo;
 }

@@ -36,4 +36,21 @@ public class ShipmentOrderVo extends BaseOrderVo<ShipmentOrderDetailVo>{
      */
     @ExcelProperty(value = "业务订单号")
     private String bizOrderNo;
+
+    /**
+     * 出库类型 1领料出库 2紧急领料出库 3退货出库 4其他出库
+     */
+    @ExcelProperty(value = "出库类型")
+    private Integer shipmentType;
+
+    /**
+     * 来源单ID
+     */
+    private Long sourceOrderId;
+
+    /**
+     * 来源单号
+     */
+    @ExcelProperty(value = "来源单号")
+    private String sourceOrderNo;
 }

@@ -181,8 +181,10 @@ public class ItemSkuService extends ServiceImpl<ItemSkuMapper, ItemSku> {
 
             details.forEach(detail -> {
                     ItemSkuMapVo vo = itemSkuMap.get(detail.getSkuId());
-                    detail.setItemSku(vo.getItemSku());
-                    detail.setItem(vo.getItem());
+                    if (vo != null) {
+                        detail.setItemSku(vo.getItemSku());
+                        detail.setItem(vo.getItem());
+                    }
             });
         }
     }

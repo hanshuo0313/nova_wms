@@ -32,4 +32,9 @@ public class  CheckOrderDetailVo extends BaseOrderDetailVo {
      */
     private Long inventoryId;
 
+    /**
+     * 是否已盘点
+     */
+    private Integer checked;
+
 }

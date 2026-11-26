@@ -5,24 +5,91 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.ruoyi.wms.mapper.InventoryMapper">
 
     <resultMap id="inventoryVoMap" type="com.ruoyi.wms.domain.vo.InventoryVo">
+        <id property="id" column="inv_id"/>
+        <result property="skuId" column="sku_id"/>
+        <result property="warehouseId" column="warehouse_id"/>
+        <result property="warehouseName" column="warehouse_name"/>
+        <result property="quantity" column="quantity"/>
+        <result property="lockedQuantity" column="locked_quantity"/>
+        <result property="availableQuantity" column="available_quantity"/>
+        <result property="moveCount" column="move_count"/>
+        <result property="stockCode" column="stock_code"/>
+        <result property="remark" column="inv_remark"/>
+        <result property="supplierName" column="supplier_name"/>
         <association property="itemSku" javaType="com.ruoyi.wms.domain.vo.ItemSkuVo">
-            <id property="id" column="sku_id"/> <!-- 映射 itemSku 的 id -->
+            <id property="id" column="sku_id"/>
+            <result property="skuName" column="sku_name"/>
+            <result property="barcode" column="barcode"/>
+            <result property="length" column="length"/>
+            <result property="width" column="width"/>
+            <result property="height" column="height"/>
+            <result property="volume" column="volume"/>
+            <result property="grossWeight" column="gross_weight"/>
+            <result property="netWeight" column="net_weight"/>
+            <result property="costPrice" column="cost_price"/>
+            <result property="sellingPrice" column="sku_selling_price"/>
         </association>
         <association property="item" javaType="com.ruoyi.wms.domain.vo.ItemVo">
-            <id property="id" column="item_id"/> <!-- 映射 item 的 id -->
+            <id property="id" column="item_id"/>
+            <result property="itemCode" column="item_code"/>
+            <result property="itemName" column="item_name"/>
+            <result property="itemImage" column="item_image"/>
+            <result property="itemCategory" column="item_category"/>
+            <result property="itemCategoryName" column="category_name"/>
+            <result property="unit" column="unit"/>
+            <result property="itemLevel" column="item_level"/>
+            <result property="itemBrand" column="item_brand"/>
+            <result property="itemModel" column="item_model"/>
+            <result property="supplierId" column="supplier_id"/>
+            <result property="sellingPrice" column="item_selling_price"/>
+            <result property="deliveryDays" column="delivery_days"/>
+            <result property="safetyStock" column="safety_stock"/>
         </association>
     </resultMap>
 
     <sql id="selectVoListByBo">
         select
-        inventory.*,
-        sku.id as sku_id,
-        sku.*,
+        inventory.id as inv_id,
+        inventory.sku_id,
+        inventory.warehouse_id,
+        inventory.quantity,
+        ifnull(inventory.locked_quantity, 0) as locked_quantity,
+        (inventory.quantity - ifnull(inventory.locked_quantity, 0)) as available_quantity,
+        inventory.stock_code,
+        inventory.move_count,
+        inventory.remark as inv_remark,
+        sku.sku_name,
+        sku.barcode,
+        sku.length,
+        sku.width,
+        sku.height,
+        sku.volume,
+        sku.gross_weight,
+        sku.net_weight,
+        sku.cost_price,
+        sku.selling_price as sku_selling_price,
         item.id as item_id,
-        item.*
+        item.item_code,
+        item.item_name,
+        item.item_image,
+        item.item_category,
+        item.unit,
+        item.item_level,
+        item.item_brand,
+        item.item_model,
+        item.supplier_id,
+        item.selling_price as item_selling_price,
+        item.delivery_days,
+        item.safety_stock,
+        category.category_name,
+        merchant.merchant_name as supplier_name,
+        warehouse.warehouse_name
         from wms_inventory inventory
         inner join wms_item_sku sku on inventory.sku_id=sku.id
         inner join wms_item item on sku.item_id=item.id
+        left join wms_item_category category on category.id = item.item_category
+        left join wms_merchant merchant on merchant.id = item.supplier_id
+        left join wms_warehouse warehouse on warehouse.id = inventory.warehouse_id
         <where>
             <if test="bo.itemName != null and bo.itemName != ''">
                 item.item_name like concat('%', #{bo.itemName}, '%')
@@ -45,6 +112,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="bo.itemId != null">
                 and item.id=#{bo.itemId}
             </if>
+            <if test="bo.supplierId != null">
+                and item.supplier_id=#{bo.supplierId}
+            </if>
+            <if test="bo.itemLevel != null and bo.itemLevel != ''">
+                and item.item_level=#{bo.itemLevel}
+            </if>
+            <if test="bo.itemModel != null and bo.itemModel != ''">
+                and item.item_model like concat('%', #{bo.itemModel}, '%')
+            </if>
+            <if test="bo.stockCode != null and bo.stockCode != ''">
+                and inventory.stock_code like concat('%', #{bo.stockCode}, '%')
+            </if>
             <if test="bo.warehouseId != null">
                 and inventory.warehouse_id=#{bo.warehouseId}
             </if>
@@ -56,6 +135,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             </if>
             <if test="bo.minQuantity != null">
                 and inventory.quantity>=#{bo.minQuantity}
+            </if>
+            <if test="bo.minMoveCount != null">
+                and inventory.move_count &gt;= #{bo.minMoveCount}
+            </if>
+            <if test="bo.belowSafetyStock != null and bo.belowSafetyStock">
+                and item.safety_stock is not null and item.safety_stock > 0 and inventory.quantity &lt; item.safety_stock
             </if>
         </where>
     </sql>
@@ -69,4 +154,108 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectVoListByBo"/>
         order by sku.item_id,sku.id,inventory.warehouse_id
     </select>
+
+    <select id="queryPageList" resultMap="inventoryVoMap">
+        <include refid="selectVoListByBo"/>
+        order by item.item_code, inventory.warehouse_id, inventory.stock_code
+    </select>
+
+    <!-- 安全库存预警：按仓库+SKU汇总，总库存低于安全库存才预警，现有库存为总库存 -->
+    <select id="selectSafetyStockPage" resultMap="inventoryVoMap">
+        select
+        null as inv_id,
+        inventory.sku_id,
+        inventory.warehouse_id,
+        sum(inventory.quantity) as quantity,
+        sum(ifnull(inventory.locked_quantity, 0)) as locked_quantity,
+        (sum(inventory.quantity) - sum(ifnull(inventory.locked_quantity, 0))) as available_quantity,
+        null as stock_code,
+        sum(ifnull(inventory.move_count, 0)) as move_count,
+        sku.sku_name,
+        sku.barcode,
+        sku.length,
+        sku.width,
+        sku.height,
+        sku.volume,
+        sku.net_weight,
+        item.id as item_id,
+        item.item_code,
+        item.item_name,
+        item.item_image,
+        item.item_model,
+        item.safety_stock,
+        category.category_name,
+        merchant.merchant_name as supplier_name,
+        warehouse.warehouse_name
+        from wms_inventory inventory
+        inner join wms_item_sku sku on inventory.sku_id=sku.id
+        inner join wms_item item on sku.item_id=item.id
+        left join wms_item_category category on category.id = item.item_category
+        left join wms_merchant merchant on merchant.id = item.supplier_id
+        left join wms_warehouse warehouse on warehouse.id = inventory.warehouse_id
+        <where>
+            item.safety_stock is not null and item.safety_stock > 0
+            <if test="bo.warehouseId != null">
+                and inventory.warehouse_id = #{bo.warehouseId}
+            </if>
+            <if test="bo.itemCode != null and bo.itemCode != ''">
+                and item.item_code like concat('%', #{bo.itemCode}, '%')
+            </if>
+            <if test="bo.itemName != null and bo.itemName != ''">
+                and item.item_name like concat('%', #{bo.itemName}, '%')
+            </if>
+        </where>
+        group by inventory.warehouse_id, inventory.sku_id
+        having sum(inventory.quantity) &lt; max(item.safety_stock)
+        order by item.item_code, warehouse.warehouse_name
+    </select>
+    <select id="selectSummaryPage" resultMap="inventoryVoMap">
+        select
+        null as inv_id,
+        inventory.sku_id,
+        inventory.warehouse_id,
+        sum(inventory.quantity) as quantity,
+        sum(ifnull(inventory.locked_quantity, 0)) as locked_quantity,
+        (sum(inventory.quantity) - sum(ifnull(inventory.locked_quantity, 0))) as available_quantity,
+        null as stock_code,
+        sum(ifnull(inventory.move_count, 0)) as move_count,
+        sku.sku_name,
+        sku.barcode,
+        sku.length,
+        sku.width,
+        sku.height,
+        sku.volume,
+        sku.net_weight,
+        item.id as item_id,
+        item.item_code,
+        item.item_name,
+        item.item_image,
+        item.item_model,
+        category.category_name,
+        merchant.merchant_name as supplier_name,
+        warehouse.warehouse_name
+        from wms_inventory inventory
+        inner join wms_item_sku sku on inventory.sku_id=sku.id
+        inner join wms_item item on sku.item_id=item.id
+        left join wms_item_category category on category.id = item.item_category
+        left join wms_merchant merchant on merchant.id = item.supplier_id
+        left join wms_warehouse warehouse on warehouse.id = inventory.warehouse_id
+        <where>
+            <if test="bo.warehouseId != null">
+                inventory.warehouse_id = #{bo.warehouseId}
+            </if>
+            <if test="bo.itemCode != null and bo.itemCode != ''">
+                and item.item_code like concat('%', #{bo.itemCode}, '%')
+            </if>
+            <if test="bo.itemName != null and bo.itemName != ''">
+                and item.item_name like concat('%', #{bo.itemName}, '%')
+            </if>
+            <if test="bo.stockCode != null and bo.stockCode != ''">
+                and inventory.stock_code like concat('%', #{bo.stockCode}, '%')
+            </if>
+        </where>
+        group by inventory.warehouse_id, inventory.sku_id
+        order by item.item_code, warehouse.warehouse_name
+    </select>
+
 </mapper>

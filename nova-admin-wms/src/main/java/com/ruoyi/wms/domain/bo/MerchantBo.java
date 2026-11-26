@@ -42,9 +42,8 @@ public class MerchantBo extends BaseEntity {
     private String merchantName;
 
     /**
-     * 企业类型
+     * 企业类型（供应商页面已不再使用）
      */
-    @NotNull(message = "企业类型不能为空", groups = { AddGroup.class, EditGroup.class })
     private Integer merchantType;
 
     /**

@@ -25,4 +25,19 @@ public interface InventoryMapper extends BaseMapperPlus<Inventory, InventoryVo> 
     Page<InventoryVo> queryWarehouseBoardList(Page<InventoryVo> page, @Param("bo") InventoryBo bo,
                                               @Param("warehouseScopeIds") Collection<Long> warehouseScopeIds);
 
+    /**
+     * 库存查询（含供应商、分类、等级、型号、规格、动碰次数、安全库存）
+     */
+    Page<InventoryVo> queryPageList(Page<InventoryVo> page, @Param("bo") InventoryBo bo);
+
+    /**
+     * 按仓库+SKU汇总库存（PAD 库存查询）
+     */
+    Page<InventoryVo> selectSummaryPage(Page<InventoryVo> page, @Param("bo") InventoryBo bo);
+
+    /**
+     * 安全库存预警：按仓库+SKU汇总库存后与安全库存比较
+     */
+    Page<InventoryVo> selectSafetyStockPage(Page<InventoryVo> page, @Param("bo") InventoryBo bo);
+
 }

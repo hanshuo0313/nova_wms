@@ -32,4 +32,24 @@ public class ReceiptOrder extends BaseOrder {
      */
     private Long merchantId;
 
+    /**
+     * 入库类型 1采购入库 2领料返库 3其他入库
+     */
+    private Integer receiptType;
+
+    /**
+     * 来源单ID（采购单/领料出库单）
+     */
+    private Long sourceOrderId;
+
+    /**
+     * 来源单号
+     */
+    private String sourceOrderNo;
+
+    /**
+     * 操作数量（实际入库数量）
+     */
+    private java.math.BigDecimal operatedQuantity;
+
 }

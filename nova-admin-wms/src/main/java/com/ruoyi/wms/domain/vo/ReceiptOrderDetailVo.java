@@ -18,6 +18,11 @@ import lombok.EqualsAndHashCode;
 @ExcelIgnoreUnannotated
 @AutoMapper(target = ReceiptOrderDetail.class)
 public class ReceiptOrderDetailVo extends BaseOrderDetailVo{
+
+    /**
+     * 操作数量（已入库/已上架数量）
+     */
+    private java.math.BigDecimal operatedQuantity;
     /**
      * 库位编号
      */

@@ -12,11 +12,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * 库存移动详情业务对象 wms_movement_order_detail
- *
- * @author zcc
- * @date 2024-08-09
  */
-
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AutoMappers({
@@ -25,16 +21,23 @@ import lombok.EqualsAndHashCode;
 })
 public class MovementOrderDetailBo extends BaseOrderDetailBo {
 
-    /**
-     * 源仓库
-     */
+    /** 源仓库 */
     @NotNull(message = "源仓库不能为空", groups = { AddGroup.class, EditGroup.class })
     private Long sourceWarehouseId;
 
-    /**
-     * 目标仓库
-     */
+    /** 目标仓库 */
     @NotNull(message = "目标仓库不能为空", groups = { AddGroup.class, EditGroup.class })
     private Long targetWarehouseId;
 
+    /** 目标货位 */
+    private String targetStockCode;
+
+    /** 1=出库明细 2=入库明细 */
+    private Integer direction;
+
+    /** 计划数量 */
+    private java.math.BigDecimal planQuantity;
+
+    /** 锁定库存行ID */
+    private Long inventoryId;
 }

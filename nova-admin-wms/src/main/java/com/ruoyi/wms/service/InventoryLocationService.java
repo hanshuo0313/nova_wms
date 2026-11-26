@@ -64,11 +64,57 @@ public class InventoryLocationService {
         LambdaQueryWrapper<InventoryLocation> lqw = Wrappers.lambdaQuery();
         lqw.eq(bo.getWarehouseId() != null, InventoryLocation::getWarehouseId, bo.getWarehouseId());
         lqw.eq(StringUtils.isNotBlank(bo.getStockCode()), InventoryLocation::getStockCode, bo.getStockCode());
+        lqw.like(StringUtils.isNotBlank(bo.getStockCode()), InventoryLocation::getStockCode, bo.getStockCode());
+        lqw.eq(StringUtils.isNotBlank(bo.getShelfNo()), InventoryLocation::getShelfNo, bo.getShelfNo());
+        lqw.eq(StringUtils.isNotBlank(bo.getColNo()), InventoryLocation::getColNo, bo.getColNo());
+        lqw.eq(StringUtils.isNotBlank(bo.getLayerNo()), InventoryLocation::getLayerNo, bo.getLayerNo());
         lqw.eq(bo.getStatus() != null, InventoryLocation::getStatus, bo.getStatus());
         // 仓库数据权限过滤
         List<Long> warehouseScopeIds = WarehouseScopeUtils.getWarehouseIds();
         lqw.in(CollUtil.isNotEmpty(warehouseScopeIds), InventoryLocation::getWarehouseId, warehouseScopeIds);
+        lqw.orderByAsc(InventoryLocation::getStockCode);
         return lqw;
+    }
+
+    /**
+     * 依据库位编码解析 货架-列-层（如 CS01-02-03 → cs01 / 02 / 03），并计算容积
+     */
+    private void normalize(InventoryLocation location) {
+        String code = location.getStockCode();
+        if (StringUtils.isNotBlank(code)) {
+            String[] parts = code.split("-");
+            if (StringUtils.isBlank(location.getShelfNo()) && parts.length > 0) {
+                location.setShelfNo(parts[0]);
+            }
+            if (StringUtils.isBlank(location.getColNo()) && parts.length > 1) {
+                location.setColNo(parts[1]);
+            }
+            if (StringUtils.isBlank(location.getLayerNo()) && parts.length > 2) {
+                location.setLayerNo(parts[2]);
+            }
+        }
+        if (location.getLength() != null && location.getWidth() != null && location.getHeight() != null) {
+            location.setVolume(location.getLength()
+                .multiply(location.getWidth())
+                .multiply(location.getHeight())
+                .setScale(2, java.math.RoundingMode.HALF_UP));
+        }
+    }
+
+    /**
+     * 入库推荐库位：空闲库位中优先容积最小且能容纳物料体积的库位
+     */
+    public List<InventoryLocationVo> recommend(Long warehouseId, java.math.BigDecimal volume, Integer limit) {
+        LambdaQueryWrapper<InventoryLocation> lqw = Wrappers.lambdaQuery();
+        lqw.eq(warehouseId != null, InventoryLocation::getWarehouseId, warehouseId);
+        lqw.eq(InventoryLocation::getStatus, 1);
+        if (volume != null && volume.signum() > 0) {
+            lqw.and(w -> w.isNull(InventoryLocation::getVolume).or().ge(InventoryLocation::getVolume, volume));
+        }
+        lqw.orderByAsc(InventoryLocation::getVolume);
+        lqw.orderByAsc(InventoryLocation::getStockCode);
+        lqw.last("limit " + (limit == null || limit <= 0 ? 20 : limit));
+        return inventoryLocationMapper.selectVoList(lqw);
     }
 
     /**
@@ -85,6 +131,7 @@ public class InventoryLocationService {
             throw new ServiceException("该仓库下库位编号【" + bo.getStockCode() + "】已存在，不允许重复添加");
         }
         InventoryLocation add = MapstructUtils.convert(bo, InventoryLocation.class);
+        normalize(add);
         inventoryLocationMapper.insert(add);
     }
 
@@ -93,6 +140,7 @@ public class InventoryLocationService {
      */
     public void updateByBo(InventoryLocationBo bo) {
         InventoryLocation update = MapstructUtils.convert(bo, InventoryLocation.class);
+        normalize(update);
         inventoryLocationMapper.updateById(update);
     }
 

@@ -26,7 +26,6 @@ public class ItemSkuBo extends BaseEntity {
     /**
      * 规格名称
      */
-    @NotBlank(message = "规格名称不能为空", groups = { AddGroup.class, EditGroup.class })
     private String skuName;
 
     /**
@@ -64,6 +63,11 @@ public class ItemSkuBo extends BaseEntity {
      * 高(cm)
      */
     private BigDecimal height;
+
+    /**
+     * 体积(cm³，长*宽*高，自动计算)
+     */
+    private BigDecimal volume;
 
     /**
      * 毛重(kg)

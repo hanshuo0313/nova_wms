@@ -41,10 +41,20 @@ public class Inventory extends BaseEntity{
      * 库存
      */
     private BigDecimal quantity;
+
+    /**
+     * 锁定库存数量
+     */
+    private BigDecimal lockedQuantity;
     /**
      * 库位编号
      */
     private String stockCode;
+
+    /**
+     * 动碰次数（出入库、移库 +1，盘点后清零）
+     */
+    private Integer moveCount;
     /**
      * 备注
      */

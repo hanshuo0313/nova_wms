@@ -10,8 +10,10 @@ import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.wms.domain.bo.ShipmentOrderDetailBo;
 import com.ruoyi.wms.domain.entity.ShipmentOrderDetail;
+import com.ruoyi.wms.domain.entity.ShipmentOrder;
 import com.ruoyi.wms.domain.vo.ShipmentOrderDetailVo;
 import com.ruoyi.wms.mapper.ShipmentOrderDetailMapper;
+import com.ruoyi.wms.mapper.ShipmentOrderMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +34,29 @@ public class ShipmentOrderDetailService extends ServiceImpl<ShipmentOrderDetailM
 
     private final ShipmentOrderDetailMapper shipmentOrderDetailMapper;
     private final ItemSkuService itemSkuService;
+    private final ShipmentOrderMapper shipmentOrderMapper;
+
+    private void fillExtra(List<ShipmentOrderDetailVo> list) {
+        if (CollUtil.isEmpty(list)) {
+            return;
+        }
+        itemSkuService.setItemSkuMap(list);
+        java.util.Set<Long> orderIds = list.stream().map(ShipmentOrderDetailVo::getOrderId)
+            .filter(java.util.Objects::nonNull).collect(java.util.stream.Collectors.toSet());
+        if (orderIds.isEmpty()) {
+            return;
+        }
+        java.util.Map<Long, ShipmentOrder> orderMap = shipmentOrderMapper.selectBatchIds(orderIds).stream()
+            .collect(java.util.stream.Collectors.toMap(ShipmentOrder::getId, o -> o, (a, b) -> a));
+        list.forEach(d -> {
+            ShipmentOrder order = orderMap.get(d.getOrderId());
+            if (order != null) {
+                d.setOrderNo(order.getOrderNo());
+                d.setOrderStatus(order.getOrderStatus());
+                d.setOrderType(order.getShipmentType());
+            }
+        });
+    }
 
     /**
      * 查询出库单详情
@@ -46,6 +71,7 @@ public class ShipmentOrderDetailService extends ServiceImpl<ShipmentOrderDetailM
     public TableDataInfo<ShipmentOrderDetailVo> queryPageList(ShipmentOrderDetailBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<ShipmentOrderDetail> lqw = buildQueryWrapper(bo);
         Page<ShipmentOrderDetailVo> result = shipmentOrderDetailMapper.selectVoPage(pageQuery.build(), lqw);
+        fillExtra(result.getRecords());
         return TableDataInfo.build(result);
     }
 
@@ -54,7 +80,9 @@ public class ShipmentOrderDetailService extends ServiceImpl<ShipmentOrderDetailM
      */
     public List<ShipmentOrderDetailVo> queryList(ShipmentOrderDetailBo bo) {
         LambdaQueryWrapper<ShipmentOrderDetail> lqw = buildQueryWrapper(bo);
-        return shipmentOrderDetailMapper.selectVoList(lqw);
+        List<ShipmentOrderDetailVo> list = shipmentOrderDetailMapper.selectVoList(lqw);
+        fillExtra(list);
+        return list;
     }
 
     private LambdaQueryWrapper<ShipmentOrderDetail> buildQueryWrapper(ShipmentOrderDetailBo bo) {

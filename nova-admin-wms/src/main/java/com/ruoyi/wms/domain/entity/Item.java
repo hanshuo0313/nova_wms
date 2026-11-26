@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
+import java.math.BigDecimal;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -39,6 +40,11 @@ public class Item extends BaseEntity {
     private String itemImage;
 
     /**
+     * 供应商ID
+     */
+    private Long supplierId;
+
+    /**
      * 分类
      */
     private String itemCategory;
@@ -62,6 +68,26 @@ public class Item extends BaseEntity {
      * 所属仓库
      */
     private Long warehouseId;
+
+     * 型号
+     */
+    private String itemModel;
+
+    /**
+     * 售价(元)
+     */
+    private BigDecimal sellingPrice;
+
+    /**
+     * 交货期(天)
+     */
+    private Integer deliveryDays;
+
+    /**
+     * 安全库存水位
+     */
+    private BigDecimal safetyStock;
+
 
     /**
      * 备注

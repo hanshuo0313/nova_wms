@@ -32,4 +32,19 @@ public class ShipmentOrder extends BaseOrder {
      */
     private Long merchantId;
 
+    /**
+     * 出库类型 1领料出库 2紧急领料出库 3退货出库 4其他出库
+     */
+    private Integer shipmentType;
+
+    /**
+     * 来源单ID（领料出库单/退货单）
+     */
+    private Long sourceOrderId;
+
+    /**
+     * 来源单号
+     */
+    private String sourceOrderNo;
+
 }

@@ -20,5 +20,9 @@ public class ReceiptOrderDetail extends BaseOrderDetail {
      */
     private Long warehouseId;
 
+    /**
+     * 操作数量（已入库/已上架数量）
+     */
+    private java.math.BigDecimal operatedQuantity;
 
 }

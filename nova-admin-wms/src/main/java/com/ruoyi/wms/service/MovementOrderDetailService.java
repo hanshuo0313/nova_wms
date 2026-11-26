@@ -10,8 +10,10 @@ import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.wms.domain.bo.MovementOrderDetailBo;
 import com.ruoyi.wms.domain.entity.MovementOrderDetail;
+import com.ruoyi.wms.domain.entity.MovementOrder;
 import com.ruoyi.wms.domain.vo.MovementOrderDetailVo;
 import com.ruoyi.wms.mapper.MovementOrderDetailMapper;
+import com.ruoyi.wms.mapper.MovementOrderMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +35,28 @@ public class MovementOrderDetailService extends ServiceImpl<MovementOrderDetailM
 
     private final MovementOrderDetailMapper movementOrderDetailMapper;
     private final ItemSkuService itemSkuService;
+    private final MovementOrderMapper movementOrderMapper;
+
+    private void fillExtra(List<MovementOrderDetailVo> list) {
+        if (CollUtil.isEmpty(list)) {
+            return;
+        }
+        itemSkuService.setItemSkuMap(list);
+        java.util.Set<Long> orderIds = list.stream().map(MovementOrderDetailVo::getOrderId)
+            .filter(java.util.Objects::nonNull).collect(java.util.stream.Collectors.toSet());
+        if (orderIds.isEmpty()) {
+            return;
+        }
+        java.util.Map<Long, MovementOrder> orderMap = movementOrderMapper.selectBatchIds(orderIds).stream()
+            .collect(java.util.stream.Collectors.toMap(MovementOrder::getId, o -> o, (a, b) -> a));
+        list.forEach(d -> {
+            MovementOrder order = orderMap.get(d.getOrderId());
+            if (order != null) {
+                d.setOrderNo(order.getOrderNo());
+                d.setOrderStatus(order.getOrderStatus());
+            }
+        });
+    }
 
     /**
      * 查询库存移动详情
@@ -47,6 +71,7 @@ public class MovementOrderDetailService extends ServiceImpl<MovementOrderDetailM
     public TableDataInfo<MovementOrderDetailVo> queryPageList(MovementOrderDetailBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<MovementOrderDetail> lqw = buildQueryWrapper(bo);
         Page<MovementOrderDetailVo> result = movementOrderDetailMapper.selectVoPage(pageQuery.build(), lqw);
+        fillExtra(result.getRecords());
         return TableDataInfo.build(result);
     }
 
@@ -55,7 +80,9 @@ public class MovementOrderDetailService extends ServiceImpl<MovementOrderDetailM
      */
     public List<MovementOrderDetailVo> queryList(MovementOrderDetailBo bo) {
         LambdaQueryWrapper<MovementOrderDetail> lqw = buildQueryWrapper(bo);
-        return movementOrderDetailMapper.selectVoList(lqw);
+        List<MovementOrderDetailVo> list = movementOrderDetailMapper.selectVoList(lqw);
+        fillExtra(list);
+        return list;
     }
 
     private LambdaQueryWrapper<MovementOrderDetail> buildQueryWrapper(MovementOrderDetailBo bo) {

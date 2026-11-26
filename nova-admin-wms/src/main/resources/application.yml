@@ -10,7 +10,8 @@ ruoyi:
   cacheLazy: false
 
 captcha:
-  enable: true
+  # PAD 端只需账号/密码登录，故关闭验证码校验
+  enable: false
   # 页面 <参数设置> 可开启关闭 验证码校验
   # 验证码类型 math 数组计算 char 字符验证
   type: MATH
@@ -131,6 +132,8 @@ security:
     # 公共路径
     - /favicon.ico
     - /error
+    # 客户端 IP 查询（登录前调用）
+    - /client/ip
     # swagger 文档配置
     - /*/api-docs
     - /*/api-docs/**

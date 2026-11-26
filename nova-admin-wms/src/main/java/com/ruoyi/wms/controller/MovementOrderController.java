@@ -77,7 +77,9 @@ public class MovementOrderController extends BaseController {
     @RepeatSubmit()
     @PostMapping()
     public R<Void> add(@Validated(AddGroup.class) @RequestBody MovementOrderBo bo) {
-        bo.setOrderStatus(ServiceConstants.MovementOrderStatus.PENDING);
+        if (bo.getOrderStatus() == null) {
+            bo.setOrderStatus(ServiceConstants.MovementOrderStatus.PENDING);
+        }
         movementOrderService.insertByBo(bo);
         return R.ok();
     }
@@ -100,6 +102,15 @@ public class MovementOrderController extends BaseController {
     @SaCheckPermission("wms:movement:all")
     @Log(title = "移库单", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
+    /**
+     * 确认移库单：配货并生成出库/入库明细
+     */
+    @PostMapping("/confirm/{id}")
+    public R<Void> confirm(@PathVariable Long id) {
+        movementOrderService.confirm(id);
+        return R.ok();
+    }
+
     @PostMapping("/move")
     public R<Void> move(@Validated(AddGroup.class) @RequestBody MovementOrderBo bo) {
         bo.setOrderStatus(ServiceConstants.MovementOrderStatus.FINISH);

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.wms.mapper.ReturnOrderDetailMapper">
+
+    <select id="queryDetailVoList" resultType="com.ruoyi.wms.domain.vo.ReturnOrderDetailVo">
+        select
+            d.id,
+            d.order_id,
+            d.purchase_detail_id,
+            d.sku_id,
+            sku.item_id,
+            item.item_code,
+            item.item_name,
+            item.supplier_id,
+            merchant.merchant_name as supplier_name,
+            d.return_quantity,
+            d.received_quantity,
+            d.max_quantity,
+            d.remark
+        from wms_return_order_detail d
+        inner join wms_item_sku sku on sku.id = d.sku_id
+        inner join wms_item item on item.id = sku.item_id
+        left join wms_merchant merchant on merchant.id = item.supplier_id
+        where d.order_id = #{orderId}
+        order by d.id
+    </select>
+
+</mapper>

@@ -71,4 +71,29 @@ public class InventoryBo extends BaseEntity {
     private Long itemId;
     private Long itemCategory;
     private String unit;
+
+    /**
+     * 供应商ID
+     */
+    private Long supplierId;
+
+    /**
+     * 等级
+     */
+    private String itemLevel;
+
+    /**
+     * 型号
+     */
+    private String itemModel;
+
+    /**
+     * 仅查询低于安全库存水位的库存
+     */
+    private Boolean belowSafetyStock;
+
+    /**
+     * 最小动碰次数（动盘：>=1）
+     */
+    private Integer minMoveCount;
 }

@@ -12,20 +12,29 @@ import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.wms.domain.bo.ItemBo;
 import com.ruoyi.wms.domain.bo.ItemSkuBo;
 import com.ruoyi.wms.domain.entity.Item;
+import com.ruoyi.wms.domain.entity.ItemBrand;
 import com.ruoyi.wms.domain.entity.ItemCategory;
+import com.ruoyi.wms.domain.entity.Merchant;
+import com.ruoyi.wms.domain.vo.ItemBrandVo;
 import com.ruoyi.wms.domain.vo.ItemCategoryVo;
 import com.ruoyi.wms.domain.vo.ItemSkuVo;
 import com.ruoyi.wms.domain.vo.ItemVo;
+import com.ruoyi.wms.domain.vo.MerchantVo;
+import com.ruoyi.wms.mapper.ItemBrandMapper;
 import com.ruoyi.wms.mapper.ItemCategoryMapper;
 import com.ruoyi.wms.mapper.ItemMapper;
 import com.ruoyi.wms.utils.WarehouseScopeUtils;
+import com.ruoyi.wms.mapper.MerchantMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -37,13 +46,19 @@ public class ItemService {
     private final ItemMapper itemMapper;
     private final ItemSkuService itemSkuService;
     private final ItemCategoryMapper itemCategoryMapper;
+    private final ItemBrandMapper itemBrandMapper;
+    private final MerchantMapper merchantMapper;
 
     /**
      * 查询物料
      */
 
     public ItemVo queryById(Long id) {
-        return itemMapper.selectVoById(id);
+        ItemVo vo = itemMapper.selectVoById(id);
+        if (vo != null) {
+            fillExtra(List.of(vo));
+        }
+        return vo;
     }
 
     /**
@@ -58,7 +73,9 @@ public class ItemService {
         }
         LambdaQueryWrapper<Item> lambdaQueryWrapper = Wrappers.lambdaQuery();
         lambdaQueryWrapper.in(Item::getId, itemIds);
-        return itemMapper.selectVoList(lambdaQueryWrapper);
+        List<ItemVo> list = itemMapper.selectVoList(lambdaQueryWrapper);
+        fillExtra(list);
+        return list;
     }
 
     /**
@@ -68,15 +85,7 @@ public class ItemService {
     public TableDataInfo<ItemVo> queryPageList(ItemBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<Item> lqw = buildQueryWrapper(bo);
         Page<ItemVo> result = itemMapper.selectVoPage(pageQuery.build(), lqw);
-        List<ItemVo> itemVoList = result.getRecords();
-        if (!CollUtil.isEmpty(itemVoList)) {
-            LambdaQueryWrapper<ItemCategory> itemTypeWrapper = new LambdaQueryWrapper<>();
-            itemTypeWrapper.in(ItemCategory::getId, itemVoList.stream().map(ItemVo::getItemCategory).collect(Collectors.toSet()));
-            Map<Long, ItemCategoryVo> itemCategoryVoMap = itemCategoryMapper.selectVoList(itemTypeWrapper).stream().collect(Collectors.toMap(ItemCategoryVo::getId, Function.identity()));
-            itemVoList.forEach(itemVo -> {
-                itemVo.setItemCategoryInfo(itemCategoryVoMap.get(Long.valueOf(itemVo.getItemCategory())));
-            });
-        }
+        fillExtra(result.getRecords());
         return TableDataInfo.build(result);
     }
 
@@ -86,7 +95,69 @@ public class ItemService {
 
     public List<ItemVo> queryList(ItemBo bo) {
         LambdaQueryWrapper<Item> lqw = buildQueryWrapper(bo);
-        return itemMapper.selectVoList(lqw);
+        List<ItemVo> list = itemMapper.selectVoList(lqw);
+        fillExtra(list);
+        return list;
+    }
+
+    /**
+     * 填充分类、品牌、供应商、主规格信息
+     */
+    private void fillExtra(List<ItemVo> itemVoList) {
+        if (CollUtil.isEmpty(itemVoList)) {
+            return;
+        }
+        // 分类
+        Set<Long> categoryIds = itemVoList.stream()
+            .map(ItemVo::getItemCategory)
+            .filter(StrUtil::isNotBlank)
+            .map(Long::valueOf)
+            .collect(Collectors.toSet());
+        Map<Long, ItemCategoryVo> categoryMap = CollUtil.isEmpty(categoryIds)
+            ? Map.of()
+            : itemCategoryMapper.selectVoList(Wrappers.<ItemCategory>lambdaQuery().in(ItemCategory::getId, categoryIds))
+                .stream().collect(Collectors.toMap(ItemCategoryVo::getId, Function.identity(), (a, b) -> a));
+        // 品牌
+        Set<Long> brandIds = itemVoList.stream().map(ItemVo::getItemBrand).filter(java.util.Objects::nonNull).collect(Collectors.toSet());
+        Map<Long, ItemBrandVo> brandMap = CollUtil.isEmpty(brandIds)
+            ? Map.of()
+            : itemBrandMapper.selectVoList(Wrappers.<ItemBrand>lambdaQuery().in(ItemBrand::getId, brandIds))
+                .stream().collect(Collectors.toMap(ItemBrandVo::getId, Function.identity(), (a, b) -> a));
+        // 供应商
+        Set<Long> supplierIds = itemVoList.stream().map(ItemVo::getSupplierId).filter(java.util.Objects::nonNull).collect(Collectors.toSet());
+        Map<Long, MerchantVo> supplierMap = CollUtil.isEmpty(supplierIds)
+            ? Map.of()
+            : merchantMapper.selectVoList(Wrappers.<Merchant>lambdaQuery().in(Merchant::getId, supplierIds))
+                .stream().collect(Collectors.toMap(MerchantVo::getId, Function.identity(), (a, b) -> a));
+
+        for (ItemVo vo : itemVoList) {
+            if (StrUtil.isNotBlank(vo.getItemCategory())) {
+                ItemCategoryVo categoryVo = categoryMap.get(Long.valueOf(vo.getItemCategory()));
+                vo.setItemCategoryInfo(categoryVo);
+                if (categoryVo != null) {
+                    vo.setItemCategoryName(categoryVo.getCategoryName());
+                }
+            }
+            if (vo.getItemBrand() != null && brandMap.containsKey(vo.getItemBrand())) {
+                vo.setItemBrandName(brandMap.get(vo.getItemBrand()).getBrandName());
+            }
+            if (vo.getSupplierId() != null && supplierMap.containsKey(vo.getSupplierId())) {
+                vo.setSupplierName(supplierMap.get(vo.getSupplierId()).getMerchantName());
+            }
+            List<ItemSkuVo> skuList = itemSkuService.queryByItemId(vo.getId());
+            if (CollUtil.isNotEmpty(skuList)) {
+                ItemSkuVo sku = skuList.get(0);
+                vo.setSkuId(sku.getId());
+                vo.setSkuName(sku.getSkuName());
+                vo.setLength(sku.getLength());
+                vo.setWidth(sku.getWidth());
+                vo.setHeight(sku.getHeight());
+                vo.setVolume(sku.getVolume());
+                vo.setGrossWeight(sku.getGrossWeight());
+                vo.setNetWeight(sku.getNetWeight());
+                vo.setCostPrice(sku.getCostPrice());
+            }
+        }
     }
 
     private LambdaQueryWrapper<Item> buildQueryWrapper(ItemBo bo) {
@@ -95,10 +166,10 @@ public class ItemService {
         // 主键集合
         lqw.in(!CollUtil.isEmpty(bo.getIds()), Item::getId, bo.getIds());
         lqw.like(StrUtil.isNotBlank(bo.getItemName()), Item::getItemName, bo.getItemName());
-        if (!StrUtil.isBlank(bo.getItemCategory())){
+        if (!StrUtil.isBlank(bo.getItemCategory())) {
             Long parentId = Long.valueOf(bo.getItemCategory());
             List<Long> subIdList = this.buildSubItemCategoryIdList(parentId);
-            subIdList.add(Long.valueOf(bo.getItemCategory()));
+            subIdList.add(parentId);
             lqw.in(Item::getItemCategory, subIdList);
         }
         lqw.eq(StrUtil.isNotBlank(bo.getUnit()), Item::getUnit, bo.getUnit());
@@ -106,6 +177,11 @@ public class ItemService {
         // 仓库数据权限过滤
         List<Long> warehouseScopeIds = WarehouseScopeUtils.getWarehouseIds();
         lqw.in(CollUtil.isNotEmpty(warehouseScopeIds), Item::getWarehouseId, warehouseScopeIds);
+        lqw.eq(bo.getSupplierId() != null, Item::getSupplierId, bo.getSupplierId());
+        lqw.eq(StrUtil.isNotBlank(bo.getItemLevel()), Item::getItemLevel, bo.getItemLevel());
+        lqw.like(StrUtil.isNotBlank(bo.getItemModel()), Item::getItemModel, bo.getItemModel());
+        lqw.eq(bo.getItemBrand() != null, Item::getItemBrand, bo.getItemBrand());
+        lqw.orderByDesc(Item::getId);
         return lqw;
     }
 
@@ -125,7 +201,8 @@ public class ItemService {
         validateBoBeforeSave(bo);
         Item item = MapstructUtils.convert(bo, Item.class);
         itemMapper.insert(item);
-        itemSkuService.setItemId(bo.getSku(),item.getId());
+        itemSkuService.setItemId(bo.getSku(), item.getId());
+        normalizeSku(bo.getSku(), item);
         itemSkuService.saveOrUpdateBatchByBo(bo.getSku());
     }
 
@@ -138,8 +215,35 @@ public class ItemService {
     public void updateByForm(ItemBo bo) {
         validateBoBeforeSave(bo);
         itemMapper.updateById(MapstructUtils.convert(bo, Item.class));
-        itemSkuService.setItemId(bo.getSku(),bo.getId());
+        itemSkuService.setItemId(bo.getSku(), bo.getId());
+        normalizeSku(bo.getSku(), MapstructUtils.convert(bo, Item.class));
         itemSkuService.saveOrUpdateBatchByBo(bo.getSku());
+    }
+
+    /**
+     * 规格名称/编码不再由页面填写：为空时补默认值；体积=长*宽*高
+     */
+    private void normalizeSku(List<ItemSkuBo> skuList, Item item) {
+        if (CollUtil.isEmpty(skuList)) {
+            return;
+        }
+        for (ItemSkuBo sku : skuList) {
+            if (StrUtil.isBlank(sku.getSkuName())) {
+                sku.setSkuName(item.getItemName());
+            }
+            if (StrUtil.isBlank(sku.getSkuCode())) {
+                sku.setSkuCode(item.getItemCode());
+            }
+            if (sku.getLength() != null && sku.getWidth() != null && sku.getHeight() != null) {
+                BigDecimal volume = sku.getLength()
+                    .multiply(sku.getWidth())
+                    .multiply(sku.getHeight())
+                    .setScale(4, RoundingMode.HALF_UP);
+                sku.setVolume(volume);
+            } else if (sku.getVolume() == null) {
+                sku.setVolume(BigDecimal.ZERO);
+            }
+        }
     }
 
     /**

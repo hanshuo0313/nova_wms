@@ -19,6 +19,8 @@ import com.ruoyi.wms.utils.WarehouseScopeUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -38,45 +40,45 @@ public class InventoryHistoryService extends ServiceImpl<InventoryHistoryMapper,
     public void saveInventoryHistory(BaseOrderBo<? extends BaseOrderDetailBo> bo,Integer orderType,Boolean isAdd){
         List<InventoryHistory> inventoryHistoryList = new LinkedList<>();
         bo.getDetails().forEach(detail -> {
-            InventoryHistory inventoryHistory = new InventoryHistory();
-            inventoryHistory.setOrderId(bo.getId());
-            inventoryHistory.setOrderNo(bo.getOrderNo());
-            inventoryHistory.setOrderType(orderType);
-            inventoryHistory.setSkuId(detail.getSkuId());
-
-            LambdaQueryWrapper<Inventory> wrapper = Wrappers.lambdaQuery();
-            wrapper.eq(Inventory::getWarehouseId, detail.getWarehouseId());
-            wrapper.eq(Inventory::getSkuId, detail.getSkuId());
-            Inventory result = inventoryMapper.selectOne(wrapper);
-            if(orderType==4){
-                inventoryHistory.setStockCode(detail.getStockCode());
-            }else{
-                if(result!=null){
-                    String existingStockCode = result.getStockCode();
-                    String newStockCode = detail.getStockCode();
-                    if (existingStockCode != null && !existingStockCode.isEmpty() && newStockCode != null && !newStockCode.isEmpty()) {
-                        List<String> existingStockCodeList = Arrays.asList(existingStockCode.split(","));
-                        List<String> newStockCodeList = Arrays.asList(newStockCode.split(","));
-                        Set<String> allCodes = new HashSet<>(existingStockCodeList);
-                        allCodes.addAll(newStockCodeList.stream().map(String::trim).toList());
-                        inventoryHistory.setStockCode(String.join(",", allCodes));
-                    } else {
-                        inventoryHistory.setStockCode(newStockCode);
+            // 每个货位一条库存记录：同一物料不同货位分别记录
+            List<String> codes = new LinkedList<>();
+            String stockCodes = detail.getStockCode();
+            if (stockCodes != null && !stockCodes.trim().isEmpty()) {
+                for (String code : stockCodes.split(",")) {
+                    if (!code.trim().isEmpty()) {
+                        codes.add(code.trim());
                     }
                 }
             }
-
-
-            if(isAdd){
-                inventoryHistory.setQuantity(detail.getQuantity());
-            }else {
-                inventoryHistory.setQuantity(detail.getQuantity().negate());
+            if (codes.isEmpty()) {
+                codes.add(null);
             }
-            inventoryHistory.setWarehouseId(detail.getWarehouseId());
-            inventoryHistory.setAmount(detail.getAmount());
-            inventoryHistory.setBeforeQuantity(detail.getBeforeQuantity());
-            inventoryHistory.setAfterQuantity(detail.getAfterQuantity());
-            inventoryHistoryList.add(inventoryHistory);
+            // 多个货位时按数量均分，保证每个货位一条记录且数量合计不变
+            BigDecimal totalQty = detail.getQuantity() == null ? BigDecimal.ZERO : detail.getQuantity();
+            int codeCount = codes.size();
+            BigDecimal share = codeCount > 0 ? totalQty.divide(BigDecimal.valueOf(codeCount), 2, java.math.RoundingMode.DOWN) : totalQty;
+            BigDecimal assigned = BigDecimal.ZERO;
+            for (int i = 0; i < codeCount; i++) {
+                String code = codes.get(i);
+                BigDecimal qty = (i == codeCount - 1) ? totalQty.subtract(assigned) : share;
+                assigned = assigned.add(qty);
+                InventoryHistory inventoryHistory = new InventoryHistory();
+                inventoryHistory.setOrderId(bo.getId());
+                inventoryHistory.setOrderNo(bo.getOrderNo());
+                inventoryHistory.setOrderType(orderType);
+                inventoryHistory.setSkuId(detail.getSkuId());
+                inventoryHistory.setStockCode(code);
+                if(isAdd){
+                    inventoryHistory.setQuantity(qty);
+                } else {
+                    inventoryHistory.setQuantity(qty.negate());
+                }
+                inventoryHistory.setWarehouseId(detail.getWarehouseId());
+                inventoryHistory.setAmount(detail.getAmount());
+                inventoryHistory.setBeforeQuantity(detail.getBeforeQuantity());
+                inventoryHistory.setAfterQuantity(detail.getAfterQuantity());
+                inventoryHistoryList.add(inventoryHistory);
+            }
         });
         this.saveBatch(inventoryHistoryList);
     }

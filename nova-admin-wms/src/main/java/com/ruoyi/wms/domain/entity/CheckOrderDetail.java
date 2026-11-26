@@ -20,7 +20,12 @@ public class CheckOrderDetail extends BaseOrderDetail {
     /**
      * 盘点数量
      */
-    private BigDecimal checkQuantity;
+    private java.math.BigDecimal checkQuantity;
+
+    /**
+     * 是否已盘点
+     */
+    private Integer checked;
     /**
      * 所属仓库
      */
