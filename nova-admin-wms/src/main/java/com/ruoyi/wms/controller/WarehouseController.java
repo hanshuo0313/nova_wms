@@ -40,12 +40,11 @@ public class WarehouseController extends BaseController {
     }
 
     /**
-     * 查询仓库列表
+     * 查询仓库列表（前端下拉选择等只读场景，仅要求登录，并按仓库数据权限过滤）
      */
-    @SaCheckPermission("wms:warehouse:list")
     @GetMapping("/listNoPage")
     public R<List<WarehouseVo>> listNoPage(WarehouseBo bo) {
-        return R.ok(warehouseService.queryList(bo));
+        return R.ok(warehouseService.queryScopeList(bo));
     }
 
     /**

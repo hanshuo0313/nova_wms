@@ -44,19 +44,17 @@ public class ItemCategoryController extends BaseController {
     }
 
     /**
-     * 查询物料类型列表
+     * 查询物料类型列表（前端下拉选择等只读场景，仅要求登录）
      */
     @GetMapping("/listNoPage")
-    @SaCheckPermission("wms:item:list")
     public R<List<ItemCategoryVo>> listNoPage(ItemCategoryBo bo) {
         return R.ok(itemCategoryService.queryList(bo));
     }
 
     /**
-     * 获取物料类型下拉树列表
+     * 获取物料类型下拉树列表（仅要求登录）
      */
     @GetMapping("/treeselect")
-    @SaCheckPermission("wms:item:list")
     public R<List<ItemTypeTreeSelectVo>> treeselect(ItemCategoryBo query) {
         List<ItemCategoryVo> itemTypes = itemCategoryService.queryList(query);
         return R.ok(itemCategoryService.buildItemTypeTreeSelect(itemTypes));

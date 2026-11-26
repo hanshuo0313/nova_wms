@@ -26,6 +26,7 @@ import com.ruoyi.wms.domain.vo.ReceiptOrderVo;
 import com.ruoyi.wms.domain.vo.ShipmentOrderDetailVo;
 import com.ruoyi.wms.domain.vo.ShipmentOrderVo;
 import com.ruoyi.wms.mapper.ShipmentOrderMapper;
+import com.ruoyi.wms.utils.WarehouseScopeUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -90,6 +91,10 @@ public class ShipmentOrderService {
         lqw.eq(bo.getTotalAmount() != null, ShipmentOrder::getTotalAmount, bo.getTotalAmount());
         lqw.eq(bo.getTotalQuantity() != null, ShipmentOrder::getTotalQuantity, bo.getTotalQuantity());
         lqw.eq(bo.getOrderStatus() != null, ShipmentOrder::getOrderStatus, bo.getOrderStatus());
+        lqw.eq(bo.getWarehouseId() != null, ShipmentOrder::getWarehouseId, bo.getWarehouseId());
+        // 仓库数据权限过滤
+        List<Long> warehouseScopeIds = WarehouseScopeUtils.getWarehouseIds();
+        lqw.in(CollUtil.isNotEmpty(warehouseScopeIds), ShipmentOrder::getWarehouseId, warehouseScopeIds);
         lqw.orderByDesc(BaseEntity::getCreateTime);
         return lqw;
     }

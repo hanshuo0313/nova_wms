@@ -12,6 +12,7 @@ import lombok.Data;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 角色信息视图对象 sys_role
@@ -92,6 +93,11 @@ public class SysRoleVo implements Serializable {
      * 用户是否存在此角色标识 默认不存在
      */
     private boolean flag = false;
+
+    /**
+     * 仓库组（仓库数据权限，为空表示全部仓库）
+     */
+    private List<Long> warehouseIds;
 
     public boolean isAdmin() {
         return UserConstants.ADMIN_ID.equals(this.roleId);

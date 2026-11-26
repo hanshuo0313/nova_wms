@@ -69,6 +69,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="bo.unit != null and bo.unit != ''">
                 and item.unit=#{bo.unit}
             </if>
+            <if test="bo.warehouseId != null">
+                and item.warehouse_id=#{bo.warehouseId}
+            </if>
+            <if test="warehouseScopeIds != null and warehouseScopeIds.size() > 0">
+                and item.warehouse_id in
+                <foreach collection="warehouseScopeIds" item="scopeWarehouseId" open="(" separator="," close=")">
+                    #{scopeWarehouseId}
+                </foreach>
+            </if>
         </where>
         order by sku.item_id desc
     </select>

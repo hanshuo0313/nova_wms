@@ -17,6 +17,7 @@ import com.ruoyi.wms.domain.entity.MovementOrder;
 import com.ruoyi.wms.domain.entity.MovementOrderDetail;
 import com.ruoyi.wms.domain.vo.MovementOrderVo;
 import com.ruoyi.wms.mapper.MovementOrderMapper;
+import com.ruoyi.wms.utils.WarehouseScopeUtils;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.SerializationUtils;
 import org.springframework.stereotype.Service;
@@ -80,6 +81,10 @@ public class MovementOrderService {
         lqw.eq(bo.getTargetWarehouseId() != null, MovementOrder::getTargetWarehouseId, bo.getTargetWarehouseId());
         lqw.eq(bo.getOrderStatus() != null, MovementOrder::getOrderStatus, bo.getOrderStatus());
         lqw.eq(bo.getTotalQuantity() != null, MovementOrder::getTotalQuantity, bo.getTotalQuantity());
+        // 仓库数据权限过滤（来源仓库或目标仓库在权限范围内）
+        List<Long> warehouseScopeIds = WarehouseScopeUtils.getWarehouseIds();
+        lqw.and(!warehouseScopeIds.isEmpty(), w -> w.in(MovementOrder::getSourceWarehouseId, warehouseScopeIds)
+            .or().in(MovementOrder::getTargetWarehouseId, warehouseScopeIds));
         lqw.orderByDesc(BaseEntity::getCreateTime);
         return lqw;
     }

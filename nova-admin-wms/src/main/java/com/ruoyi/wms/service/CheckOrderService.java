@@ -17,6 +17,7 @@ import com.ruoyi.wms.domain.entity.CheckOrder;
 import com.ruoyi.wms.domain.entity.CheckOrderDetail;
 import com.ruoyi.wms.domain.vo.CheckOrderVo;
 import com.ruoyi.wms.mapper.CheckOrderMapper;
+import com.ruoyi.wms.utils.WarehouseScopeUtils;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.SerializationUtils;
 import org.springframework.stereotype.Service;
@@ -79,6 +80,9 @@ public class CheckOrderService {
         lqw.eq(bo.getOrderStatus() != null, CheckOrder::getOrderStatus, bo.getOrderStatus());
         lqw.eq(bo.getTotalQuantity() != null, CheckOrder::getTotalQuantity, bo.getTotalQuantity());
         lqw.eq(bo.getWarehouseId() != null, CheckOrder::getWarehouseId, bo.getWarehouseId());
+        // 仓库数据权限过滤
+        List<Long> warehouseScopeIds = WarehouseScopeUtils.getWarehouseIds();
+        lqw.in(!warehouseScopeIds.isEmpty(), CheckOrder::getWarehouseId, warehouseScopeIds);
         lqw.orderByDesc(BaseEntity::getCreateTime);
         return lqw;
     }

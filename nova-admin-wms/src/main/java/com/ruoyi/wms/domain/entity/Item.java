@@ -59,6 +59,11 @@ public class Item extends BaseEntity {
     private Long itemBrand;
 
     /**
+     * 所属仓库
+     */
+    private Long warehouseId;
+
+    /**
      * 备注
      */
     private String remark;

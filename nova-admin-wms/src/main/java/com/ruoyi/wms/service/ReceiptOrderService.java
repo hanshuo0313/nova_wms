@@ -24,6 +24,7 @@ import com.ruoyi.wms.domain.entity.ReceiptOrderDetail;
 import com.ruoyi.wms.domain.vo.ReceiptOrderDetailVo;
 import com.ruoyi.wms.domain.vo.ReceiptOrderVo;
 import com.ruoyi.wms.mapper.ReceiptOrderMapper;
+import com.ruoyi.wms.utils.WarehouseScopeUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -87,6 +88,10 @@ public class ReceiptOrderService {
         lqw.eq(StringUtils.isNotBlank(bo.getOrderNo()), ReceiptOrder::getOrderNo, bo.getOrderNo());
         lqw.eq(bo.getTotalAmount() != null, ReceiptOrder::getTotalAmount, bo.getTotalAmount());
         lqw.eq(bo.getOrderStatus() != null, ReceiptOrder::getOrderStatus, bo.getOrderStatus());
+        lqw.eq(bo.getWarehouseId() != null, ReceiptOrder::getWarehouseId, bo.getWarehouseId());
+        // 仓库数据权限过滤
+        List<Long> warehouseScopeIds = WarehouseScopeUtils.getWarehouseIds();
+        lqw.in(CollUtil.isNotEmpty(warehouseScopeIds), ReceiptOrder::getWarehouseId, warehouseScopeIds);
         lqw.orderByDesc(BaseEntity::getCreateTime);
         return lqw;
     }

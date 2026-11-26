@@ -32,10 +32,9 @@ public class ItemSkuController extends BaseController {
     private final ItemSkuService itemSkuService;
 
     /**
-     * 查询sku信息列表
+     * 查询sku信息列表（前端下拉选择等只读场景，仅要求登录，并按仓库数据权限过滤）
      */
     @GetMapping("/list")
-    @SaCheckPermission("wms:item:list")
     public TableDataInfo<ItemSkuMapVo> list(ItemSkuBo bo, PageQuery pageQuery) {
         return itemSkuService.queryPageList(bo, pageQuery);
     }

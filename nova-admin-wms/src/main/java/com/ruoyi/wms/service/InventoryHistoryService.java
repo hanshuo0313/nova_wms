@@ -15,6 +15,7 @@ import com.ruoyi.wms.domain.entity.InventoryHistory;
 import com.ruoyi.wms.domain.vo.InventoryHistoryVo;
 import com.ruoyi.wms.mapper.InventoryHistoryMapper;
 import com.ruoyi.wms.mapper.InventoryMapper;
+import com.ruoyi.wms.utils.WarehouseScopeUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -91,7 +92,7 @@ public class InventoryHistoryService extends ServiceImpl<InventoryHistoryMapper,
      * 查询库存记录列表
      */
     public TableDataInfo<InventoryHistoryVo> queryPageList(InventoryHistoryBo bo, PageQuery pageQuery) {
-        Page<InventoryHistoryVo> result = inventoryHistoryMapper.selectVoPageByBo(pageQuery.build(), bo);
+        Page<InventoryHistoryVo> result = inventoryHistoryMapper.selectVoPageByBo(pageQuery.build(), bo, WarehouseScopeUtils.getWarehouseIds());
         return TableDataInfo.build(result);
     }
 
@@ -111,6 +112,9 @@ public class InventoryHistoryService extends ServiceImpl<InventoryHistoryMapper,
         lqw.eq(bo.getSkuId() != null, InventoryHistory::getSkuId, bo.getSkuId());
         lqw.eq(bo.getQuantity() != null, InventoryHistory::getQuantity, bo.getQuantity());
         lqw.eq(bo.getWarehouseId() != null, InventoryHistory::getWarehouseId, bo.getWarehouseId());
+        // 仓库数据权限过滤
+        List<Long> warehouseScopeIds = WarehouseScopeUtils.getWarehouseIds();
+        lqw.in(!warehouseScopeIds.isEmpty(), InventoryHistory::getWarehouseId, warehouseScopeIds);
         return lqw;
     }
 

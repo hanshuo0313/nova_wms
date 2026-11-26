@@ -101,4 +101,9 @@ public class ItemSkuBo extends BaseEntity {
     private String itemCategory;
 
     private Long itemBrand;
+
+    /**
+     * 所属仓库
+     */
+    private Long warehouseId;
 }

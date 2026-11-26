@@ -18,6 +18,7 @@ import com.ruoyi.wms.domain.vo.BaseOrderDetailVo;
 import com.ruoyi.wms.domain.vo.ItemSkuMapVo;
 import com.ruoyi.wms.domain.vo.ItemSkuVo;
 import com.ruoyi.wms.mapper.ItemSkuMapper;
+import com.ruoyi.wms.utils.WarehouseScopeUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
@@ -58,8 +59,8 @@ public class ItemSkuService extends ServiceImpl<ItemSkuMapper, ItemSku> {
      */
 
     public TableDataInfo<ItemSkuMapVo> queryPageList(ItemSkuBo bo, PageQuery pageQuery) {
-        //开始查sku
-        IPage<ItemSkuMapVo> result = itemSkuMapper.selectByBo(pageQuery.build(), bo);
+        //开始查sku（同时应用当前用户的仓库数据权限）
+        IPage<ItemSkuMapVo> result = itemSkuMapper.selectByBo(pageQuery.build(), bo, WarehouseScopeUtils.getWarehouseIds());
         return TableDataInfo.build(result);
     }
 

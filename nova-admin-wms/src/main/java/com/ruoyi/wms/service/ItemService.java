@@ -18,6 +18,7 @@ import com.ruoyi.wms.domain.vo.ItemSkuVo;
 import com.ruoyi.wms.domain.vo.ItemVo;
 import com.ruoyi.wms.mapper.ItemCategoryMapper;
 import com.ruoyi.wms.mapper.ItemMapper;
+import com.ruoyi.wms.utils.WarehouseScopeUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -101,6 +102,10 @@ public class ItemService {
             lqw.in(Item::getItemCategory, subIdList);
         }
         lqw.eq(StrUtil.isNotBlank(bo.getUnit()), Item::getUnit, bo.getUnit());
+        lqw.eq(bo.getWarehouseId() != null, Item::getWarehouseId, bo.getWarehouseId());
+        // 仓库数据权限过滤
+        List<Long> warehouseScopeIds = WarehouseScopeUtils.getWarehouseIds();
+        lqw.in(CollUtil.isNotEmpty(warehouseScopeIds), Item::getWarehouseId, warehouseScopeIds);
         return lqw;
     }
 
@@ -139,24 +144,57 @@ public class ItemService {
 
     /**
      * 保存前的数据校验
+     * <p>
+     * 商品名称允许重复（不同编号、不同仓库的商品可以同名），因此不校验名称唯一性；
+     * 商品编号（item_code）具有唯一性，需要校验；
+     * 规格编号（sku_code/条码）允许重复，因此不做唯一性校验
      */
     private void validateBoBeforeSave(ItemBo itemBo) {
-        validateItemName(itemBo);
+        // 统一去除编号首尾空格，避免因空格差异绕过唯一性校验
+        itemBo.setItemCode(StrUtil.trim(itemBo.getItemCode()));
+        validateItemCode(itemBo);
         validateItemSkuName(itemBo.getSku());
+        validateWarehouseScope(itemBo);
     }
 
-    private void validateItemName(ItemBo item) {
+    /**
+     * 校验商品编号是否唯一（编辑时排除自身）
+     */
+    private void validateItemCode(ItemBo itemBo) {
+        String itemCode = itemBo.getItemCode();
+        if (StrUtil.isBlank(itemCode)) {
+            return;
+        }
         LambdaQueryWrapper<Item> queryWrapper = Wrappers.lambdaQuery();
-        queryWrapper.eq(Item::getItemName, item.getItemName());
-        queryWrapper.ne(item.getId() != null, Item::getId, item.getId());
-        Assert.isTrue(itemMapper.selectCount(queryWrapper) == 0, "商品名称重复");
+        queryWrapper.eq(Item::getItemCode, itemCode);
+        queryWrapper.ne(itemBo.getId() != null, Item::getId, itemBo.getId());
+        Assert.isTrue(itemMapper.selectCount(queryWrapper) == 0, "商品编号【{}】已存在，请更换商品编号", itemCode);
     }
 
+    /**
+     * 校验仓库是否在数据权限范围内
+     */
+    private void validateWarehouseScope(ItemBo itemBo) {
+        if (itemBo.getWarehouseId() != null) {
+            Assert.isTrue(WarehouseScopeUtils.contains(itemBo.getWarehouseId()), "无权操作该仓库的商品");
+        }
+    }
+
+    /**
+     * 校验同一商品下的规格名称是否重复
+     * <p>
+     * 规格名称为空时不参与重复校验（导入或手工录入时允许存在多个未填写规格名称的规格）
+     */
     private void validateItemSkuName(List<ItemSkuBo> skuVoList) {
-         Assert.isTrue(
-             skuVoList.stream().map(ItemSkuBo::getSkuName).distinct().count() == skuVoList.size(),
-             "商品规格重复"
-         );
+        if (CollUtil.isEmpty(skuVoList)) {
+            return;
+        }
+        List<String> skuNames = skuVoList.stream()
+            .map(ItemSkuBo::getSkuName)
+            .filter(StrUtil::isNotBlank)
+            .map(String::trim)
+            .collect(Collectors.toList());
+        Assert.isTrue(skuNames.stream().distinct().count() == skuNames.size(), "商品规格重复");
     }
 
 

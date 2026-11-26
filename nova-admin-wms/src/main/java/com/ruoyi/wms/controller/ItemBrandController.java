@@ -46,9 +46,8 @@ public class ItemBrandController extends BaseController {
     }
 
     /**
-     * 查询商品品牌列表
+     * 查询商品品牌列表（前端下拉选择等只读场景，仅要求登录）
      */
-    @SaCheckPermission("wms:itemBrand:list")
     @GetMapping("/listNoPage")
     public R<List<ItemBrandVo>> listNoPage(ItemBrandBo bo) {
         return R.ok(itemBrandService.queryList(bo));

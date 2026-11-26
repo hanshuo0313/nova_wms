@@ -17,6 +17,8 @@ import com.ruoyi.wms.domain.bo.InventoryLocationBo;
 import com.ruoyi.wms.domain.vo.InventoryLocationVo;
 import com.ruoyi.wms.domain.entity.InventoryLocation;
 import com.ruoyi.wms.mapper.InventoryLocationMapper;
+import com.ruoyi.wms.utils.WarehouseScopeUtils;
+import cn.hutool.core.collection.CollUtil;
 
 import java.util.List;
 import java.util.Map;
@@ -63,6 +65,9 @@ public class InventoryLocationService {
         lqw.eq(bo.getWarehouseId() != null, InventoryLocation::getWarehouseId, bo.getWarehouseId());
         lqw.eq(StringUtils.isNotBlank(bo.getStockCode()), InventoryLocation::getStockCode, bo.getStockCode());
         lqw.eq(bo.getStatus() != null, InventoryLocation::getStatus, bo.getStatus());
+        // 仓库数据权限过滤
+        List<Long> warehouseScopeIds = WarehouseScopeUtils.getWarehouseIds();
+        lqw.in(CollUtil.isNotEmpty(warehouseScopeIds), InventoryLocation::getWarehouseId, warehouseScopeIds);
         return lqw;
     }
 

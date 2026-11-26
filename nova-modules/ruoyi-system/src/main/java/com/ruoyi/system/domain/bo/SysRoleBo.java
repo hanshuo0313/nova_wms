@@ -83,6 +83,11 @@ public class SysRoleBo extends BaseEntity {
      */
     private Long[] deptIds;
 
+    /**
+     * 仓库组（仓库数据权限，为空表示全部仓库）
+     */
+    private Long[] warehouseIds;
+
     public SysRoleBo(Long roleId) {
         this.roleId = roleId;
     }

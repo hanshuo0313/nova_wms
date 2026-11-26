@@ -48,6 +48,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="bo.warehouseId != null">
                 and inventory.warehouse_id=#{bo.warehouseId}
             </if>
+            <if test="warehouseScopeIds != null and warehouseScopeIds.size() > 0">
+                and inventory.warehouse_id in
+                <foreach collection="warehouseScopeIds" item="scopeWarehouseId" open="(" separator="," close=")">
+                    #{scopeWarehouseId}
+                </foreach>
+            </if>
             <if test="bo.minQuantity != null">
                 and inventory.quantity>=#{bo.minQuantity}
             </if>

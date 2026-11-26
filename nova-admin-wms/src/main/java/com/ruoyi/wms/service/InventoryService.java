@@ -21,6 +21,7 @@ import com.ruoyi.wms.domain.vo.InventoryVo;
 import com.ruoyi.wms.domain.vo.ItemSkuMapVo;
 import com.ruoyi.wms.mapper.InventoryLocationMapper;
 import com.ruoyi.wms.mapper.InventoryMapper;
+import com.ruoyi.wms.utils.WarehouseScopeUtils;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -75,6 +76,9 @@ public class InventoryService extends ServiceImpl<InventoryMapper, Inventory> {
         wrapper.eq(bo.getSkuId() != null, Inventory::getSkuId, bo.getSkuId());
         wrapper.eq(bo.getWarehouseId() != null, Inventory::getWarehouseId, bo.getWarehouseId());
         wrapper.eq(bo.getQuantity() != null, Inventory::getQuantity, bo.getQuantity());
+        // 仓库数据权限过滤
+        List<Long> warehouseScopeIds = WarehouseScopeUtils.getWarehouseIds();
+        wrapper.in(CollUtil.isNotEmpty(warehouseScopeIds), Inventory::getWarehouseId, warehouseScopeIds);
         return wrapper;
     }
 
@@ -113,11 +117,11 @@ public class InventoryService extends ServiceImpl<InventoryMapper, Inventory> {
     }
 
     public TableDataInfo<InventoryVo> queryWarehouseBoardList(InventoryBo bo, PageQuery pageQuery) {
-            return TableDataInfo.build(inventoryMapper.queryWarehouseBoardList(pageQuery.build(), bo));
+            return TableDataInfo.build(inventoryMapper.queryWarehouseBoardList(pageQuery.build(), bo, WarehouseScopeUtils.getWarehouseIds()));
     }
 
     public TableDataInfo<InventoryVo> queryItemBoardList(InventoryBo bo, PageQuery pageQuery) {
-        Page<InventoryVo> result = inventoryMapper.queryItemBoardList(pageQuery.build(), bo);
+        Page<InventoryVo> result = inventoryMapper.queryItemBoardList(pageQuery.build(), bo, WarehouseScopeUtils.getWarehouseIds());
         return TableDataInfo.build(result);
     }
 

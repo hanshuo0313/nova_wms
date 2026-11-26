@@ -300,6 +300,8 @@ public class SysLoginService {
         loginUser.setDeptName(ObjectUtil.isNull(dept) ? "" : dept.getDeptName());
         List<SysRoleVo> roles = roleService.selectRolesByUserId(user.getUserId());
         loginUser.setRoles(BeanUtil.copyToList(roles, RoleVO.class));
+        // 仓库权限范围（为空表示全部仓库）
+        loginUser.setWarehouseIds(roleService.selectWarehouseScopeByUserId(user.getUserId()));
 
         return loginUser;
     }

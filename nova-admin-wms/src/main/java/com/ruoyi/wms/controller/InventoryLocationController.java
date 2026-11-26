@@ -47,9 +47,8 @@ public class InventoryLocationController extends BaseController {
     private final WarehouseMapper warehouseMapper;
 
     /**
-     * 查询库位管理列表
+     * 查询库位管理列表（出入库单据/看板等只读引用场景，仅要求登录，并按仓库数据权限过滤）
      */
-    @SaCheckPermission("wms:location:list")
     @GetMapping("/list")
     public TableDataInfo<InventoryLocationVo> list(InventoryLocationBo bo, PageQuery pageQuery) {
         return inventoryLocationService.queryPageList(bo, pageQuery);

@@ -101,6 +101,11 @@ public class LoginUser implements Serializable {
     private Long roleId;
 
     /**
+     * 仓库权限范围（为空表示全部仓库）
+     */
+    private List<Long> warehouseIds;
+
+    /**
      * 获取登录id
      */
     public String getLoginId() {

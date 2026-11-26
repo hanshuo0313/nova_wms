@@ -46,9 +46,8 @@ public class MerchantController extends BaseController {
     }
 
     /**
-     * 查询往来单位列表
+     * 查询往来单位列表（前端下拉选择等只读场景，仅要求登录）
      */
-    @SaCheckPermission("wms:merchant:list")
     @GetMapping("/listNoPage")
     public R<List<MerchantVo>> listNoPage(MerchantBo bo) {
         return R.ok(merchantService.queryList(bo));

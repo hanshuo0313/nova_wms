@@ -66,6 +66,12 @@ public class ItemBo extends BaseEntity {
      */
     private Long itemBrand;
 
+    /**
+     * 所属仓库
+     */
+    @NotNull(message = "仓库不能为空", groups = { AddGroup.class })
+    private Long warehouseId;
+
 
     /**
      * 备注

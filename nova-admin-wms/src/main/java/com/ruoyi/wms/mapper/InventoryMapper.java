@@ -8,6 +8,8 @@ import com.ruoyi.wms.domain.vo.InventoryVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Collection;
+
 /**
  * 库存Mapper接口
  *
@@ -17,7 +19,10 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface InventoryMapper extends BaseMapperPlus<Inventory, InventoryVo> {
 
-    Page<InventoryVo> queryItemBoardList(Page<InventoryVo> page, @Param("bo") InventoryBo bo);
-    Page<InventoryVo> queryWarehouseBoardList(Page<InventoryVo> page, @Param("bo") InventoryBo bo);
+    Page<InventoryVo> queryItemBoardList(Page<InventoryVo> page, @Param("bo") InventoryBo bo,
+                                         @Param("warehouseScopeIds") Collection<Long> warehouseScopeIds);
+
+    Page<InventoryVo> queryWarehouseBoardList(Page<InventoryVo> page, @Param("bo") InventoryBo bo,
+                                              @Param("warehouseScopeIds") Collection<Long> warehouseScopeIds);
 
 }

@@ -16,6 +16,7 @@ import com.ruoyi.wms.domain.bo.WarehouseBo;
 import com.ruoyi.wms.domain.entity.Warehouse;
 import com.ruoyi.wms.domain.vo.WarehouseVo;
 import com.ruoyi.wms.mapper.WarehouseMapper;
+import com.ruoyi.wms.utils.WarehouseScopeUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,6 +62,17 @@ public class WarehouseService extends ServiceImpl<WarehouseMapper, Warehouse> {
      */
     public List<WarehouseVo> queryList(WarehouseBo bo) {
         LambdaQueryWrapper<Warehouse> lqw = buildQueryWrapper(bo);
+        return warehouseMapper.selectVoList(lqw);
+    }
+
+    /**
+     * 查询当前登录用户仓库数据权限范围内的仓库列表（用于下拉选择等只读场景）
+     */
+    public List<WarehouseVo> queryScopeList(WarehouseBo bo) {
+        LambdaQueryWrapper<Warehouse> lqw = buildQueryWrapper(bo);
+        // 仓库数据权限过滤
+        List<Long> warehouseScopeIds = WarehouseScopeUtils.getWarehouseIds();
+        lqw.in(CollUtil.isNotEmpty(warehouseScopeIds), Warehouse::getId, warehouseScopeIds);
         return warehouseMapper.selectVoList(lqw);
     }
 

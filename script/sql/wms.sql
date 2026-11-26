@@ -571,6 +571,16 @@ PRIMARY KEY (`role_id`, `dept_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色和部门关联表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for sys_role_warehouse
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_role_warehouse`;
+CREATE TABLE `sys_role_warehouse`  (
+`role_id` bigint(20) NOT NULL COMMENT '角色ID',
+`warehouse_id` bigint(20) NOT NULL COMMENT '仓库ID',
+PRIMARY KEY (`role_id`, `warehouse_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色和仓库关联表（仓库数据权限，未配置表示全部仓库）' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- Table structure for sys_role_menu
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role_menu`;
@@ -854,12 +864,15 @@ CREATE TABLE `wms_item` (
 `unit` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '单位类别',
 `item_level` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '商品级别',
 `item_brand` bigint(20) DEFAULT NULL COMMENT '品牌',
+`warehouse_id` bigint(20) DEFAULT NULL COMMENT '所属仓库',
 `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
 `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
 `create_time` datetime(3) DEFAULT NULL COMMENT '创建时间',
 `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
 `update_time` datetime(3) DEFAULT NULL COMMENT '修改时间',
-PRIMARY KEY (`id`) USING BTREE
+PRIMARY KEY (`id`) USING BTREE,
+UNIQUE INDEX `uk_item_code`(`item_code`) USING BTREE,
+INDEX `idx_item_warehouse_id`(`warehouse_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='物料';
 
 -- ----------------------------

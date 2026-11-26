@@ -120,7 +120,10 @@ public class SysRoleController extends BaseController {
     public R<Void> dataScope(@RequestBody SysRoleBo role) {
         roleService.checkRoleAllowed(role);
         roleService.checkRoleDataScope(role.getRoleId());
-        return toAjax(roleService.authDataScope(role));
+        int rows = roleService.authDataScope(role);
+        // 数据权限（含仓库权限范围）变更后，强制角色下的在线用户重新登录以刷新权限
+        roleService.cleanOnlineUserByRole(role.getRoleId());
+        return toAjax(rows);
     }
 
     /**

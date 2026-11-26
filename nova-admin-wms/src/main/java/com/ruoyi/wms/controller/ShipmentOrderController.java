@@ -69,7 +69,7 @@ public class ShipmentOrderController extends BaseController {
         return R.ok(shipmentOrderService.queryById(id));
     }
 
-    @SaCheckPermission("wms:receipt:all")
+    @SaCheckPermission("wms:shipment:all")
     @GetMapping("/getIdByNo")
     public R<Long> getId(@RequestParam String orderNo) {
         return R.ok(shipmentOrderService.queryIdByOrderNo(orderNo));

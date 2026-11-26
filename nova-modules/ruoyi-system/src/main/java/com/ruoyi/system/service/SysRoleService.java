@@ -24,17 +24,20 @@ import com.ruoyi.system.domain.bo.SysRoleBo;
 import com.ruoyi.system.domain.entity.SysRole;
 import com.ruoyi.system.domain.entity.SysRoleDept;
 import com.ruoyi.system.domain.entity.SysRoleMenu;
+import com.ruoyi.system.domain.entity.SysRoleWarehouse;
 import com.ruoyi.system.domain.entity.SysUserRole;
 import com.ruoyi.system.domain.vo.SysRoleVo;
 import com.ruoyi.system.mapper.SysRoleDeptMapper;
 import com.ruoyi.system.mapper.SysRoleMapper;
 import com.ruoyi.system.mapper.SysRoleMenuMapper;
+import com.ruoyi.system.mapper.SysRoleWarehouseMapper;
 import com.ruoyi.system.mapper.SysUserRoleMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 角色 业务层处理
@@ -49,6 +52,7 @@ public class SysRoleService {
     private final SysRoleMenuMapper roleMenuMapper;
     private final SysUserRoleMapper userRoleMapper;
     private final SysRoleDeptMapper roleDeptMapper;
+    private final SysRoleWarehouseMapper roleWarehouseMapper;
 
     public TableDataInfo<SysRoleVo> selectPageRoleList(SysRoleBo role, PageQuery pageQuery) {
         Page<SysRoleVo> page = roleMapper.selectPageRoleList(pageQuery.build(), this.buildQueryWrapper(role));
@@ -132,7 +136,56 @@ public class SysRoleService {
      * @return 角色对象信息
      */
     public SysRoleVo selectRoleById(Long roleId) {
-        return roleMapper.selectRoleById(roleId);
+        SysRoleVo roleVo = roleMapper.selectRoleById(roleId);
+        if (ObjectUtil.isNotNull(roleVo)) {
+            roleVo.setWarehouseIds(selectWarehouseIdsByRoleId(roleId));
+        }
+        return roleVo;
+    }
+
+    /**
+     * 根据角色ID查询仓库权限范围
+     *
+     * @param roleId 角色ID
+     * @return 仓库ID集合
+     */
+    public List<Long> selectWarehouseIdsByRoleId(Long roleId) {
+        return roleWarehouseMapper.selectList(new LambdaQueryWrapper<SysRoleWarehouse>()
+                .eq(SysRoleWarehouse::getRoleId, roleId))
+            .stream()
+            .map(SysRoleWarehouse::getWarehouseId)
+            .distinct()
+            .collect(Collectors.toList());
+    }
+
+    /**
+     * 根据用户ID查询仓库数据权限范围
+     * <p>返回空集合表示拥有全部仓库权限（未配置仓库范围的角色不限制仓库）</p>
+     *
+     * @param userId 用户ID
+     * @return 仓库ID集合
+     */
+    public List<Long> selectWarehouseScopeByUserId(Long userId) {
+        List<SysRoleVo> roles = roleMapper.selectRolesByUserId(userId);
+        if (CollUtil.isEmpty(roles)) {
+            return new ArrayList<>();
+        }
+        Set<Long> roleIds = roles.stream().map(SysRoleVo::getRoleId).filter(Objects::nonNull).collect(Collectors.toSet());
+        if (CollUtil.isEmpty(roleIds)) {
+            return new ArrayList<>();
+        }
+        List<SysRoleWarehouse> relations = roleWarehouseMapper.selectList(new LambdaQueryWrapper<SysRoleWarehouse>()
+            .in(SysRoleWarehouse::getRoleId, roleIds));
+        Set<Long> configuredRoleIds = relations.stream().map(SysRoleWarehouse::getRoleId).collect(Collectors.toSet());
+        // 存在未配置仓库范围的角色时，视为拥有全部仓库权限
+        if (configuredRoleIds.size() < roleIds.size()) {
+            return new ArrayList<>();
+        }
+        return relations.stream()
+            .map(SysRoleWarehouse::getWarehouseId)
+            .filter(Objects::nonNull)
+            .distinct()
+            .collect(Collectors.toList());
     }
 
     /**
@@ -241,6 +294,10 @@ public class SysRoleService {
         SysRole role = MapstructUtils.convert(bo, SysRole.class);
         // 修改角色信息
         roleMapper.updateById(role);
+        // 未提交菜单权限（如仅修改数据权限/仓库权限等场景）时不更新菜单关联，避免误清空角色菜单
+        if (Objects.isNull(bo.getMenuIds())) {
+            return 1;
+        }
         // 删除角色与菜单关联
         roleMenuMapper.delete(new LambdaQueryWrapper<SysRoleMenu>().eq(SysRoleMenu::getRoleId, role.getRoleId()));
         return insertRoleMenu(bo);
@@ -276,8 +333,42 @@ public class SysRoleService {
         roleMapper.updateById(role);
         // 删除角色与部门关联
         roleDeptMapper.delete(new LambdaQueryWrapper<SysRoleDept>().eq(SysRoleDept::getRoleId, role.getRoleId()));
+        // 未提交仓库权限（warehouseIds 为 null）时保留原有仓库范围，避免误清空
+        if (Objects.nonNull(bo.getWarehouseIds())) {
+            // 删除角色与仓库关联
+            roleWarehouseMapper.delete(new LambdaQueryWrapper<SysRoleWarehouse>().eq(SysRoleWarehouse::getRoleId, role.getRoleId()));
+            // 新增角色和仓库信息（仓库数据权限）
+            insertRoleWarehouse(bo);
+        }
         // 新增角色和部门信息（数据权限）
         return insertRoleDept(role);
+    }
+
+    /**
+     * 新增角色仓库信息(仓库数据权限)
+     *
+     * @param role 角色对象
+     */
+    public int insertRoleWarehouse(SysRoleBo role) {
+        int rows = 1;
+        if (Objects.isNull(role.getWarehouseIds()) || role.getWarehouseIds().length == 0) {
+            return rows;
+        }
+        // 新增角色与仓库（仓库数据权限）管理
+        List<SysRoleWarehouse> list = new ArrayList<>();
+        for (Long warehouseId : role.getWarehouseIds()) {
+            if (Objects.isNull(warehouseId)) {
+                continue;
+            }
+            SysRoleWarehouse rw = new SysRoleWarehouse();
+            rw.setRoleId(role.getRoleId());
+            rw.setWarehouseId(warehouseId);
+            list.add(rw);
+        }
+        if (list.size() > 0) {
+            rows = roleWarehouseMapper.insertBatch(list) ? list.size() : 0;
+        }
+        return rows;
     }
 
     /**
@@ -287,6 +378,9 @@ public class SysRoleService {
      */
     public int insertRoleMenu(SysRoleBo role) {
         int rows = 1;
+        if (Objects.isNull(role.getMenuIds()) || role.getMenuIds().length == 0) {
+            return rows;
+        }
         // 新增用户与角色管理
         List<SysRoleMenu> list = new ArrayList<SysRoleMenu>();
         for (Long menuId : role.getMenuIds()) {
@@ -334,6 +428,8 @@ public class SysRoleService {
         roleMenuMapper.delete(new LambdaQueryWrapper<SysRoleMenu>().eq(SysRoleMenu::getRoleId, roleId));
         // 删除角色与部门关联
         roleDeptMapper.delete(new LambdaQueryWrapper<SysRoleDept>().eq(SysRoleDept::getRoleId, roleId));
+        // 删除角色与仓库关联
+        roleWarehouseMapper.delete(new LambdaQueryWrapper<SysRoleWarehouse>().eq(SysRoleWarehouse::getRoleId, roleId));
         return roleMapper.deleteById(roleId);
     }
 
